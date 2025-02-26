@@ -31,16 +31,18 @@ export default function Home() {
   ];
 
   return (
-    <ScrollView className="flex-1 bg-black">
+    <ScrollView className="flex-1">
       {/* Header */}
-      <Box className="bg-black px-4 pt-12 pb-4">
+      <Box className=" px-4 pt-12 pb-4">
         <HStack className="justify-between items-center">
-          <HStack space="sm" className="items-center">
-            <Icon as={DumbbellIcon} size="lg" className="text-white" />
-            <Heading size="xl" className="text-white font-bold">FitForge</Heading>
+
+          <HStack space="sm" className="items-end">
+            <Icon as={DumbbellIcon} size="lg" className="" />
+            <Heading size="xl" className=" font-bold">Oman Maulana</Heading>
           </HStack>
+
           <HStack space="md" className="items-center">
-            <Icon as={BellIcon} size="md" className="text-white" />
+            <Icon as={BellIcon} size="md" className="" />
             <Avatar size="md">
               <AvatarFallbackText>Jane Doe</AvatarFallbackText>
               <AvatarImage
@@ -54,16 +56,10 @@ export default function Home() {
         </HStack>
       </Box>
 
-      {/* Welcome Message */}
-      <Box className="px-4 py-3">
-        <Text className="text-white text-lg">Hello, John</Text>
-        <Text className="text-gray-400">Ready for today's workout?</Text>
-      </Box>
-
       {/* Workouts of the Day Section */}
       <Box className="px-4 py-2">
         <HStack className="justify-between items-center mb-3">
-          <Heading size="md" className="text-white">Today's Workouts</Heading>
+          <Heading size="md" className="">Today's Workouts</Heading>
           <Link>
             <HStack className="items-center">
               <LinkText size="sm" className="text-gray-300 no-underline">View All</LinkText>
@@ -81,7 +77,7 @@ export default function Home() {
                 alt={workout.name}
               />
               <Box className="p-3">
-                <Heading size="sm" className="text-white mb-1">{workout.name}</Heading>
+                <Heading size="sm" className=" mb-1">{workout.name}</Heading>
                 <HStack className="justify-between">
                   <Text className="text-gray-400 text-xs">{workout.difficulty}</Text>
                   <Text className="text-gray-400 text-xs">{workout.time}</Text>
@@ -99,7 +95,7 @@ export default function Home() {
 
       {/* Exercise Categories */}
       <Box className="px-4 py-2 mb-6">
-        <Heading size="md" className="text-white mb-4">Exercise Categories</Heading>
+        <Heading size="md" className=" mb-4">Exercise Categories</Heading>
 
         <VStack space="md">
           {exerciseCategories.map((category, index) => (
