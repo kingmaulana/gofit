@@ -33,8 +33,8 @@ export default function Home() {
   return (
     <ScrollView className="flex-1">
       {/* Header */}
-      <Box className=" px-4 pt-12 pb-4">
-        <HStack className="justify-between items-center">
+      <Box cla ssName=" px-4 pt-12 pb-4">
+        <HStack className="justify-between items-center my-3 mx-3">
 
           <HStack space="sm" className="items-end">
             <Icon as={DumbbellIcon} size="lg" className="" />
@@ -47,7 +47,7 @@ export default function Home() {
               <AvatarFallbackText>Jane Doe</AvatarFallbackText>
               <AvatarImage
                 source={{
-                  uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+                  uri:  "https://image.pollinations.ai/prompt/handsome%20man%20500x500",
                 }}
               />
               <AvatarBadge />
@@ -62,8 +62,8 @@ export default function Home() {
           <Heading size="md" className="">Today's Workouts</Heading>
           <Link>
             <HStack className="items-center">
-              <LinkText size="sm" className="text-gray-300 no-underline">View All</LinkText>
-              <Icon as={ArrowRightIcon} size="sm" className="text-gray-300" />
+              <LinkText size="sm" className="text-gray-600 no-underline">View All</LinkText>
+              <Icon as={ArrowRightIcon} size="sm" className="text-gray-600" />
             </HStack>
           </Link>
         </HStack>
@@ -77,7 +77,7 @@ export default function Home() {
                 alt={workout.name}
               />
               <Box className="p-3">
-                <Heading size="sm" className=" mb-1">{workout.name}</Heading>
+                <Heading size="sm" className="text-white mb-1">{workout.name}</Heading>
                 <HStack className="justify-between">
                   <Text className="text-gray-400 text-xs">{workout.difficulty}</Text>
                   <Text className="text-gray-400 text-xs">{workout.time}</Text>
