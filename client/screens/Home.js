@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/image"
 import { Link, LinkText } from "@/components/ui/link"
 import { Text } from "@/components/ui/text"
 import { Icon, ArrowRightIcon, DumbbellIcon, BellIcon } from "@/components/ui/icon"
-import { View, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { Box } from "@/components/ui/box"
 import {
   Avatar,
@@ -32,8 +32,7 @@ export default function Home() {
 
   return (
     <ScrollView className="flex-1">
-      {/* Header */}
-      <Box cla ssName=" px-4 pt-12 pb-4">
+      <Box className=" px-4 pt-12 pb-4">
         <HStack className="justify-between items-center my-3 mx-3">
 
           <HStack space="sm" className="items-end">
@@ -56,7 +55,6 @@ export default function Home() {
         </HStack>
       </Box>
 
-      {/* Workouts of the Day Section */}
       <Box className="px-4 py-2">
         <HStack className="justify-between items-center mb-3">
           <Heading size="md" className="">Today's Workouts</Heading>
@@ -93,7 +91,6 @@ export default function Home() {
 
       <Divider className="bg-gray-800 my-3" />
 
-      {/* Exercise Categories */}
       <Box className="px-4 py-2 mb-6">
         <Heading size="md" className=" mb-4">Exercise Categories</Heading>
 
