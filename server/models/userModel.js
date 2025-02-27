@@ -12,13 +12,13 @@ class UserModel {
     // * Fitur register user
     static async register(newUser) {
         // * Validasi username
-        if (newUser.username === "" || newUser.username === undefined ) {
+        if (newUser.username === "" || newUser.username === undefined) {
             throw new Error("Please input your username.")
         }
 
         // * validasi username length
         if (newUser.username.length < 2) {
-            throw new Error ("Your username must be atleast 2 characters.")
+            throw new Error("Your username must be atleast 2 characters.")
         }
 
         // * Validasi username unik
@@ -33,7 +33,7 @@ class UserModel {
 
         // * Validasi email user
         if (newUser.email === "" || newUser.email === undefined) {
-            throw new Error ("Please input your email")
+            throw new Error("Please input your email")
         }
 
         // * Validasi email unik
@@ -47,19 +47,19 @@ class UserModel {
 
         // * Validasi format email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        
+
         if (!emailRegex.test(newUser.email)) {
-            throw new Error("Invalid email format");
+            throw new Error("Please use correct email format");
         }
 
         // * validasi password user
         if (newUser.password === "" || newUser.password === undefined) {
-            throw new Error("Password is required");
+            throw new Error("Please input your password");
         }
 
         // * validasi password length
         if (newUser.password.length < 5) {
-            throw new Error("Password must be at least 6 characters");
+            throw new Error("Your password must be at least 6 characters");
         }
 
         // * hash password
@@ -92,6 +92,22 @@ class UserModel {
             password: hashedPass,
             createdAt: userCreatedUpdated.createdAt,
             updatedAt: userCreatedUpdated.updatedAt
+        }
+    }
+
+    // * Fitur login user
+    static async login(email, password) {
+
+        // * Validasi pengisian email
+        if (email === "" || email === undefined) {
+            throw new Error("Please input your registered email")
+        }
+
+        // * Validasi format email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!emailRegex.test(email)) {
+            throw new Error("Please use correct email format");
         }
     }
 }
