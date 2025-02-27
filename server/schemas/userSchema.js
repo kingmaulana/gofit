@@ -6,10 +6,10 @@ const typeDefs = `#graphql
 
     # Collection User
     type User {
-        _id: ID!
-        username: String!
-        email: String!
-        password: String!
+        _id: ID
+        username: String
+        email: String
+        password: String
         weight: Int
         age: Int
         height: Int
