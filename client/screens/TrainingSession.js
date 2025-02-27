@@ -24,8 +24,8 @@ export default function TrainingSession() {
       clearInterval(timerRef.current)
     }
 
-    return () => clearInterval(timerRef) // Cleanup
-  }, [isRunning])
+    return () => clearInterval(timerRef.current) // Cleanup
+  }, [isRunning, time])
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60)
