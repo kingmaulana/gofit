@@ -1,6 +1,7 @@
 const { database } = require("../config/mongodb")
 const { ObjectId } = require('mongodb')
 const { hashPassword, comparePassword } = require("../helpers/bcrypt")
+const { signToken } = require("../helpers/jwt")
 
 
 class UserModel {
@@ -123,6 +124,33 @@ class UserModel {
         // * Validasi password
         if (password === "" || password === undefined) {
             throw new Error("Please input the password");
+        }
+
+        // * Validasi password length
+        if (password.length < 5) {
+            throw new Error("Password must be at least 5 characters");
+        }
+
+        // * Compare password saat user login
+        const isPassValid = comparePassword(password, user.password)
+
+        // * Jika salah throw Error
+        if (!isPassValid) {
+            throw new Error("Email or Password is incorrect");
+        }
+
+        // * Kalau berhasil login buat token
+        const payload = {
+            _id: user._id,
+            email: user.email,
+            username: user.username
+        }
+
+        const token = signToken(payload)
+
+        // * Return access_token
+        return {
+            access_token: token
         }
     }
 }
