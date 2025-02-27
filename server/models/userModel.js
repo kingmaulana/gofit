@@ -59,7 +59,7 @@ class UserModel {
 
         // * validasi password length
         if (newUser.password.length < 5) {
-            throw new Error("Your password must be at least 6 characters");
+            throw new Error("Your password must be at least 5 characters");
         }
 
         // * hash password
@@ -105,9 +105,24 @@ class UserModel {
 
         // * Validasi format email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        
+
         if (!emailRegex.test(email)) {
             throw new Error("Please use correct email format");
+        }
+
+        // * Cari user berdasarkan email di collection users
+        const user = await this.collection().findOne({
+            email: email
+        })
+
+        // * Validasi jika email tidak ditemukan
+        if (!user){
+            throw new Error("Email or Password is incorrect");
+        }
+
+        // * Validasi password
+        if (password === "" || password === undefined) {
+            throw new Error("Please input the password");
         }
     }
 }
