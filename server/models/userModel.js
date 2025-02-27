@@ -70,9 +70,29 @@ class UserModel {
             username: newUser.username,
             email: newUser.email,
             password: hashedPass,
+            weight: null,
+            age: null,
+            height: null,
+            goalsId: null,
+            categoryId: null,
             createdAt: new Date(),
             updatedAt: new Date()
         })
+
+        // * untuk dapat createdAt dan updatedAt
+        const userCreatedUpdated = await this.collection().findOne({
+            _id: registeredUser.insertedId
+        })
+
+        // * return user yang baru daftar
+        return {
+            _id: registeredUser.insertedId,
+            username: newUser.username,
+            email: newUser.email,
+            password: hashedPass,
+            createdAt: userCreatedUpdated.createdAt,
+            updatedAt: userCreatedUpdated.updatedAt
+        }
     }
 }
 

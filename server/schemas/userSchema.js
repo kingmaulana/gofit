@@ -1,4 +1,4 @@
-// const UserModel = require("../models/userModel")
+const UserModel = require("../models/userModel")
 // const { ObjectId } = require('mongodb')
 
 // * Data User
@@ -6,7 +6,7 @@ const typeDefs = `#graphql
 
     # Collection User
     type User {
-        _id: ID
+        _id: ID!
         username: String
         email: String
         password: String
@@ -24,10 +24,15 @@ const typeDefs = `#graphql
         access_token: String
     }
 
+    # Query (Read Operation)
+    type Query {
+        users: [User]
+    }
+
     # Mutation untuk write
     type Mutation {
         # Register
-        register()
+        register(username: String, email: String, password: String) : User
     }
 
 `;
@@ -37,14 +42,11 @@ const typeDefs = `#graphql
 const resolvers = {
     Mutation: {
         // * Fitur Register User
-        register: async (parents, { username, email, password, weight, age, height }) => {
+        register: async (parents, { username, email, password }) => {
             const newUser = {
                 username,
                 email,
-                password,
-                weight,
-                age,
-                height
+                password
             }
 
             const user = await UserModel.register(newUser)
@@ -52,3 +54,5 @@ const resolvers = {
         }
     }
 }
+
+module.exports = { userTypeDefs: typeDefs, userResolvers: resolvers };
