@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, Platform, StatusBar} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Platform, StatusBar, BackHandler} from 'react-native';
 import {Button, ButtonText} from "@/components/ui/button";
 import WelcomeScreen from "@/screens/onboarding/step0";
 import {FormProvider, useForm} from "react-hook-form";
@@ -17,6 +17,23 @@ const OnboardingFlow = () => {
   const handlePrevious = () => {
     setStep(step - 1);
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      if (step > 0) {
+        handlePrevious();
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [step]);
 
   return (
     <FormProvider {...form}>
