@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Platform, StatusBar} from 'react-native';
 import {Button, ButtonText} from "@/components/ui/button";
 import WelcomeScreen from "@/screens/onboarding/step0";
 import {FormProvider, useForm} from "react-hook-form";
+import Step1 from "@/screens/onboarding/step1";
 
 const OnboardingFlow = () => {
   const form = useForm();
@@ -23,9 +24,7 @@ const OnboardingFlow = () => {
         <View className="flex-1">
           {/* Step 1: Login / Register*/}
           {step === 0 && <WelcomeScreen onRegisterClick={() => setStep(1)}/>}
-          {step === 1 && (
-            <Text>Step 1: Welcome to our app!</Text>
-          )}
+          {step === 1 && <Step1 />}
           {/* If choose register, go to step 2: gender */}
           {step === 2 && (
             <Text>Step 2: Get started with our app!</Text>
