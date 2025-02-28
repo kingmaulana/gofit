@@ -5,6 +5,7 @@ import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import Training from '@/screens/Training';
 import TrainingSession from '@/screens/TrainingSession';
+import CategoryTraining from '@/screens/CategoryTraining';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +47,7 @@ export default function TabNavigator() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Daily" component={TrainingSession} />
       <Tab.Screen name="Training" component={Training} />
-      <Tab.Screen name="Personal" component={Home} />
+      <Tab.Screen name="Personal" component={CategoryTraining} />
 
     </Tab.Navigator >
   )
