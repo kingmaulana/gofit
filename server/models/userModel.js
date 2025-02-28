@@ -71,29 +71,36 @@ class UserModel {
             username: newUser.username,
             email: newUser.email,
             password: hashedPass,
-            weight: null,
-            age: null,
-            height: null,
+            weight: newUser.weight,
+            age: newUser.age,
+            height: newUser.height,
             goalsId: null,
             categoryId: null,
             createdAt: new Date(),
             updatedAt: new Date()
         })
-
-        // * untuk dapat createdAt dan updatedAt
-        const userCreatedUpdated = await this.collection().findOne({
+        
+        // * Kalau berhasil login buat token
+        const payload = {
             _id: registeredUser.insertedId
-        })
+        }
+
+        const token = signToken(payload)
+
+        // * Return access_token
+        return {
+            access_token: token
+        }
 
         // * return user yang baru daftar
-        return {
-            _id: registeredUser.insertedId,
-            username: newUser.username,
-            email: newUser.email,
-            password: hashedPass,
-            createdAt: userCreatedUpdated.createdAt,
-            updatedAt: userCreatedUpdated.updatedAt
-        }
+        // return {
+        //     _id: registeredUser.insertedId,
+        //     username: newUser.username,
+        //     email: newUser.email,
+        //     password: hashedPass,
+        //     createdAt: userCreatedUpdated.createdAt,
+        //     updatedAt: userCreatedUpdated.updatedAt
+        // }
     }
 
     // * Fitur login user
@@ -153,6 +160,8 @@ class UserModel {
             access_token: token
         }
     }
+
+    // ! Buat model baru untuk validasi email dan username (unik)
 }
 
 module.exports = UserModel
