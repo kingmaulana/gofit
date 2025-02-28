@@ -1,10 +1,10 @@
 
-
+import { Image } from "expo-image"
 import { Box } from '@/components/ui/box'
 import { Button, ButtonText } from '@/components/ui/button'
 import { HStack } from '@/components/ui/hstack'
 import { Icon, PlayIcon, ChevronsRightIcon } from '@/components/ui/icon'
-import { Image } from '@/components/ui/image'
+// import { Image } from '@/components/ui/image'
 import { Text } from '@/components/ui/text'
 import { VStack } from '@/components/ui/vstack'
 import React, { useEffect, useRef, useState } from 'react'
@@ -36,13 +36,23 @@ export default function TrainingSession() {
   return (
     <Box className='flex flex-col items-center justify-between h-[80%] w-full'>
       <VStack className='w-full items-center pt-10'>
-        <Image
+        {/* <Image
           source={{
             uri: 'https://i.pinimg.com/originals/df/c5/92/dfc5926090f3fdd4ceefd08b43388360.gif',
           }}
           size='none'
           className='aspect-[320/208] w-full max-w-[320px]'
           alt="Workout"
+        /> */}
+        <Image
+          source={{
+            uri: 'https://i.pinimg.com/originals/df/c5/92/dfc5926090f3fdd4ceefd08b43388360.gif',
+          }}
+          contentFit="cover"
+          style={{
+            width: 320,
+            height: 208,
+          }}
         />
       </VStack>
 

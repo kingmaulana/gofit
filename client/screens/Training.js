@@ -27,7 +27,7 @@ export default function Training() {
       <Card className="p-5 rounded-lg max-w-[400px] m-3 mb-20">
         <Image
           source={{
-            uri: "https://image.pollinations.ai/prompt/fullbody%20workout%20black%20and%20white%20500x500",
+            uri: "  ",
           }}
           className="mb-4 h-[180px] w-full rounded-md"
           alt="Workout"
