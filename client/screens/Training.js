@@ -8,11 +8,13 @@ import { Image } from "@/components/ui/image"
 import { Text } from "@/components/ui/text"
 import { Icon, ClockIcon, CheckCircleIcon, AlertCircleIcon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
-import { ScrollView } from 'react-native'
-import { Link, useRoute } from '@react-navigation/native'
+import { ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { Link, useNavigation, useRoute } from '@react-navigation/native'
 import { Pressable } from '@/components/ui/pressable'
 
 export default function Training() {
+
+  const navigation = useNavigation()
 
   const exercises = [
     { id: 1, name: "Push-ups", minute: 10 },
@@ -84,7 +86,7 @@ export default function Training() {
          className="w-full bg-black rounded-md flex"
          onPress={() => {
           // Handle the press event here
-           console.log("Button pressed!");
+          navigation.navigate('TrainingSession')
          }}
          >
           <Text className="text-white font-medium text-center py-3">
