@@ -24,9 +24,16 @@ const typeDefs = `#graphql
         access_token: String
     }
 
+    # Type cek user
+    type CheckUserResponse {
+        success: Boolean
+        message: String
+    }
+
     # Query (Read Operation)
     type Query {
         users: [User]
+        checkUser(username: String, email: String): CheckUserResponse
     }
 
     # Collection Token
@@ -48,9 +55,26 @@ const typeDefs = `#graphql
 
 // * Resolvers
 const resolvers = {
+    Query: {
+        // * Query cek keunikan username dan email
+        checkUser: async (parents, { username, email }) => {
+            try {
+                const userExists = await UserModel.checkUser(username, email)
+
+                // * Kalau ada return error message
+                if (userExists) {
+                    return { success: false, message: "Username or email already exists." };
+                }
+                
+                // * Kalau berhasil set success ke true dan kirim message
+                return { success: true, message: "Username and email are available, please continue." }
+            } catch (error) {
+                return { success: false, message: error.message };
+            }
+        }
+    },
     Mutation: {
         // * Mutation Register User
-        
         register: async (parents, { username, name, email, password, weight, age, height }) => {
             const newUser = {
                 username,
@@ -68,7 +92,7 @@ const resolvers = {
         // * Mutation Login User
         login: async (parents, { email, password }) => {
             const user = await UserModel.login(email, password)
-            
+
             return user
         }
     }
