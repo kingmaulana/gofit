@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/image"
 import { Link, LinkText } from "@/components/ui/link"
 import { Text } from "@/components/ui/text"
 import { Icon, ArrowRightIcon, DumbbellIcon, BellIcon } from "@/components/ui/icon"
-import { ScrollView } from "react-native"
+import { ScrollView, TouchableWithoutFeedback } from "react-native"
 import { Box } from "@/components/ui/box"
 import {
   Avatar,
@@ -16,8 +16,12 @@ import {
 } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Divider } from "@/components/ui/divider"
+import { useNavigation } from "@react-navigation/native"
 
 export default function Home() {
+
+  const navigation = useNavigation()
+
   const exerciseCategories = [
     { name: "Strength", image: "https://image.pollinations.ai/prompt/weightlifting%20black%20and%20white%20500x500" },
     { name: "Cardio", image: "https://image.pollinations.ai/prompt/running%20black%20and%20white%20500x500" },
@@ -46,21 +50,23 @@ export default function Home() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {workoutsOfDay.map((workout, index) => (
             <Card key={index} className="bg-gray-900 rounded-xl mr-4 w-[280px] overflow-hidden border-0">
-              <Image
-                source={{ uri: workout.image }}
-                size="2xl"
-                alt={workout.name}
-              />
-              <Box className="p-3">
-                <Heading size="sm" className="text-white mb-1">{workout.name}</Heading>
-                <HStack className="justify-between">
-                  <Text className="text-gray-400 text-xs">{workout.difficulty}</Text>
-                  <Text className="text-gray-400 text-xs">{workout.time}</Text>
-                </HStack>
-                <Button size="sm" variant="solid" className="bg-white mt-3 rounded-lg">
-                  <Text className="text-black font-medium">Start Workout</Text>
-                </Button>
-              </Box>
+                <Image
+                  source={{ uri: workout.image }}
+                  size="2xl"
+                  alt={workout.name}
+                />
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("Training")}>
+                <Box className="p-3">
+                  <Heading size="sm" className="text-white mb-1">{workout.name}</Heading>
+                  <HStack className="justify-between">
+                    <Text className="text-gray-400 text-xs">{workout.difficulty}</Text>
+                    <Text className="text-gray-400 text-xs">{workout.time}</Text>
+                  </HStack>
+                  <Button size="sm" variant="solid" className="bg-white mt-3 rounded-lg">
+                    <Text className="text-black font-medium">Start Workout</Text>
+                  </Button>
+                </Box>
+              </TouchableWithoutFeedback>
             </Card>
           ))}
         </ScrollView>
