@@ -9,8 +9,11 @@ import { Text } from "@/components/ui/text"
 import { Icon, ClockIcon, CheckCircleIcon, AlertCircleIcon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
 import { ScrollView } from 'react-native'
+import { Link, useRoute } from '@react-navigation/native'
+import { Pressable } from '@/components/ui/pressable'
 
 export default function Training() {
+
   const exercises = [
     { id: 1, name: "Push-ups", minute: 10 },
     { id: 2, name: "Squats", minute: 5 },
@@ -21,10 +24,10 @@ export default function Training() {
 
   return (
     <ScrollView className="flex-1">
-      <Card className="p-5 rounded-lg max-w-[400px] m-3">
+      <Card className="p-5 rounded-lg max-w-[400px] m-3 mb-20">
         <Image
           source={{
-            uri: "https://image.pollinations.ai/prompt/fullbody%20workout%20black%20and%20white%20500x500",
+            uri: "  ",
           }}
           className="mb-4 h-[180px] w-full rounded-md"
           alt="Workout"
@@ -77,11 +80,17 @@ export default function Training() {
           ))}
         </VStack>
 
-        <Button className="w-full bg-black rounded-md">
-          <Text className="text-white font-medium">
+        <Pressable
+         className="w-full bg-black rounded-md flex"
+         onPress={() => {
+          // Handle the press event here
+           console.log("Button pressed!");
+         }}
+         >
+          <Text className="text-white font-medium text-center py-3">
             Start Workout
           </Text>
-        </Button>
+        </Pressable>
       </Card>
     </ScrollView>
   )
