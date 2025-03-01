@@ -4,15 +4,12 @@ import {Button, ButtonText} from "@/components/ui/button";
 import WelcomeScreen from "@/screens/onboarding/step0";
 import {FormProvider, useForm} from "react-hook-form";
 import Step1 from "@/screens/onboarding/step1";
+import Step2 from "@/screens/onboarding/step2";
 
 const OnboardingFlow = () => {
   const form = useForm();
   // Max: 9 steps
   const [step, setStep] = useState(0);
-
-  const handleNext = () => {
-    setStep(step + 1);
-  };
 
   const handlePrevious = () => {
     setStep(step - 1);
@@ -39,13 +36,12 @@ const OnboardingFlow = () => {
     <FormProvider {...form}>
       <View className="flex-1">
         <View className="flex-1">
-          {/* Step 1: Login / Register*/}
+          {/* Login / Register */}
           {step === 0 && <WelcomeScreen onRegisterClick={() => setStep(1)}/>}
-          {step === 1 && <Step1 />}
-          {/* If choose register, go to step 2: gender */}
-          {step === 2 && (
-            <Text>Step 2: Get started with our app!</Text>
-          )}
+          {/* If choose register, go to step 1: biodata */}
+          {step === 1 && <Step1 onNext={() => setStep(2)} />}
+          {/* Step 2: gender */}
+          {step === 2 && <Step2 onNext={() => setStep(3)} />}
           {/* Step 3: goal */}
           {step === 3 && (
             <Text>Step 3: You're all set!</Text>
