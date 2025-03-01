@@ -181,6 +181,8 @@ class UserModel {
         // * kalau validasi lewat return false
         return false
     }
+
+    // ! Buat model baru untuk validasi email dan username (unik)
 }
 
 module.exports = UserModel

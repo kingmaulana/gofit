@@ -1,0 +1,99 @@
+
+import React from 'react'
+import { Card } from "@/components/ui/card"
+import { Heading } from "@/components/ui/heading"
+import { HStack } from "@/components/ui/hstack"
+import { VStack } from "@/components/ui/vstack"
+import { Image } from "@/components/ui/image"
+import { Text } from "@/components/ui/text"
+import { Icon, ClockIcon, CheckCircleIcon, AlertCircleIcon } from "@/components/ui/icon"
+import { Button } from "@/components/ui/button"
+import { ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { Link, useNavigation, useRoute } from '@react-navigation/native'
+import { Pressable } from '@/components/ui/pressable'
+
+export default function Training() {
+
+  const navigation = useNavigation()
+
+  const exercises = [
+    { id: 1, name: "Push-ups", minute: 10 },
+    { id: 2, name: "Squats", minute: 5 },
+    { id: 3, name: "Lunges", minute: 10 },
+    { id: 4, name: "Plank", minute: 10 },
+    { id: 5, name: "Shoulder Press", minute: 5 },
+  ];
+
+  return (
+    <ScrollView className="flex-1">
+      <Card className="p-5 rounded-lg max-w-[400px] m-3 mb-20">
+        <Image
+          source={{
+            uri: "  ",
+          }}
+          className="mb-4 h-[180px] w-full rounded-md"
+          alt="Workout"
+        />
+
+        <Heading size="xl" className="mb-4">
+          Full Body Workout
+        </Heading>
+
+        <HStack className="mb-6 justify-between">
+          <HStack>
+            <Icon as={ClockIcon} size="md" className="text-primary-600 mr-1" />
+            <Text className="text-sm font-bold text-typography-700">
+              60 minutes
+            </Text>
+          </HStack>
+          <HStack>
+            <Icon as={CheckCircleIcon} size="md" className="text-primary-600 mr-1" />
+            <Text className="text-sm font-bold text-typography-700">
+              10 exercises
+            </Text>
+          </HStack>
+        </HStack>
+
+        <Heading size="sm" className="mb-3">
+          Exercises
+        </Heading>
+
+        <VStack className="mb-6 space-y-2">
+          {exercises.map((exercise) => (
+            <Card key={exercise.id} className="p-3">
+              <HStack className="gap-5 items-center">
+                <Image
+                  source={{
+                    uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI2Gvl3_X7DNc2gfZUfwdGhO_WmAd0fnwyxg&s',
+                  }}
+                  className="rounded-md fit-cover h-20 w-20"
+                  alt="Workout"
+                />
+                <VStack>
+                  <Text className="font-bold text-xl">{exercise.name}</Text>
+                  <Text className="text-sm text-typography-600">
+                    {exercise.minute} minutes
+                  </Text>
+
+                </VStack>
+                <Icon as={AlertCircleIcon} size="xl" className="text-primary-600 ml-auto" />
+              </HStack>
+            </Card>
+          ))}
+        </VStack>
+
+        <Pressable
+         className="w-full bg-black rounded-md flex"
+         onPress={() => {
+          // Handle the press event here
+          navigation.navigate('TrainingSession')
+         }}
+         >
+          <Text className="text-white font-medium text-center py-3">
+            Start Workout
+          </Text>
+        </Pressable>
+      </Card>
+    </ScrollView>
+  )
+}
