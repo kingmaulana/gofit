@@ -4,6 +4,7 @@ const { hashPassword, comparePassword } = require("../helpers/bcrypt")
 const { signToken, verifyToken } = require("../helpers/jwt")
 
 
+
 class UserModel {
     // * Ambil collection users
     static collection() {
@@ -128,7 +129,18 @@ class UserModel {
             return dataUser
         } catch (error) {
             throw new Error(error.message)
+
         }
+
+        // * return user yang baru daftar
+        // return {
+        //     _id: registeredUser.insertedId,
+        //     username: newUser.username,
+        //     email: newUser.email,
+        //     password: hashedPass,
+        //     createdAt: userCreatedUpdated.createdAt,
+        //     updatedAt: userCreatedUpdated.updatedAt
+        // }
     }
 
     // * Fitur login user
@@ -209,6 +221,8 @@ class UserModel {
         // * kalau validasi lewat return false
         return false
     }
+
+    // ! Buat model baru untuk validasi email dan username (unik)
 }
 
 module.exports = UserModel

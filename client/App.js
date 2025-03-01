@@ -1,12 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
+import "@/global.css";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { StyleSheet, Text, View } from 'react-native';
+import Home from './screens/Home';
+import TabNavigator from './navigations/TabNavigator';
+import { NavigationContainer } from '@react-navigation/native';
+import RootStackHome from './navigations/RootStackHome';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GluestackUIProvider mode="light">
+      <NavigationContainer>
+          <RootStackHome />
+      </NavigationContainer>
+    </GluestackUIProvider>
   );
 }
 
