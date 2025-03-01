@@ -161,6 +161,27 @@ class UserModel {
         }
     }
 
+    // * Cek User (saat menggunakan app) apakah sudah menggunakan email atau usernamenya
+    static async checkUser(username, email) {
+        // * Cari di database users, username atau email sudah ada atau belum
+        const existUser = await this.collection().findOne({
+            $or: [{ username }, { email }]
+        })
+
+        // * Validasi username dan email
+        if(existUser) {
+            if (existUser.username === username) {
+                throw new Error("This username has already been used, please use another username.")
+            }
+            if (existUser.email === email) {
+                throw new Error("This email has already been used, please use another email.")
+            }
+        }
+
+        // * kalau validasi lewat return false
+        return false
+    }
+
     // ! Buat model baru untuk validasi email dan username (unik)
 }
 
