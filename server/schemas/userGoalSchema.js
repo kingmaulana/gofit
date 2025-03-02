@@ -1,0 +1,62 @@
+const UserGoalModel = require("../models/userGoalModel");
+
+
+const typeDefs = `#graphql
+    type UserGoal {
+        _id: ID!
+        goalName: String
+        userId: String
+        startWeight: Float
+        goalWeight: Float
+        startDate: String
+    }
+
+    type WeightProgress {
+        _id: ID!
+        userId: String
+        weight: Float
+        date: String
+    }
+
+    type Query {
+        userGoals(userId: String): UserGoal
+    }
+
+    type Mutation {
+        createUserGoal(goalName: String, userId: String, goalWeight: Float, startDate: String): UserGoal
+        updateWeightProgress(userId: String, weight: Float): WeightProgress
+    }
+`;
+
+const resolvers = {
+    Query: {
+        userGoals: async (_, args) => {
+            try {
+                const workouts = await UserGoalModel.findGoal(args)
+                return workouts
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+    },
+    Mutation: {
+        createUserGoal: async (_, args) => {
+            try {
+                const workout = await UserGoalModel.createGoal(args)
+                return workout
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+        updateWeightProgress: async (_, args) => {
+            try {
+                const workout = await UserGoalModel.updateWeightProgress(args)
+                return workout
+            } catch (error) {
+                throw new Error(error)
+            }
+        }
+    }
+}
+
+module.exports = { userGoalTypeDefs: typeDefs, userGoalResolvers: resolvers };
