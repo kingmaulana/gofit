@@ -10,12 +10,13 @@ const authentication = require("./middlewares/authentication")
 const { userTypeDefs, userResolvers } = require("./schemas/userSchema");
 const { workoutTypeDefs, workoutResolvers } = require("./schemas/workoutSchema");
 const { userExerciseTypeDefs, userExerciseResolvers } = require("./schemas/userExerciseSchema");
+const { historyExerciseTypeDefs, historyExerciseResolvers } = require("./schemas/historyExerciseSchema");
 
 
 // * Apollo Server
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs],
-  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers],
+  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs, historyExerciseTypeDefs],
+  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers, historyExerciseResolvers],
   introspection: true // ! Sementara dinyalain dulu
 })
 
