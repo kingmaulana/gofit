@@ -21,11 +21,12 @@ class UserGoalModel {
     }
 
     static async createGoal(args) {
+        console.log("🚀 ~ UserGoalModel ~ createGoal ~ args:", args)
         try {
             const goal = await this.collection().insertOne({
                 goalName: args.goalName,
                 userId: args.userId,
-                startWeight: 92,
+                startWeight: args.weight,
                 goalWeight: args.goalWeight,
                 startDate: args.startDate,
             })
