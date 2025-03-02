@@ -1,8 +1,15 @@
 import {Image, Platform, SafeAreaView, StatusBar as RNStatusBar, StyleSheet, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import PropTypes from "prop-types";
+import {useEffect} from "react";
+import * as NavigationBar from "expo-navigation-bar";
 
 export default function OnboardingLayout({children, style, className, statusBarStyle, image}) {
+
+  useEffect(() => {
+    NavigationBar.setBackgroundColorAsync("black");
+  })
+
   return <>
     <View className={`bg-black flex-1 relative ${className || ""}`} style={style}>
       {image && <Image source={{
@@ -19,7 +26,8 @@ export default function OnboardingLayout({children, style, className, statusBarS
 
 export const defaultStyle = StyleSheet.create({
   AndroidSafeArea: {
-    marginTop: Platform.OS === "android" ? RNStatusBar.currentHeight : 0
+    marginTop: Platform.OS === "android" ? RNStatusBar.currentHeight : 0,
+    flex: 1
   }
 });
 

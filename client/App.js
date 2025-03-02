@@ -5,9 +5,17 @@ import {StyleSheet, View} from 'react-native';
 import TabNavigator from './navigations/TabNavigator';
 import {NavigationContainer} from '@react-navigation/native';
 import OnboardingNavigations from '@/navigations/onboarding/onboarding-navigations';
+import {useEffect} from "react";
+import * as NavigationBar from "expo-navigation-bar";
 
 export default function App() {
   const onboarding = true;
+
+  useEffect(() => {
+    if (!onboarding) {
+      NavigationBar.setBackgroundColorAsync("white");
+    }
+  })
 
   if (onboarding) {
     return (

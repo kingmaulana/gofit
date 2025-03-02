@@ -1,10 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Platform, StatusBar, BackHandler} from 'react-native';
-import {Button, ButtonText} from "@/components/ui/button";
+import {BackHandler, Platform, StatusBar, StyleSheet, View} from 'react-native';
 import WelcomeScreen from "@/screens/onboarding/step0";
 import {FormProvider, useForm} from "react-hook-form";
 import Step1 from "@/screens/onboarding/step1";
 import Step2 from "@/screens/onboarding/step2";
+import Step4 from "@/screens/onboarding/step4";
+import Step3 from "@/screens/onboarding/step3";
+import Step5 from "@/screens/onboarding/step5";
+import Step6 from "@/screens/onboarding/step6";
+import Step7 from "@/screens/onboarding/step7";
+import Step8 from "@/screens/onboarding/step8";
+import Step9 from "@/screens/onboarding/step9";
+import ReviewStep from "@/screens/onboarding/review";
 
 const OnboardingFlow = () => {
   const form = useForm();
@@ -32,6 +39,10 @@ const OnboardingFlow = () => {
     return () => backHandler.remove();
   }, [step]);
 
+  const handleOnboardingSubmit = async (data) => {
+    console.log(data);
+  }
+
   return (
     <FormProvider {...form}>
       <View className="flex-1">
@@ -39,20 +50,23 @@ const OnboardingFlow = () => {
           {/* Login / Register */}
           {step === 0 && <WelcomeScreen onRegisterClick={() => setStep(1)}/>}
           {/* If choose register, go to step 1: biodata */}
-          {step === 1 && <Step1 onNext={() => setStep(2)} />}
+          {step === 1 && <Step1 onNext={() => setStep(2)}/>}
           {/* Step 2: gender */}
-          {step === 2 && <Step2 onNext={() => setStep(3)} />}
+          {step === 2 && <Step2 onNext={() => setStep(3)}/>}
           {/* Step 3: goal */}
-          {step === 3 && (
-            <Text>Step 3: You're all set!</Text>
-          )}
+          {step === 3 && <Step3 onNext={() => setStep(4)}/>}
           {/* Step 4: berat badan */}
+          {step === 4 && <Step4 onNext={() => setStep(5)}/>}
           {/* Step 5: umur */}
+          {step === 5 && <Step5 onNext={() => setStep(6)}/>}
           {/* Step 6: tinggi */}
-          {/* Step 7: preferensi  */}
+          {step === 6 && <Step6 onNext={() => setStep(7)}/>}
+          {/* Step 7: preferensi */}
+          {step === 7 && <Step7 onNext={() => setStep(8)}/>}
           {/* Step 8: workout berapa kali */}
-          {/* Step 9: nama email password */}
-          {/* Step 10: review */}
+          {step === 8 && <Step8 onNext={() => setStep(9)}/>}
+          {/* Step 9: review */}
+          {step === 9 && <ReviewStep onNext={form.handleSubmit(handleOnboardingSubmit)}/>}
         </View>
       </View>
     </FormProvider>
