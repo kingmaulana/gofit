@@ -18,7 +18,7 @@ export default function Step7({onNext}) {
           <Text className={getValues("activity") === "beginner" ? "text-orange-500" : "text-white"}>Beginner</Text>
         </Pressable>
         <Pressable onPress={() => handleActivityClick("advanced")}>
-          <Text className={getValues("activity") === "build-muscle" ? "text-orange-500" : "text-white"}>Advance</Text>
+          <Text className={getValues("activity") === "advanced" ? "text-orange-500" : "text-white"}>Advance</Text>
         </Pressable>
         <Pressable onPress={() => handleActivityClick("expert")}>
           <Text className={getValues("activity") === "expert" ? "text-orange-500" : "text-white"}>Expert</Text>
