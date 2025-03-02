@@ -20,6 +20,25 @@ class HistoryExerciseModel {
         }
     }
 
+    // fungsi ini akan otomatis menambahkan log history exercise user setiap selesai sesi exercise
+    static async addToLogs(args) {
+        try {
+
+            const logEntry = {
+                userId: args.userId,
+                exerciseId: args.exerciseId,
+                date: new Date().toISOString(),
+                createdAt: new Date(),
+            }
+
+            const history = await this.collection()
+            .insertOne(logEntry)
+            return history
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
 }
 
 module.exports = HistoryExerciseModel

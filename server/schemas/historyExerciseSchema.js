@@ -31,6 +31,16 @@ const resolvers = {
             }
         }
     },
+    Mutation: {
+        createHistoryExercise: async (_, args) => {
+            try {
+                const workout = await HistoryExerciseModel.addToLogs(args)
+                return workout
+            } catch (error) {
+                throw new Error(error)
+            }
+        }
+    }
 }
 
 module.exports = { historyExerciseTypeDefs: typeDefs, historyExerciseResolvers: resolvers };
