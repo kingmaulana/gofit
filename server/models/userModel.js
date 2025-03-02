@@ -2,6 +2,8 @@ const { database } = require("../config/mongodb")
 const { ObjectId } = require('mongodb')
 const { hashPassword, comparePassword } = require("../helpers/bcrypt")
 const { signToken, verifyToken } = require("../helpers/jwt")
+const { calculateBMI } =  require("../helpers/bmiFormula")
+const UserGoalModel = require("./userGoalModel")
 
 
 
@@ -11,8 +13,18 @@ class UserModel {
         return database.collection("users")
     }
 
+    static collectionGoal() {
+        return database.collection("user_goal")
+    }
+
     // * Fitur register user
     static async register(newUser) {
+
+        // Validate user input (username, email, password, etc.)
+        if (newUser.username === "" || newUser.username === undefined) {
+            throw new Error("Please input your username.");
+        }
+    
         // * Validasi username
         if (newUser.username === "" || newUser.username === undefined) {
             throw new Error("Please input your username.")
@@ -63,11 +75,11 @@ class UserModel {
         if (newUser.password.length < 5) {
             throw new Error("Your password must be at least 5 characters");
         }
-
-        // * hash password
-        const hashedPass = hashPassword(newUser.password)
-
-        // * register user baru
+        
+        // Hash password
+        const hashedPass = hashPassword(newUser.password);
+    
+        // Register user in the database
         const registeredUser = await this.collection().insertOne({
             username: newUser.username,
             email: newUser.email,
@@ -78,29 +90,51 @@ class UserModel {
             categoryId: null,
             createdAt: new Date(),
             updatedAt: new Date()
-        })
+        });
+    
+        const newUserId = registeredUser.insertedId;
+    
+        console.log(newUser.height / 100, 'INI JADI METER')
+        // Calculate BMI and the weight change recommendation
+        const bmiResult = calculateBMI(newUser.weight, newUser.height / 100);
+        console.log("🚀 ~ UserModel ~ register ~ bmiResult:", bmiResult)
+    
+        // Check if the user has set their own goal weight
+        let goalWeight = newUser.goalWeight || null; // If user provides their goal weight
         
-        // * Kalau berhasil login buat token
+        if (!goalWeight) {
+            // If no goal weight is provided, use the BMI result to suggest a goal weight
+            if (bmiResult.category === "Underweight") {
+                // Calculate goal weight to reach BMI of 18.5
+                goalWeight = 18.5 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 18.5
+            } else if (bmiResult.category === "Normal weight") {
+                goalWeight = newUser.weight; // No change in weight if already normal
+            } else if (bmiResult.category === "Overweight" || bmiResult.category === "Obesity") {
+                // Calculate goal weight to reach BMI of 24.9
+                goalWeight = 24.9 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 24.9
+            }
+        }
+        console.log("🚀 ~ UserModel ~ register ~ goalWeight:", goalWeight)
+    
+        // Create a goal for the user with the target weight
+        await UserGoalModel.createGoal({
+            goalName: newUser.goal,
+            userId: newUserId,
+            startWeight: newUser.weight,
+            goalWeight: goalWeight,
+            startDate: new Date(),
+        });
+    
+        // Generate a JWT token for the user
         const payload = {
             _id: registeredUser.insertedId
-        }
-
-        const token = signToken(payload)
-
-        // * Return access_token
+        };
+        const token = signToken(payload);
+    
+        // Return the access token
         return {
             access_token: token
-        }
-
-        // * return user yang baru daftar
-        // return {
-        //     _id: registeredUser.insertedId,
-        //     username: newUser.username,
-        //     email: newUser.email,
-        //     password: hashedPass,
-        //     createdAt: userCreatedUpdated.createdAt,
-        //     updatedAt: userCreatedUpdated.updatedAt
-        // }
+        };
     }
 
     // * Fitur mendapatkan detail user berdasarkan ID
