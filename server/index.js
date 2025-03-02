@@ -7,13 +7,15 @@ const authentication = require("./middlewares/authentication")
 
 
 // * Import Schemas
-const { userTypeDefs, userResolvers } = require("./schemas/userSchema")
+const { userTypeDefs, userResolvers } = require("./schemas/userSchema");
+const { workoutTypeDefs, workoutResolvers } = require("./schemas/workoutSchema");
+const { userExerciseTypeDefs, userExerciseResolvers } = require("./schemas/userExerciseSchema");
 
 
 // * Apollo Server
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs],
-  resolvers: [userResolvers],
+  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs],
+  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers],
   introspection: true // ! Sementara dinyalain dulu
 })
 
