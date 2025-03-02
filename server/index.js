@@ -11,12 +11,13 @@ const { userTypeDefs, userResolvers } = require("./schemas/userSchema");
 const { workoutTypeDefs, workoutResolvers } = require("./schemas/workoutSchema");
 const { userExerciseTypeDefs, userExerciseResolvers } = require("./schemas/userExerciseSchema");
 const { historyExerciseTypeDefs, historyExerciseResolvers } = require("./schemas/historyExerciseSchema");
+const { userGoalTypeDefs, userGoalResolvers } = require("./schemas/userGoalSchema");
 
 
 // * Apollo Server
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs, historyExerciseTypeDefs],
-  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers, historyExerciseResolvers],
+  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs, historyExerciseTypeDefs, userGoalTypeDefs],
+  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers, historyExerciseResolvers, userGoalResolvers],
   introspection: true // ! Sementara dinyalain dulu
 })
 
