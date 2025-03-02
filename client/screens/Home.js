@@ -36,32 +36,9 @@ export default function Home() {
 
   return (
     <ScrollView className="flex-1">
-      <Box className=" px-4 pt-12 pb-4">
-        <HStack className="justify-between items-center my-3 mx-3">
-
-          <HStack space="sm" className="items-end">
-            <Icon as={DumbbellIcon} size="lg" className="" />
-            <Heading size="xl" className=" font-bold">Oman Maulana</Heading>
-          </HStack>
-
-          <HStack space="md" className="items-center">
-            <Icon as={BellIcon} size="md" className="" />
-            <Avatar size="md">
-              <AvatarFallbackText>Jane Doe</AvatarFallbackText>
-              <AvatarImage
-                source={{
-                  uri: "https://image.pollinations.ai/prompt/handsome%20man%20500x500",
-                }}
-              />
-              <AvatarBadge />
-            </Avatar>
-          </HStack>
-        </HStack>
-      </Box>
-
       <Box className="px-4 py-2">
         <HStack className="justify-between items-center mb-3">
-          <Heading size="md" className="">Today's Workouts</Heading>
+          <Heading size="md" className="">Your Workouts</Heading>
           <Link>
             <HStack className="items-center">
               <LinkText size="sm" className="text-gray-600 no-underline">View All</LinkText>
