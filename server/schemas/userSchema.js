@@ -13,7 +13,6 @@ const typeDefs = `#graphql
         weight: Int
         age: Int
         height: Int
-        goalsId: ID
         categoryId: ID
         createdAt: String!
         updatedAt: String!
@@ -34,6 +33,7 @@ const typeDefs = `#graphql
     type Query {
         users: [User]
         checkUser(username: String, email: String): CheckUserResponse
+        getUserDetails: User
     }
 
     # Collection Token
@@ -71,6 +71,21 @@ const resolvers = {
             } catch (error) {
                 return { success: false, message: error.message };
             }
+        },
+
+        // * Query Fetch User Details (Ketika user sudah login)
+        getUserDetails: async (parents, __, context) => {
+            try {
+                const decodedUser = await context.authentication();
+
+        
+                const userDetails = await UserModel.userDetails(decodedUser);
+        
+                return userDetails;
+            } catch (error) {
+                throw new Error(error.message);
+            }
+
         }
     },
     Mutation: {

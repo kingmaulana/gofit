@@ -10,19 +10,21 @@ const authentication = require("./middlewares/authentication")
 const { userTypeDefs, userResolvers } = require("./schemas/userSchema");
 const { workoutTypeDefs, workoutResolvers } = require("./schemas/workoutSchema");
 const { userExerciseTypeDefs, userExerciseResolvers } = require("./schemas/userExerciseSchema");
+const { historyExerciseTypeDefs, historyExerciseResolvers } = require("./schemas/historyExerciseSchema");
+const { userGoalTypeDefs, userGoalResolvers } = require("./schemas/userGoalSchema");
 
 
 // * Apollo Server
 const server = new ApolloServer({
-  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs],
-  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers],
+  typeDefs: [userTypeDefs, workoutTypeDefs, userExerciseTypeDefs, historyExerciseTypeDefs, userGoalTypeDefs],
+  resolvers: [userResolvers, workoutResolvers, userExerciseResolvers, historyExerciseResolvers, userGoalResolvers],
   introspection: true // ! Sementara dinyalain dulu
 })
 
 
 startStandaloneServer(server, {
   listen: { port: process.env.PORT || 3000 },
-  ontext: async ({ req }) => {
+  context: async ({ req }) => {
     return {
       authentication: () => authentication({ req })
     }

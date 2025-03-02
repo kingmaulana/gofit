@@ -1,7 +1,8 @@
 const { database } = require("../config/mongodb")
 const { ObjectId } = require('mongodb')
 const { hashPassword, comparePassword } = require("../helpers/bcrypt")
-const { signToken } = require("../helpers/jwt")
+const { signToken, verifyToken } = require("../helpers/jwt")
+
 
 
 class UserModel {
@@ -74,7 +75,6 @@ class UserModel {
             weight: newUser.weight,
             age: newUser.age,
             height: newUser.height,
-            goalsId: null,
             categoryId: null,
             createdAt: new Date(),
             updatedAt: new Date()
@@ -90,6 +90,46 @@ class UserModel {
         // * Return access_token
         return {
             access_token: token
+        }
+
+        // * return user yang baru daftar
+        // return {
+        //     _id: registeredUser.insertedId,
+        //     username: newUser.username,
+        //     email: newUser.email,
+        //     password: hashedPass,
+        //     createdAt: userCreatedUpdated.createdAt,
+        //     updatedAt: userCreatedUpdated.updatedAt
+        // }
+    }
+
+    // * Fitur mendapatkan detail user berdasarkan ID
+    static async userDetails(decodedToken) {
+        try {
+            // * cari user berdasarkan id dari token
+            const user = await this.collection().findOne({
+                _id: new ObjectId(decodedToken._id)
+            })
+
+            if(!user) {
+                throw new Error("User not found");
+            }
+
+            const dataUser = {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                age: user.age,
+                height: user.height,
+                weight: user.weight,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            }
+
+            return dataUser
+        } catch (error) {
+            throw new Error(error.message)
+
         }
 
         // * return user yang baru daftar
