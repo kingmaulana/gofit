@@ -7,7 +7,7 @@ const typeDefs = `#graphql
         force: String
         level: String
         mechanic: String
-        equipement: String
+        equipment: String
         primaryMuscles: [String]
         secondaryMuscles: [String]
         instructions: [String]
@@ -21,10 +21,11 @@ const typeDefs = `#graphql
         workoutId: [String]
     }
 
+
     type Query {
         workouts: [Workout]
         workoutById(id: ID!): Workout
-        workoutByCategory(category: String!): [Workout]
+        workoutByFilter(category: String, equipment: String, level: String): [Workout]
     }
 
 `;
@@ -47,9 +48,9 @@ const resolvers = {
                 throw new Error(error)
             }
         },
-        workoutByCategory: async (_, args) => {
+        workoutByFilter: async (_, args) => {
             try {
-                const workouts = await WorkoutModel.findByCategory(args.category)
+                const workouts = await WorkoutModel.workoutByFilter(args)
                 return workouts
             } catch (error) {
                 throw new Error(error)

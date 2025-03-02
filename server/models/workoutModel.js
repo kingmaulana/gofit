@@ -30,18 +30,34 @@ class WorkoutModel {
         }
     }
 
-    static async findByCategory(category) {
+    static async workoutByFilter(args) {
+        console.log("🚀 ~ WorkoutModel ~ workoutByFilter ~ args:", args);
         try {
-            const workouts = await this.collection().find({
-                category: ""
-            }).toArray()
-            return workouts
+            // Build the filter object dynamically
+            const filter = {};
+
+            // If category is provided, add it to the filter
+            if (args.category) {
+                filter.category = args.category;
+            }
+
+            // If equipment is provided, add it to the filter
+            if (args.equipment) {
+                filter.equipment = args.equipment;
+            }
+
+            // If level is provided, add it to the filter
+            if (args.level) {
+                filter.level = args.level;
+            }
+
+            // Query the database with the dynamically constructed filter
+            const workouts = await this.collection().find(filter).toArray();
+            return workouts;
         } catch (error) {
-            throw new Error(error)
+            throw new Error(error);
         }
     }
-
-
 }
 
 module.exports = WorkoutModel
