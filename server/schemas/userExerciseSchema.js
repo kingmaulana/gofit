@@ -6,6 +6,8 @@ const typeDefs = `#graphql
         _id: ID!
         name: String
         userId: String
+        duration: Int
+        restDuration: Int
         exerciseId: [String]
     }
 
@@ -14,7 +16,7 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
-        addUserExercise(name: String, userId: String, exerciseId: [String]): UserExercise
+        addUserExercise(name: String, userId: String, duration: Int, restDuration: Int,  exerciseId: [String]): UserExercise
 
         # untuk update belum perlu kirim userId karena di UI pas fetch semua koleksi exercise yg muncul hanya punya user
         updateName(name: String, id: String): UserExercise

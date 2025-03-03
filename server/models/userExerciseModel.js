@@ -26,7 +26,9 @@ class UserExerciseModel {
             .insertOne({
                 name: args.name,
                 userId: args.userId,
-                exerciseId: args.exerciseId
+                exerciseId: args.exerciseId,
+                duration: args.duration,
+                restDuration: args.restDuration
             })
 
             const exerciseAdd = await this.collection().findOne({_id: userExercise.insertedId})
