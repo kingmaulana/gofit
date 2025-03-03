@@ -24,7 +24,7 @@ class UserGoalModel {
     }
 
     static async createGoal(args) {
-        console.log("🚀 ~ UserGoalModel ~ createGoal ~ args:", args)
+        // console.log("🚀 ~ UserGoalModel ~ createGoal ~ args:", args)
         try {
             const goal = await this.collection().insertOne({
                 goalName: args.goalName,
@@ -55,6 +55,7 @@ class UserGoalModel {
     }
 
     static async createSuggestionAI(args) {
+        console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
         try {
             // Cari user goal terkait
             const userGoal = await this.collection().findOne({
@@ -69,7 +70,7 @@ class UserGoalModel {
             const DATA_EXERCISE = require('../constant/data_exercise.json'); // Your list of exercises
 
             // Send the message to the chat session
-            const result = await chatSession.sendMessage(`My Data: ${DATA_EXERCISE}, from that data please give me 15 exercise recommendations for adding weight, and I have an injury in my legs and am underweight?`);
+            const result = await chatSession.sendMessage(`My Data: ${DATA_EXERCISE}, from that data please give me 10-15 exercise recommendations for ${args.goalName}, and I have an injury in my legs, my current weight is ${args.weight} and my goal weight is ${args.goalWeight}, my gender is ${args.gender} also choose my level of exercise is ${args.activity}`);
 
             // Get the response text
             const responseText = await result.response.text();

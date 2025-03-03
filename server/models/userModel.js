@@ -127,12 +127,22 @@ class UserModel {
             endGoal: newUser.endGoal
         });
 
-        // const findGoal = await UserGoalModel.collectionGoal().findOne({
-        //     userId: newUserId
-        // })
+        const argsForAI = {
+            userId: newUserId,
+            weight: newUser.weight,
+            height: newUser.height,
+            age: newUser.age,
+            gender: newUser.gender,
+            activity: newUser.activity,
+            goal: newUser.goal,
+            endGoal: newUser.endGoal,
+            bmi: newUser.bmi,
+            goalWeight: newUser.goalWeight,
+            endGoal: newUser.endGoal
+        }
 
         //disini untuk ai suggestion ter create
-        // await UserGoalModel.createSuggestionAI(findGoal)
+        await UserGoalModel.createSuggestionAI(argsForAI)
     
         // Generate a JWT token for the user
         const payload = {
