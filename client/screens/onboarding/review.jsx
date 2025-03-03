@@ -5,6 +5,8 @@ import {Text} from "@/components/ui/text";
 import {View} from "react-native";
 import {gql, useMutation} from "@apollo/client";
 import {storeSecure} from "@/helpers/secure";
+import {AuthContext} from "@/helpers/auth-context";
+import {useContext} from "react";
 
 const REGISTER = gql(`
     mutation Register($username: String, $name: String, $email: String, $password: String, $weight: Int, $height: Int, $age: Int, $gender: String, $activity: String, $goal: String, $bmi: Int, $goalWeight: Int, $endGoal: String, $injuries: [String]) {
@@ -17,6 +19,7 @@ const REGISTER = gql(`
 export default function ReviewStep() {
   const form = useFormContext();
   const [register] = useMutation(REGISTER);
+  const {handleLogin} = useContext(AuthContext);
 
   const handleOnboardingSubmit = async (data) => {
     data.weight = parseFloat(data.weight);
@@ -30,7 +33,7 @@ export default function ReviewStep() {
         variables: data
       });
       const token = result.register.access_token;
-      await storeSecure("token", token);
+      handleLogin({token});
     } catch (e) {
       console.error(e);
     }
