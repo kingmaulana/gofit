@@ -14,6 +14,7 @@ import {TouchableOpacity, View} from "react-native";
 import {AuthContext} from "@/helpers/auth-context";
 import ProgressGoal from '@/screens/ProgressGoal';
 import HistoryExercise from '@/screens/HistoryExercise';
+import AnalyzeAI from '@/screens/AnalyzeAI';
 
 
 const Tab = createBottomTabNavigator();
@@ -59,7 +60,7 @@ export default function TabNavigator() {
         }
       })
       }>
-      <Tab.Screen name="History" component={HistoryExercise} />
+      <Tab.Screen name="Analyze" component={AnalyzeAI} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Daily" component={TrainingSession} />
       <Tab.Screen name="Training" component={Training} />

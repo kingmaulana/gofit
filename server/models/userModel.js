@@ -127,9 +127,9 @@ class UserModel {
             endGoal: newUser.endGoal
         });
 
-        const findGoal = await UserGoalModel.collectionGoal().findOne({
-            userId: newUserId
-        })
+        // const findGoal = await UserGoalModel.collectionGoal().findOne({
+        //     userId: newUserId
+        // })
 
         //disini untuk ai suggestion ter create
         // await UserGoalModel.createSuggestionAI(findGoal)

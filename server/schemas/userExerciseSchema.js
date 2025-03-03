@@ -11,8 +11,17 @@ const typeDefs = `#graphql
         exerciseId: [String]
     }
 
+    type ExerciseCategory {
+        _id: ID!
+        name: String
+        exerciseId: [String]
+        duration: Int
+    }
+
     type Query {
         userExercises(id: String): [UserExercise]
+
+        exerciseCategories: [ExerciseCategory]
     }
 
     type Mutation {
@@ -36,6 +45,14 @@ const resolvers = {
             try {
                 const workouts = await UserExerciseModel.findAll(args.id)
                 return workouts
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+        exerciseCategories: async () => {
+            try {
+                const categories = await UserExerciseModel.findAllCategories()
+                return categories
             } catch (error) {
                 throw new Error(error)
             }
