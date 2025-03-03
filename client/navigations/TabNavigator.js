@@ -13,6 +13,7 @@ import CreateCategoryPage from '@/screens/CreateCategory';
 import {TouchableOpacity, View} from "react-native";
 import {AuthContext} from "@/helpers/auth-context";
 import ProfileScreen from '@/screens/Profile';
+import ProgressWeight from '@/screens/ProgressWeight';
 
 
 const Tab = createBottomTabNavigator();
@@ -60,6 +61,7 @@ export default function TabNavigator() {
       <Tab.Screen name="Daily" component={TrainingSession} />
       <Tab.Screen name="Training" component={Training} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
+      <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
 
     </Tab.Navigator>
