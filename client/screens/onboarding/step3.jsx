@@ -3,6 +3,7 @@ import {ScrollView, Text, View} from "react-native";
 import PropTypes from "prop-types";
 import {Pressable} from "@/components/ui/pressable";
 import {useFormContext} from "react-hook-form";
+import SelectionButton from "@/components/screens/onboarding-button-selection";
 
 export default function Step3({onNext}) {
   const {setValue, getValues} = useFormContext();
@@ -12,18 +13,40 @@ export default function Step3({onNext}) {
   }
   return <OnboardingLayout>
     <View className="p-4 flex-col gap-2">
-      <Text className="text-white">What's your main goal?</Text>
-      <ScrollView>
-        <Pressable onPress={() => handleGoalClick("lose-weight")}>
-          <Text className={getValues("goal") === "lose-weight" ? "text-orange-500" : "text-white"}>I want to lose some weight</Text>
-        </Pressable>
-        <Pressable onPress={() => handleGoalClick("build-muscle")}>
-          <Text className={getValues("goal") === "build-muscle" ? "text-orange-500" : "text-white"}>I want to build some muscle</Text>
-        </Pressable>
-        <Pressable onPress={() => handleGoalClick("keep-fit")}>
-          <Text className={getValues("goal") === "keep-fit" ? "text-orange-500" : "text-white"}>I want to stay fit</Text>
-        </Pressable>
-      </ScrollView>
+      <Text className="text-white text-3xl text-center" style={{
+        marginVertical: 32
+      }}>What is your main goal when using GoFit?</Text>
+      <View className="flex-row justify-center" style={{
+        display: "relative",
+        height: 300
+      }}>
+        <View className="gap-4 mt-4">
+          <SelectionButton
+            value="lose-weight"
+            selectedValue={getValues("goal")}
+            onPress={handleGoalClick}
+            verticalMode
+          >
+            I want to lose some weight
+          </SelectionButton>
+          <SelectionButton
+            value="build-muscle"
+            selectedValue={getValues("goal")}
+            onPress={handleGoalClick}
+            verticalMode
+          >
+            I want to build some muscle
+          </SelectionButton>
+          <SelectionButton
+            value="keep-fit"
+            selectedValue={getValues("goal")}
+            onPress={handleGoalClick}
+            verticalMode
+          >
+            I just want to keep healthy and fit
+          </SelectionButton>
+        </View>
+      </View>
     </View>
   </OnboardingLayout>
 }
