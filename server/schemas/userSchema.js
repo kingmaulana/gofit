@@ -10,9 +10,12 @@ const typeDefs = `#graphql
         username: String
         name: String
         email: String
+        gender: String
+        activity: String
         weight: Int
         age: Int
         height: Int
+        goal: String
         categoryId: ID
         createdAt: String!
         updatedAt: String!
@@ -44,7 +47,20 @@ const typeDefs = `#graphql
     # Mutation untuk write
     type Mutation {
         # Register
-        register(username: String, name: String, email: String, password: String) : Token
+        register(
+        username: String, 
+        name: String, 
+        email: String, 
+        password: String, 
+        weight: Int,  
+        height: Int,  
+        age: Int,  
+        gender: String, 
+        activity: String,
+        goal: String 
+        bmi: Int
+        goalWeight: Int
+        ) : Token
 
         # Login
         login(email: String, password: String): Token
@@ -90,7 +106,7 @@ const resolvers = {
     },
     Mutation: {
         // * Mutation Register User
-        register: async (parents, { username, name, email, password, weight, age, height }) => {
+        register: async (parents, { username, name, email, password, weight, age, height, gender, activity, goal, bmi, goalWeight }) => {
             const newUser = {
                 username,
                 name,
@@ -99,6 +115,11 @@ const resolvers = {
                 weight,
                 age,
                 height,
+                gender, 
+                activity, 
+                goal, 
+                bmi, 
+                goalWeight
             }
             const user = await UserModel.register(newUser)
             return user
