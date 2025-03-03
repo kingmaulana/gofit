@@ -2,40 +2,42 @@ const UserExerciseModel = require("../models/userExerciseModel");
 
 
 const typeDefs = `#graphql
-    type UserExercise {
-        _id: ID!
-        name: String
-        userId: String
-        duration: Int
-        restDuration: Int
-        exerciseId: [String]
-    }
+type UserExercise {
+    _id: ID!
+    name: String
+    userId: String
+    duration: Int
+    restDuration: Int
+    exerciseId: [String]
+}
 
-    type ExerciseCategory {
-        _id: ID!
-        name: String
-        exerciseId: [String]
-        duration: Int
-    }
 
-    type Query {
-        userExercises(id: String): [UserExercise]
+type ExerciseCategory {
+    _id: ID!
+    name: String
+    exerciseId: [String]
+    duration: Int
+}
 
-        exerciseCategories: [ExerciseCategory]
-    }
 
-    type Mutation {
-        addUserExercise(name: String, userId: String, duration: Int, restDuration: Int,  exerciseId: [String]): UserExercise
+type Query {
+    userExercises(id: String): [UserExercise]
 
-        # untuk update belum perlu kirim userId karena di UI pas fetch semua koleksi exercise yg muncul hanya punya user
-        updateName(name: String, id: String): UserExercise
+    exerciseCategories: [ExerciseCategory]
+}
 
-        updateExercise(id: String, exerciseId: [String]): UserExercise
+type Mutation {
+    addUserExercise(name: String, userId: String, duration: Int, restDuration: Int,  exerciseId: [String]): UserExercise
 
-        deleteCollectionExercise(id: String): UserExercise
+    # untuk update belum perlu kirim userId karena di UI pas fetch semua koleksi exercise yg muncul hanya punya user
+    updateName(name: String, id: String): UserExercise
 
-        deleteExercise(id: String, exerciseId: String): UserExercise
-    }
+    updateExercise(id: String, exerciseId: [String]): UserExercise
+
+    deleteCollectionExercise(id: String): UserExercise
+
+    deleteExercise(id: String, exerciseId: String): UserExercise
+}
 
 `;
 

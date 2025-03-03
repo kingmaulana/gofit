@@ -15,6 +15,7 @@ import {AuthContext} from "@/helpers/auth-context";
 import ProgressGoal from '@/screens/ProgressGoal';
 import HistoryExercise from '@/screens/HistoryExercise';
 import AnalyzeAI from '@/screens/AnalyzeAI';
+import ProfileScreen from '@/screens/Profile';
 
 
 const Tab = createBottomTabNavigator();
@@ -35,10 +36,8 @@ export default function TabNavigator() {
             iconName = focused ? 'barbell' : 'barbell-outline';
           } else if (route.name === 'Personal') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'CustomCategory') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'AddExercisePage') {
-            iconName = focused ? 'add-circle' : 'add-circle-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person' : 'person-outline';
           }
           return <Ionicons name={iconName} size={size} color={color}/>;
         },
@@ -65,9 +64,7 @@ export default function TabNavigator() {
       <Tab.Screen name="Daily" component={TrainingSession} />
       <Tab.Screen name="Training" component={Training} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
-      <Tab.Screen name="CustomCategory" component={CustomCategory} />
-      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
-      <Tab.Screen name="CreateCategoryPage" component={CreateCategoryPage} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
 
     </Tab.Navigator>
   )
