@@ -60,6 +60,7 @@ const typeDefs = `#graphql
         goal: String 
         bmi: Int
         goalWeight: Int
+        endGoal: String
         ) : Token
 
         # Login
@@ -106,7 +107,7 @@ const resolvers = {
     },
     Mutation: {
         // * Mutation Register User
-        register: async (parents, { username, name, email, password, weight, age, height, gender, activity, goal, bmi, goalWeight }) => {
+        register: async (parents, { username, name, email, password, weight, age, height, gender, activity, goal, bmi, goalWeight, endGoal }) => {
             const newUser = {
                 username,
                 name,
@@ -119,7 +120,8 @@ const resolvers = {
                 activity, 
                 goal, 
                 bmi, 
-                goalWeight
+                goalWeight,
+                endGoal
             }
             const user = await UserModel.register(newUser)
             return user

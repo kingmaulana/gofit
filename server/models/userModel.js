@@ -119,6 +119,7 @@ class UserModel {
             userId: newUserId,
             startWeight: newUser.weight,
             goalWeight: goalWeight,
+            endGoal: newUser.endGoal,
             startDate: new Date(),
         });
     
