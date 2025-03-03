@@ -5,8 +5,14 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import Training from '@/screens/Training';
 import TrainingSession from '@/screens/TrainingSession';
 import CategoryTraining from '@/screens/CategoryTraining';
+
+import CustomCategory from '@/screens/CustomCategory';
+import AddExercisePage from '@/screens/AddExercise';
+import CreateCategoryPage from '@/screens/CreateCategory';
+
 import {TouchableOpacity, View} from "react-native";
 import {AuthContext} from "@/helpers/auth-context";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +32,10 @@ export default function TabNavigator() {
             iconName = focused ? 'barbell' : 'barbell-outline';
           } else if (route.name === 'Personal') {
             iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'CustomCategory') {
+            iconName = focused ? 'list' : 'list-outline';
+          } else if (route.name === 'AddExercisePage') {
+            iconName = focused ? 'add-circle' : 'add-circle-outline';
           }
           return <Ionicons name={iconName} size={size} color={color}/>;
         },
@@ -47,19 +57,13 @@ export default function TabNavigator() {
         }
       })
       }>
-      <Tab.Screen name="Home" component={Home}/>
-      <Tab.Screen name="Daily" component={TrainingSession}/>
-      <Tab.Screen name="Training" component={Training}/>
-      <Tab.Screen name="Personal" component={CategoryTraining} options={{
-        tabBarLabel: 'Personal',
-        headerRight: () => (
-          <View className="mr-4">
-            <TouchableOpacity className="p-2" onPress={handleLogout}>
-              <Ionicons name="log-out-outline" size={24} color="black"/>
-            </TouchableOpacity>
-          </View>
-        )
-      }}/>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Daily" component={TrainingSession} />
+      <Tab.Screen name="Training" component={Training} />
+      <Tab.Screen name="Personal" component={CategoryTraining} />
+      <Tab.Screen name="CustomCategory" component={CustomCategory} />
+      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
+      <Tab.Screen name="CreateCategoryPage" component={CreateCategoryPage} />
 
     </Tab.Navigator>
   )
