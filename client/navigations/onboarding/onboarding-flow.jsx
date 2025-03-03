@@ -12,10 +12,10 @@ import Step8 from "@/screens/onboarding/step8";
 import Step9 from "@/screens/onboarding/step9";
 import ReviewStep from "@/screens/onboarding/review";
 import Step7 from "@/screens/onboarding/step7";
+import Step10 from "@/screens/onboarding/step10";
 
 const OnboardingFlow = () => {
   const form = useForm();
-  // Max: 9 steps
   const [step, setStep] = useState(0);
 
   const handlePrevious = () => {
@@ -70,8 +70,9 @@ const OnboardingFlow = () => {
           {step === 8 && <Step8 onNext={() => setStep(9)}/>}
           {/* Step 9: workout berapa kali */}
           { step === 9 && <Step9 onNext={() => setStep(10)}/> }
-          {/* Step 10: review */}
-          {step === 10 && <ReviewStep onNext={form.handleSubmit(handleOnboardingSubmit)}/>}
+          {/* Step 10: injuries */}
+          {step === 10 && <Step10 onNext={() => setStep(11)} />}
+          {step === 11 && <ReviewStep onNext={form.handleSubmit(handleOnboardingSubmit)}/>}
         </View>
       </View>
     </FormProvider>

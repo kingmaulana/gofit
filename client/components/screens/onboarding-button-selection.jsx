@@ -3,8 +3,8 @@ import {View, Text} from "react-native";
 import {Pressable} from "@/components/ui/pressable";
 import PropTypes from "prop-types";
 
-export default function SelectionButton({ value, selectedValue, onPress, children, verticalMode }) {
-  const isSelected = selectedValue === value;
+export default function SelectionButton({ value, selectedValue, onPress, children, verticalMode, multipleMode }) {
+  const isSelected = multipleMode ? selectedValue.includes(value) : selectedValue === value;
 
   return (
     <View
@@ -25,8 +25,8 @@ export default function SelectionButton({ value, selectedValue, onPress, childre
 
 SelectionButton.propTypes = {
   value: PropTypes.string.isRequired,
-  selectedValue: PropTypes.string,
   onPress: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-  verticalMode: PropTypes.bool
+  verticalMode: PropTypes.bool,
+  multipleMode: PropTypes.bool,
 };

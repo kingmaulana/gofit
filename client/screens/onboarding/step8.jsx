@@ -1,6 +1,5 @@
 import OnboardingLayout from "@/components/screens/onboarding-layout";
-import {ScrollView, Text, View} from "react-native";
-import {Pressable} from "@/components/ui/pressable";
+import {Text, View} from "react-native";
 import {useFormContext} from "react-hook-form";
 import SelectionButton from "@/components/screens/onboarding-button-selection";
 
