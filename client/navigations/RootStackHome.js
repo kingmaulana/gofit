@@ -6,6 +6,7 @@ import Training from '@/screens/Training';
 import CustomCategory from '@/screens/CustomCategory';
 import AddExercisePage from '@/screens/AddExercise';
 import CreateCategoryPage from '@/screens/CreateCategory';
+import ProfileScreen from '@/screens/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +18,7 @@ export default function RootStackHome() {
             <Stack.Screen name="Training" component={Training} />
             <Stack.Screen name="CustomCategory" component={CustomCategory} />
             <Stack.Screen name="AddExercisePage" component={AddExercisePage} />
-            <Stack.Screen name="CreateCategoryPage" component={CreateCategoryPage} />
+            <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
         </Stack.Navigator>
     );
 }
