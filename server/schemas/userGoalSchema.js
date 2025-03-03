@@ -25,7 +25,17 @@ const typeDefs = `#graphql
     }
 
     type Mutation {
-        createUserGoal(goalName: String, userId: String, goalWeight: Float, startDate: String, endGoal: String): UserGoal
+        createUserGoal(
+            goalName: String,
+            userId: String,
+            startWeight: Int,
+            endGoal: String,
+            startDate: String,
+            activity: String, 
+            goal: String, 
+            bmi: Int, 
+            goalWeight: Int
+            ): UserGoal
         updateWeightProgress(userId: String, weight: Float): WeightProgress
         createSuggestionAI(userId: String): UserGoal
         giveAnalyticByAI(userId: String): UserGoal
