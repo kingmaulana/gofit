@@ -89,39 +89,50 @@ class UserModel {
             height: newUser.height,
             categoryId: null,
             createdAt: new Date(),
-            updatedAt: new Date()
+            updatedAt: new Date(),
         });
     
         const newUserId = registeredUser.insertedId;
     
         // Calculate BMI and the weight change recommendation
-        const bmiResult = calculateBMI(newUser.weight, newUser.height / 100);
+        // const bmiResult = calculateBMI(newUser.weight, newUser.height / 100);
     
         // Check if the user has set their own goal weight
-        let goalWeight = newUser.goalWeight || null; // If user provides their goal weight
+        // let goalWeight = newUser.goalWeight || null; // If user provides their goal weight
         
-        if (!goalWeight) {
-            // If no goal weight is provided, use the BMI result to suggest a goal weight
-            if (bmiResult.category === "Underweight") {
-                // Calculate goal weight to reach BMI of 18.5
-                goalWeight = 18.5 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 18.5
-            } else if (bmiResult.category === "Normal weight") {
-                goalWeight = newUser.weight; // No change in weight if already normal
-            } else if (bmiResult.category === "Overweight" || bmiResult.category === "Obesity") {
-                // Calculate goal weight to reach BMI of 24.9
-                goalWeight = 24.9 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 24.9
-            }
-        }
+        // if (!goalWeight) {
+        //     // If no goal weight is provided, use the BMI result to suggest a goal weight
+        //     if (bmiResult.category === "Underweight") {
+        //         // Calculate goal weight to reach BMI of 18.5
+        //         goalWeight = 18.5 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 18.5
+        //     } else if (bmiResult.category === "Normal weight") {
+        //         goalWeight = newUser.weight; // No change in weight if already normal
+        //     } else if (bmiResult.category === "Overweight" || bmiResult.category === "Obesity") {
+        //         // Calculate goal weight to reach BMI of 24.9
+        //         goalWeight = 24.9 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 24.9
+        //     }
+        // }
     
         // Create a goal for the user with the target weight
         await UserGoalModel.createGoal({
             goalName: newUser.goal,
             userId: newUserId,
             startWeight: newUser.weight,
-            goalWeight: goalWeight,
             endGoal: newUser.endGoal,
             startDate: new Date(),
+            activity: newUser.activity, 
+            goal: newUser.goal, 
+            bmi: newUser.bmi, 
+            goalWeight: newUser.goalWeight, 
+            endGoal: newUser.endGoal
         });
+
+        const findGoal = await UserGoalModel.collectionGoal().findOne({
+            userId: newUserId
+        })
+
+        //disini untuk ai suggestion ter create
+        // await UserGoalModel.createSuggestionAI(findGoal)
     
         // Generate a JWT token for the user
         const payload = {
