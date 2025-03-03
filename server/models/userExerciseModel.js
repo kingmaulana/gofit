@@ -13,6 +13,14 @@ class UserExerciseModel {
         return categories;
     }
 
+    static async collectionCategory() {
+        // Get collection and fetch all data
+        const collection = database.collection("category_exercise");
+        const categories = await collection.find().toArray();  // Fetch all documents and return as an array
+        return categories;
+    }
+
+
     //Supaya bsia menemukan exercise yg sudah di buat user
     static async findAll(id) {
         // console.log("🚀 ~ UserExerciseModel ~ findAll ~ id:", id)
@@ -114,6 +122,21 @@ class UserExerciseModel {
             throw new Error(error);
         }
     }
+
+
+    static async findAllCategories() {
+        try {
+            // Fetch categories from the collection
+            const categories = await this.collectionCategory();
+            console.log("🚀 ~ UserExerciseModel ~ findAllCategories ~ categories:", categories);
+            return categories;
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+            throw new Error(error);
+        }
+    }
+
+    
 }
 
 module.exports = UserExerciseModel  

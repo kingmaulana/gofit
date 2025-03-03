@@ -11,12 +11,14 @@ type UserExercise {
     exerciseId: [String]
 }
 
+
 type ExerciseCategory {
     _id: ID!
     name: String
     exerciseId: [String]
     duration: Int
 }
+
 
 type Query {
     userExercises(id: String): [UserExercise]
