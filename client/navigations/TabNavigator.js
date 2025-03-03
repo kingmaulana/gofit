@@ -13,6 +13,7 @@ import CreateCategoryPage from '@/screens/CreateCategory';
 import {TouchableOpacity, View} from "react-native";
 import {AuthContext} from "@/helpers/auth-context";
 import ProgressGoal from '@/screens/ProgressGoal';
+import HistoryExercise from '@/screens/HistoryExercise';
 
 
 const Tab = createBottomTabNavigator();
@@ -58,7 +59,7 @@ export default function TabNavigator() {
         }
       })
       }>
-      <Tab.Screen name="Progress" component={ProgressGoal} />
+      <Tab.Screen name="History" component={HistoryExercise} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Daily" component={TrainingSession} />
       <Tab.Screen name="Training" component={Training} />
