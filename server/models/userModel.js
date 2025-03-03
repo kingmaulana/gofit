@@ -118,9 +118,9 @@ class UserModel {
             goalName: newUser.goal,
             userId: newUserId,
             startWeight: newUser.weight,
-            goalWeight: goalWeight,
-            endGoal: newUser.endGoal,
+            goalWeight: newUser.goalWeight,
             startDate: new Date(),
+            endGoal: new Date(newUser.endGoal)
         });
     
         // Generate a JWT token for the user
