@@ -1,48 +1,15 @@
-import {StatusBar} from 'expo-status-bar';
 import '@/global.css';
-import {GluestackUIProvider} from '@/components/ui/gluestack-ui-provider';
-import {StyleSheet, View} from 'react-native';
-import TabNavigator from './navigations/TabNavigator';
-import {NavigationContainer} from '@react-navigation/native';
-import OnboardingNavigations from '@/navigations/onboarding/onboarding-navigations';
-import {useEffect} from "react";
-import * as NavigationBar from "expo-navigation-bar";
+import {ApolloProvider} from "@apollo/client";
+import client from "@/config/apollo";
+import AuthProvider from "@/helpers/auth-context";
+import AppConsumer from "@/app-consumer";
 
 export default function App() {
-  const onboarding = true;
-
-  useEffect(() => {
-    if (!onboarding) {
-      NavigationBar.setBackgroundColorAsync("white");
-    }
-  })
-
-  if (onboarding) {
-    return (
-      <GluestackUIProvider mode="light">
-        <NavigationContainer>
-          <OnboardingNavigations/>
-        </NavigationContainer>
-      </GluestackUIProvider>
-    );
-  }
-
   return (
-    <GluestackUIProvider mode="light">
-      <NavigationContainer>
-        <TabNavigator/>
-        <View style={styles.container}>
-          <StatusBar style="auto"/>
-        </View>
-      </NavigationContainer>
-    </GluestackUIProvider>
-  );
+    <ApolloProvider client={client}>
+      <AuthProvider>
+        <AppConsumer/>
+      </AuthProvider>
+    </ApolloProvider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

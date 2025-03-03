@@ -63,7 +63,7 @@ export default function Step7({onNext}) {
         <View className="flex-1 gap-4">
           <View className={`flex-col gap-4 ${bmiColor} p-4 rounded-lg`}>
             <Text className="text-white text-xl">Your BMI is</Text>
-            <Text className="text-white text-6xl font-bold text-center">{bmi}</Text>
+            <Text className="text-white text-6xl font-black text-center">{bmi}</Text>
             <Accordion
               size="md"
               variant="filled"

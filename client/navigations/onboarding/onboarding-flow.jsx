@@ -13,10 +13,12 @@ import Step9 from "@/screens/onboarding/step9";
 import ReviewStep from "@/screens/onboarding/review";
 import Step7 from "@/screens/onboarding/step7";
 import Step10 from "@/screens/onboarding/step10";
+import {useNavigation} from "@react-navigation/native";
 
 const OnboardingFlow = () => {
   const form = useForm();
   const [step, setStep] = useState(0);
+  const navigation = useNavigation();
 
   const handlePrevious = () => {
     if (step === 1) {
@@ -42,10 +44,6 @@ const OnboardingFlow = () => {
     return () => backHandler.remove();
   }, [step]);
 
-  const handleOnboardingSubmit = async (data) => {
-    console.log(data);
-  }
-
   return (
     <FormProvider {...form}>
       <View className="flex-1">
@@ -53,7 +51,11 @@ const OnboardingFlow = () => {
           {/* Login / Register */}
           {step === 0 && <WelcomeScreen onRegisterClick={() => setStep(1)}/>}
           {/* If choose register, go to step 1: biodata */}
-          {step === 1 && <Step1 onNext={() => setStep(2)}/>}
+          {step === 1 && <Step1 onNext={() => setStep(2)} onLogin={() => {
+            setStep(0);
+            form.reset();
+            navigation.navigate("Login");
+          }}/>}
           {/* Step 2: gender */}
           {step === 2 && <Step2 onNext={() => setStep(3)}/>}
           {/* Step 3: goal */}
@@ -72,7 +74,7 @@ const OnboardingFlow = () => {
           { step === 9 && <Step9 onNext={() => setStep(10)}/> }
           {/* Step 10: injuries */}
           {step === 10 && <Step10 onNext={() => setStep(11)} />}
-          {step === 11 && <ReviewStep onNext={form.handleSubmit(handleOnboardingSubmit)}/>}
+          {step === 11 && <ReviewStep />}
         </View>
       </View>
     </FormProvider>
