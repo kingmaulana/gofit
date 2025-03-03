@@ -33,10 +33,6 @@ export default function TabNavigator() {
             iconName = focused ? 'barbell' : 'barbell-outline';
           } else if (route.name === 'Personal') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'CustomCategory') {
-            iconName = focused ? 'list' : 'list-outline';
-          } else if (route.name === 'AddExercisePage') {
-            iconName = focused ? 'add-circle' : 'add-circle-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
@@ -64,9 +60,6 @@ export default function TabNavigator() {
       <Tab.Screen name="Daily" component={TrainingSession} />
       <Tab.Screen name="Training" component={Training} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
-      <Tab.Screen name="CustomCategory" component={CustomCategory} />
-      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
-      <Tab.Screen name="CreateCategoryPage" component={CreateCategoryPage} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
 
     </Tab.Navigator>
