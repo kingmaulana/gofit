@@ -6,6 +6,12 @@ class UserExerciseModel {
     static collection() {
         return database.collection("user_exercise")
     }
+    static async collectionCategory() {
+        // Get collection and fetch all data
+        const collection = database.collection("category_exercise");
+        const categories = await collection.find().toArray();  // Fetch all documents and return as an array
+        return categories;
+    }
 
     //Supaya bsia menemukan exercise yg sudah di buat user
     static async findAll(id) {
