@@ -1,8 +1,11 @@
 import {Text, TextInput, View} from "react-native";
 import OnboardingLayout from "@/components/screens/onboarding-layout";
 import {Button, ButtonText} from "@/components/ui/button";
+import {useForm} from "react-hook-form";
 
 export default function LoginView() {
+  const form = useForm();
+
   return <OnboardingLayout>
     <View>
       <View>
