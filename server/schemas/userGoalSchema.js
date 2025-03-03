@@ -9,6 +9,7 @@ const typeDefs = `#graphql
         startWeight: Float
         goalWeight: Float
         startDate: String
+        exercise: [String]
     }
 
     type WeightProgress {
@@ -25,6 +26,7 @@ const typeDefs = `#graphql
     type Mutation {
         createUserGoal(goalName: String, userId: String, goalWeight: Float, startDate: String): UserGoal
         updateWeightProgress(userId: String, weight: Float): WeightProgress
+        createSuggestionAI(userId: String): UserGoal
     }
 `;
 
@@ -51,6 +53,14 @@ const resolvers = {
         updateWeightProgress: async (_, args) => {
             try {
                 const workout = await UserGoalModel.updateWeightProgress(args)
+                return workout
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+        createSuggestionAI: async (_, args) => {
+            try {
+                const workout = await UserGoalModel.createSuggestionAI(args)
                 return workout
             } catch (error) {
                 throw new Error(error)

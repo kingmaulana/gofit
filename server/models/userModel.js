@@ -94,10 +94,8 @@ class UserModel {
     
         const newUserId = registeredUser.insertedId;
     
-        console.log(newUser.height / 100, 'INI JADI METER')
         // Calculate BMI and the weight change recommendation
         const bmiResult = calculateBMI(newUser.weight, newUser.height / 100);
-        console.log("🚀 ~ UserModel ~ register ~ bmiResult:", bmiResult)
     
         // Check if the user has set their own goal weight
         let goalWeight = newUser.goalWeight || null; // If user provides their goal weight
@@ -114,7 +112,6 @@ class UserModel {
                 goalWeight = 24.9 * (newUser.height / 100 * newUser.height / 100);  // This is the target weight for BMI 24.9
             }
         }
-        console.log("🚀 ~ UserModel ~ register ~ goalWeight:", goalWeight)
     
         // Create a goal for the user with the target weight
         await UserGoalModel.createGoal({

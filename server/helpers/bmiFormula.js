@@ -32,12 +32,12 @@ function calculateBMI(weight, height) {
 }
 
 // Example usage:
-const result = calculateBMI(70, 1.75); // weight: 70kg, height: 1.75m
-if (result.weightToChange !== "0.00") {
-    console.log(`BMI: ${result.bmi}, Category: ${result.category}. You need to ${result.weightToChange > 0 ? `gain ${result.weightToChange} kg` : `lose ${Math.abs(result.weightToChange)} kg`} to be in the normal weight range.`);
-} else {
-    console.log(`BMI: ${result.bmi}, Category: ${result.category}. You are already in the normal weight range.`);
-}
+// const result = calculateBMI(70, 1.75); // weight: 70kg, height: 1.75m
+// if (result.weightToChange !== "0.00") {
+//     console.log(`BMI: ${result.bmi}, Category: ${result.category}. You need to ${result.weightToChange > 0 ? `gain ${result.weightToChange} kg` : `lose ${Math.abs(result.weightToChange)} kg`} to be in the normal weight range.`);
+// } else {
+//     console.log(`BMI: ${result.bmi}, Category: ${result.category}. You are already in the normal weight range.`);
+// }
 
 
 module.exports = {calculateBMI};
