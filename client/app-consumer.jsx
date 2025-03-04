@@ -23,9 +23,9 @@ export default function AppConsumer() {
   return <GluestackUIProvider mode="light">
     <NavigationContainer>
       {login ? <>
-        <TabNavigator>
-          <RootStackHome />
-        </TabNavigator>
+
+        <RootStackHome/>
+
         {/* <View style={styles.container}>
           <StatusBar style="auto"/>
         </View> */}
