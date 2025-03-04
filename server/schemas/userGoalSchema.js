@@ -11,6 +11,7 @@ const typeDefs = `#graphql
         startDate: String
         endGoal: String
         exercise: ExerciseAI
+        completeExercise: [Workout]
     }
 
     type ExerciseAI {
@@ -24,6 +25,21 @@ const typeDefs = `#graphql
         weight: Float
         date: String
     }
+
+    type Workout {
+        _id: ID!
+        name: String
+        force: String
+        level: String
+        mechanic: String
+        equipment: String
+        primaryMuscles: [String]
+        secondaryMuscles: [String]
+        instructions: [String]
+        category: String
+        image: [String]
+    }
+
 
     type Query {
         userGoals(userId: String): UserGoal
