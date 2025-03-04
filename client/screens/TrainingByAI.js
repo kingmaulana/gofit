@@ -64,6 +64,7 @@ export default function TrainingByAI() {
   }
 
   const goal = data?.userGoals;
+  console.log(data);
 
 
   return (
@@ -132,7 +133,7 @@ export default function TrainingByAI() {
           className="w-full bg-black rounded-md flex"
           onPress={() => {
             // Handle the press event here
-            navigation.navigate('TrainingSession');
+            navigation.navigate('TrainingSession', {categoryId: goal._id, usingGoalId: true});
           }}
         >
           <Text className="text-white font-medium text-center py-3">
