@@ -409,15 +409,13 @@ export default function AddExercisePage() {
             <TouchableOpacity
                 style={[
                     styles.submitButton,
-                    (!categoryName.trim() || exercisesAdded.length === 0) && styles.submitButtonDisabled,
-                    categoryName.trim() && exercisesAdded.length > 0 && styles.submitButtonEnabled
+                    styles.submitButtonEnabled
                 ]}
                 onPress={handleSubmit}
-                disabled={!categoryName.trim() || exercisesAdded.length === 0}
             >
                 <Text style={[
                     styles.submitButtonText, 
-                    categoryName.trim() && exercisesAdded.length > 0 && styles.submitButtonTextEnabled
+                    styles.submitButtonTextEnabled
                 ]}>Create Workout</Text>
             </TouchableOpacity>
             
