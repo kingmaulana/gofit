@@ -24,9 +24,20 @@ class HistoryExerciseModel {
     // fungsi ini akan otomatis menambahkan log history exercise user setiap selesai sesi exercise
     static async addToLogs(args) {
         try {
+            let userGoalId = null
+            let categoryId = null
+            if(args.categoryId) {
+                categoryId = ObjectId.createFromHexString(args.categoryId)
+            } 
+
+            if(args.userGoalId) {
+                userGoalId = ObjectId.createFromHexString(args.userGoalId)
+            }
+
             const logEntry = {
                 userId: ObjectId.createFromHexString(args.userId),
-                categoryId: ObjectId.createFromHexString(args.categoryId),
+                userGoalId,
+                categoryId,
                 date: new Date().toISOString(),
                 createdAt: new Date(),
             }
