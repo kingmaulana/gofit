@@ -11,6 +11,20 @@ type UserExercise {
     exerciseId: [String]
 }
 
+type Workout {
+        _id: ID!
+        name: String
+        force: String
+        level: String
+        mechanic: String
+        equipment: String
+        primaryMuscles: [String]
+        secondaryMuscles: [String]
+        instructions: [String]
+        category: String
+        images: [String]
+    }
+
 
 type ExerciseCategory {
     _id: ID!
@@ -19,11 +33,19 @@ type ExerciseCategory {
     duration: Int
 }
 
+type CompleteCategoryExercise {
+    _id: ID!
+    name: String
+    exerciseId: [String]
+    duration: Int
+    exercises: [Workout]
+}
+
 
 type Query {
     userExercises(id: String): [UserExercise]
     exerciseCategories: [ExerciseCategory]
-    getCategoryById(idCategory: String): ExerciseCategory
+    getCategoryById(idCategory: String): CompleteCategoryExercise
 }
 
 type Mutation {

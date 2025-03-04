@@ -39,6 +39,7 @@ export default function Home() {
 
   // TODO: fetch from db
   const newExerciseCategories = data.exerciseCategories?.map((category) => ({
+    id: category._id,
     name: category.name,
     duration: category.duration,
     image: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category.name}%20in%20black%20and%20white%20500x500?nologo=true`
@@ -103,9 +104,9 @@ export default function Home() {
         <Heading size="md" className=" mb-4">Exercise Categories</Heading>
 
         <VStack space="md">
-          {newExerciseCategories.map((category, index) => (
+          {newExerciseCategories?.map((category, index) => (
             <Card key={index} className="bg-gray-900 rounded-xl border-0 overflow-hidden">
-              <TouchableWithoutFeedback onPress={() => navigation.navigate("Training")}>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("Training", { categoryId: category.id })}>
               <HStack>
                 <Image
                   source={{ uri: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category.name}%20in%20black%20and%20white%20500x500?nologo=true` }}
