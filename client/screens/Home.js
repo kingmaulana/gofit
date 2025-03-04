@@ -1,38 +1,51 @@
-import {Card} from "@/components/ui/card"
-import {Heading} from "@/components/ui/heading"
-import {HStack} from "@/components/ui/hstack"
-import {VStack} from "@/components/ui/vstack"
-import {Image} from "@/components/ui/image"
-import {Link, LinkText} from "@/components/ui/link"
-import {Text} from "@/components/ui/text"
-import {ArrowRightIcon, Icon} from "@/components/ui/icon"
-import {ScrollView, TouchableWithoutFeedback} from "react-native"
-import {Box} from "@/components/ui/box"
-import {Button} from "@/components/ui/button"
-import {Divider} from "@/components/ui/divider"
-import {useNavigation} from "@react-navigation/native"
-import {gql, useQuery} from "@apollo/client";
+import { Card } from "@/components/ui/card"
+import { Heading } from "@/components/ui/heading"
+import { HStack } from "@/components/ui/hstack"
+import { VStack } from "@/components/ui/vstack"
+import { Image } from "@/components/ui/image"
+import { Link, LinkText } from "@/components/ui/link"
+import { Text } from "@/components/ui/text"
+import { ArrowRightIcon, Icon } from "@/components/ui/icon"
+import { ScrollView, TouchableWithoutFeedback } from "react-native"
+import { Box } from "@/components/ui/box"
+import { Button } from "@/components/ui/button"
+import { Divider } from "@/components/ui/divider"
+import { useNavigation } from '@react-navigation/native';
+import { gql, useQuery } from "@apollo/client";
 
 const GET_CATEGORY = gql(`
-  query GetCategories {
-      exerciseCategories {
-          name,
-          duration,
-          _id
-      }
+  query ExerciseCategories {
+  exerciseCategories {
+    _id
+    name
+    duration
   }
+}
 `)
 
 export default function Home() {
-  const { data: allExerciseCategory, loading, error } = useQuery(GET_CATEGORY);
-  const navigation = useNavigation()
+  const { data, loading, error } = useQuery(GET_CATEGORY);
+  const navigation = useNavigation();
+
+  if (loading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
+
+  // Log the structure of the response to ensure it's correct
 
   // TODO: fetch from db
-  const newExerciseCategories = allExerciseCategory?.map((category) => ({
+  const newExerciseCategories = data.exerciseCategories?.map((category) => ({
     name: category.name,
     duration: category.duration,
     image: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category.name}%20in%20black%20and%20white%20500x500?nologo=true`
   }));
+  // console.log("🚀 ~ newExerciseCategories ~ newExerciseCategories:", newExerciseCategories)
+
+
   const exerciseCategories = [
     { name: "Strength", image: "https://image.pollinations.ai/prompt/weightlifting%20black%20and%20white%20500x500?nologo=true" },
     { name: "Cardio", image: "https://image.pollinations.ai/prompt/running%20black%20and%20white%20500x500?nologo=true" },
@@ -62,11 +75,11 @@ export default function Home() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {workoutsOfDay.map((workout, index) => (
             <Card key={index} className="bg-gray-900 rounded-xl mr-4 w-[280px] overflow-hidden border-0">
-                <Image
-                  source={{ uri: workout.image }}
-                  size="2xl"
-                  alt={workout.name}
-                />
+              <Image
+                source={{ uri: workout.image }}
+                size="2xl"
+                alt={workout.name}
+              />
               <TouchableWithoutFeedback onPress={() => navigation.navigate("Training")}>
                 <Box className="p-3">
                   <Heading size="sm" className="text-white mb-1">{workout.name}</Heading>
@@ -90,16 +103,17 @@ export default function Home() {
         <Heading size="md" className=" mb-4">Exercise Categories</Heading>
 
         <VStack space="md">
-          {exerciseCategories.map((category, index) => (
+          {newExerciseCategories.map((category, index) => (
             <Card key={index} className="bg-gray-900 rounded-xl border-0 overflow-hidden">
+              <TouchableWithoutFeedback onPress={() => navigation.navigate("Training")}>
               <HStack>
                 <Image
-                  source={{ uri: category.image }}
+                  source={{ uri: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category.name}%20in%20black%20and%20white%20500x500?nologo=true` }}
                   size="md"
                   alt={category.name}
                 />
-                <HStack className="flex-1 justify-between items-center px-4">
-                  <Heading size="sm" className="text-white">{category.name}</Heading>
+                <HStack className="flex-1 justify-between items-center">
+                  <Heading size="sm" className="text-white capitalize px-2">{category.name}</Heading>
                   <Link>
                     <HStack className="items-center">
                       <LinkText size="sm" className="text-gray-300 no-underline">Explore</LinkText>
@@ -108,6 +122,7 @@ export default function Home() {
                   </Link>
                 </HStack>
               </HStack>
+              </TouchableWithoutFeedback>
             </Card>
           ))}
         </VStack>

@@ -8,6 +8,8 @@ import {StyleSheet, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
 import OnboardingNavigations from "@/navigations/onboarding/onboarding-navigations";
 import {GluestackUIProvider} from "@/components/ui/gluestack-ui-provider";
+import Home from "./screens/Home";
+import RootStackHome from "./navigations/RootStackHome";
 
 export default function AppConsumer() {
   const {login, loading} = useContext(AuthContext);
@@ -21,10 +23,12 @@ export default function AppConsumer() {
   return <GluestackUIProvider mode="light">
     <NavigationContainer>
       {login ? <>
-        <TabNavigator/>
-        <View style={styles.container}>
+        <TabNavigator>
+          <RootStackHome />
+        </TabNavigator>
+        {/* <View style={styles.container}>
           <StatusBar style="auto"/>
-        </View>
+        </View> */}
       </> : <OnboardingNavigations/>}
     </NavigationContainer>
   </GluestackUIProvider>
