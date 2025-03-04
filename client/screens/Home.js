@@ -28,7 +28,7 @@ export default function Home() {
   const navigation = useNavigation();
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <Text>Loading...</Text>
   }
 
   if (error) {

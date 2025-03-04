@@ -16,6 +16,7 @@ const GET_CATEGORY = gql(`
       _id
       name
       duration
+      exerciseId
     }
   }
 `);
@@ -75,6 +76,7 @@ export default function CategoryTraining() {
     id: category._id,
     name: category.name,
     duration: category.duration,
+    lengthExercises: category.exerciseId.length,
     image: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category.name}%20in%20black%20and%20white%20500x500?nologo=true`
   }));
   console.log("🚀 ~ newExerciseCategories ~ newExerciseCategories:", newExerciseCategories)
@@ -121,7 +123,7 @@ export default function CategoryTraining() {
                   
                   <Box style={styles.durationContainer}>
                     <Text style={styles.durationText}>
-                      {item.duration || 'Various'} mins
+                    {Math.floor(item?.duration / 60) * item?.lengthExercises} mins
                     </Text>
                   </Box>
                 </LinearGradient>
@@ -245,6 +247,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
+    textTransform: 'capitalize'
   },
   durationContainer: {
     flexDirection: 'row',
