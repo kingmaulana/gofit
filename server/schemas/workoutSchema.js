@@ -21,6 +21,7 @@ const typeDefs = `#graphql
         workoutId: [String]
     }
 
+    
 
     type Query {
         workouts: [Workout]

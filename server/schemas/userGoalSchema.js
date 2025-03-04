@@ -10,7 +10,13 @@ const typeDefs = `#graphql
         goalWeight: Float
         startDate: String
         endGoal: String
+        exercise: ExerciseAI
+        completeExercise: [Workout]
+    }
+
+    type ExerciseAI {
         exercise: [String]
+        duration: Int
     }
 
     type WeightProgress {
@@ -20,8 +26,24 @@ const typeDefs = `#graphql
         date: String
     }
 
+    type Workout {
+        _id: ID!
+        name: String
+        force: String
+        level: String
+        mechanic: String
+        equipment: String
+        primaryMuscles: [String]
+        secondaryMuscles: [String]
+        instructions: [String]
+        category: String
+        image: [String]
+    }
+
+
     type Query {
         userGoals(userId: String): UserGoal
+        getWeightProgress(userId: String): [WeightProgress]
     }
 
     type Mutation {
@@ -52,6 +74,14 @@ const resolvers = {
                 throw new Error(error)
             }
         },
+        getWeightProgress: async (_, args) => {
+            try {
+                const workouts = await UserGoalModel.getWeightProgress(args)
+                return workouts
+            } catch (error) {
+                throw new Error(error)
+            }
+        }
     },
     Mutation: {
         createUserGoal: async (_, args) => {

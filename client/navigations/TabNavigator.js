@@ -19,6 +19,8 @@ import ProfileScreen from '@/screens/Profile';
 import ProgressWeight from '@/screens/ProgressWeight';
 import WorkDetailByUser from '@/screens/WorkDetailByUser';
 import EditExerciseCategory from '@/screens/EditExerciseCategory';
+import TrainingByAI from '@/screens/TrainingByAI';
+import DetailsExercise from '@/screens/DetailsExercise';
 
 
 const Tab = createBottomTabNavigator();
@@ -64,10 +66,9 @@ export default function TabNavigator() {
         }
       })
       }>
-      <Tab.Screen name="Analyze" component={AnalyzeAI} />
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Daily" component={TrainingSession} />
-      <Tab.Screen name="Training" component={Training} />
+      <Tab.Screen name="Details" component={DetailsExercise} />
+      <Tab.Screen name="Graph" component={ProgressGoal} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
       <Tab.Screen name="CustomCategory" component={CustomCategory} />

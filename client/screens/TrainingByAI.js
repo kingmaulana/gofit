@@ -7,19 +7,27 @@ import { Image } from "@/components/ui/image"
 import { Text } from "@/components/ui/text"
 import { Icon, ClockIcon, CheckCircleIcon, AlertCircleIcon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
-import {ActivityIndicator, Alert, ScrollView, TouchableWithoutFeedback, View} from 'react-native'
+import { ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { Link, useNavigation, useRoute } from '@react-navigation/native'
 import { Pressable } from '@/components/ui/pressable'
 import { gql, useQuery } from '@apollo/client';
+import { View } from '@gluestack-ui/themed'
 
 // GraphQL Query to fetch category details by ID
-const GET_CATEGORY_BY_ID = gql`
-  query GetCategoryById($idCategory: String) {
-  getCategoryById(idCategory: $idCategory) {
-    _id
-    name
-    duration
-    exercises {
+const USER_GOAL_BY_ID = gql`
+query UserGoals($userId: String) {
+  userGoals(userId: $userId) {
+    goalName
+    userId
+    startWeight
+    goalWeight
+    startDate
+    endGoal
+    exercise {
+      exercise
+      duration
+    }
+    completeExercise {
       _id
       name
       images
@@ -28,53 +36,36 @@ const GET_CATEGORY_BY_ID = gql`
 }
 `;
 
-export default function Training() {
+export default function TrainingByAI() {
   const navigation = useNavigation();
   const route = useRoute();
   
   // Getting the category ID from route params
-  const { categoryId } = route.params;
-  console.log("🚀 ~ Training ~ categoryId:", categoryId)
+//   const { categoryId } = route.params;
+  // console.log("🚀 ~ Training ~ categoryId:", categoryId)
 
   // Using Apollo's useQuery hook to fetch data
-  const { data, loading, error } = useQuery(GET_CATEGORY_BY_ID, {
+  const { data, loading, error } = useQuery(USER_GOAL_BY_ID, {
     variables: { 
-      idCategory: categoryId
+      userId: "67c6a7d8be60228e126ec03e"
      }, // Pass the ID as a variable to the query
   });
+  // console.log("🚀 ~ TrainingByAI ~ data:", data)
+  const exercises = data?.userGoals?.completeExercise;
+  console.log("🚀 ~ TrainingByAI ~ exercise:", exercises)
 
   // Handle loading and error states
   if (loading) {
-    return <View className="h-full justify-center items-center">
-      <ActivityIndicator size="large" color="black" />
-    </View>;
+    return <Text>Loading...</Text>;
   }
 
   if (error) {
     return <Text>Error: {error.message}</Text>;
   }
 
-  const handleStartWorkout = () => {
-    Alert.alert(`Start workout ${data?.getCategoryById.name}`, null, [
-      {
-        text: 'Cancel',
-        onPress: () => {},
-        style: 'cancel',
-      },
-      {
-        text: 'Start',
-        onPress: () => {
-          navigation.navigate('TrainingSession', { categoryId: category._id, usingGoalId: false });
-        },
-      },
-    ], {
-      cancelable: true,
-    });
-  }
+  const goal = data?.userGoals;
+  console.log(data);
 
-  // Extract the data from the response
-  const category = data?.getCategoryById;
-  console.log("🚀 ~ Training ~ data?.getCategoryById;:", data?.getCategoryById)
 
   return (
     <ScrollView className="flex-1">
@@ -82,7 +73,7 @@ export default function Training() {
         {/* Image (you can set a dynamic image source if required) */}
         <Image
           source={{
-            uri: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category?.name}%20in%20black%20and%20white%20500x500?nologo=true`, // Use dynamic URL if needed
+            uri: `https://image.pollinations.ai/prompt/a%20workout%20specialize%20custom%20${goal?.goalName}%20powerfull%20vibes%20with%20textby%20ai%20500x500?nologo=true`, // Use dynamic URL if needed
           }}
           className="mb-4 h-[180px] w-full rounded-md"
           alt="Workout"
@@ -90,7 +81,7 @@ export default function Training() {
 
         {/* Display Category Name */}
         <Heading size="xl" className="mb-4 capitalize">
-          {category?.name || "Full Body Workout"}  {/* Display category name or default name */}
+        Special Workout for {goal?.goalName}  {/* Display category name or default name */}
         </Heading>
 
         {/* Display Category Details */}
@@ -98,13 +89,13 @@ export default function Training() {
           <HStack>
             <Icon as={ClockIcon} size="md" className="text-primary-600 mr-1" />
             <Text className="text-sm font-bold text-typography-700">
-              {Math.floor(category?.duration / 60) * category?.exercises.length} minutes {/* Convert duration from seconds to minutes */}
+            {Math.floor(goal?.exercise.duration / 60) * goal?.exercise.exercise.length} minutes
             </Text>
           </HStack>
           <HStack>
             <Icon as={CheckCircleIcon} size="md" className="text-primary-600 mr-1" />
             <Text className="text-sm font-bold text-typography-700">
-              {category?.exercises?.length} exercises {/* Display number of exercises */}
+              {goal?.exercise?.exercise?.length} exercises {/* Display number of exercises */}
             </Text>
           </HStack>
         </HStack>
@@ -115,7 +106,7 @@ export default function Training() {
 
         {/* Display exercises (replace with data if needed) */}
         <VStack className="mb-6 space-y-2">
-          {category?.exercises?.map((exercise) => (
+          {exercises?.map((exercise) => (
             <Card key={exercise._id} className="p-3">
               <HStack className="gap-5 items-center">
                 <Image
@@ -128,7 +119,7 @@ export default function Training() {
                 <VStack>
                   <Text className="font-bold text-xl capitalize">{exercise.name}</Text>
                   <Text className="text-sm text-typography-600">
-                    {Math.floor(category?.duration / 60)} minutes
+                    {/* {Math.floor(category?.duration / 60)} minutes */}
                   </Text>
                 </VStack>
                 <Icon as={AlertCircleIcon} size="xl" className="text-primary-600 ml-auto" />
@@ -140,7 +131,10 @@ export default function Training() {
         {/* Start Workout Button */}
         <Pressable
           className="w-full bg-black rounded-md flex"
-          onPress={handleStartWorkout}
+          onPress={() => {
+            // Handle the press event here
+            navigation.navigate('TrainingSession', {categoryId: goal._id, usingGoalId: true});
+          }}
         >
           <Text className="text-white font-medium text-center py-3">
             Start Workout
