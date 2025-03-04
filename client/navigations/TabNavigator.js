@@ -74,6 +74,7 @@ export default function TabNavigator() {
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
       <Tab.Screen name="TrainingByAI" component={TrainingByAI} />
+      <Tab.Screen name="CustomCategory" component={CustomCategory} />
 
     </Tab.Navigator>
   )
