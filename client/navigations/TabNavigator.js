@@ -39,6 +39,8 @@ export default function TabNavigator() {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'AddExercisePage') {
+            iconName = focused ? 'person' : 'person-outline';
           }
           return <Ionicons name={iconName} size={size} color={color}/>;
         },
@@ -67,6 +69,7 @@ export default function TabNavigator() {
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
 
     </Tab.Navigator>
   )
