@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Text, StyleSheet, Dimensions } from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 
 // Mock data for exercise history
 const exerciseHistory = [
