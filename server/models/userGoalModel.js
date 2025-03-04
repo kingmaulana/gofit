@@ -55,7 +55,7 @@ class UserGoalModel {
     }
 
     static async createSuggestionAI(args) {
-        console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
+        // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
         try {
             // Cari user goal terkait
             const userGoal = await this.collection().findOne({
@@ -76,11 +76,11 @@ class UserGoalModel {
             'exercise': ['exercise1', 'exercise2', 'exercise3', ...]
             }
             ` );
-            console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ result:", result)
+            // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ result:", result)
     
             // Get the response text
             const responseText = await result.response.text();
-            console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ responseText:", responseText)
+            // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ responseText:", responseText)
     
             // Log the full response to understand the structure of candidates
             const formattedResponse = {
@@ -94,7 +94,7 @@ class UserGoalModel {
     
             // Parse the response to JSON
             const jsonResponse = JSON.parse(formattedResponse.data.response.text);
-            console.log("🚀 ~ testChatSession ~ jsonResponse:", jsonResponse);
+            // console.log("🚀 ~ testChatSession ~ jsonResponse:", jsonResponse);
     
             // Extract the duration and exercises from the response
             const { duration, exercises } = jsonResponse;
@@ -114,7 +114,7 @@ class UserGoalModel {
                 );
                 
                 // Optional: Log the update result
-                console.log("Updated UserGoal:", userGoal);
+                // console.log("Updated UserGoal:", userGoal);
     
                 // Return a success response
                 return { success: true, message: "Exercises updated successfully" };
