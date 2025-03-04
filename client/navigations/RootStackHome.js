@@ -8,8 +8,11 @@ import AddExercisePage from '@/screens/AddExercise';
 import CreateCategoryPage from '@/screens/CreateCategory';
 import ProfileScreen from '@/screens/Profile';
 import ProgressWeight from '@/screens/ProgressWeight';
+import WorkDetailByUser from '@/screens/WorkDetailByUser';
+import EditExerciseCategory from '@/screens/EditExerciseCategory';
 import TrainingByAI from '@/screens/TrainingByAI';
 import ExerciseHistory from "@/screens/HistoryExercise";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +27,8 @@ export default function RootStackHome() {
             <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
             <Stack.Screen name="HistoryExercise" component={ExerciseHistory} />
             <Stack.Screen name="ProgressWeight" component={ProgressWeight} />
+            <Stack.Screen name="WorkDetailByUser" component={WorkDetailByUser} />
+            <Stack.Screen name="EditExerciseCategory" component={EditExerciseCategory} />
             <Stack.Screen name="TrainingByAI" component={TrainingByAI} />
         </Stack.Navigator>
     );
