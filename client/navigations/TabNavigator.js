@@ -1,6 +1,6 @@
 import Home from '@/screens/Home';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React, {useContext} from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { useContext } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import Training from '@/screens/Training';
 import TrainingSession from '@/screens/TrainingSession';
@@ -10,24 +10,26 @@ import CustomCategory from '@/screens/CustomCategory';
 import AddExercisePage from '@/screens/AddExercise';
 import CreateCategoryPage from '@/screens/CreateCategory';
 
-import {TouchableOpacity, View} from "react-native";
-import {AuthContext} from "@/helpers/auth-context";
+import { TouchableOpacity, View } from "react-native";
+import { AuthContext } from "@/helpers/auth-context";
 import ProgressGoal from '@/screens/ProgressGoal';
 import HistoryExercise from '@/screens/HistoryExercise';
 import AnalyzeAI from '@/screens/AnalyzeAI';
 import ProfileScreen from '@/screens/Profile';
 import ProgressWeight from '@/screens/ProgressWeight';
+import WorkDetailByUser from '@/screens/WorkDetailByUser';
+import EditExerciseCategory from '@/screens/EditExerciseCategory';
 
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
-  const {handleLogout} = useContext(AuthContext);
+  const { handleLogout } = useContext(AuthContext);
 
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
@@ -37,12 +39,12 @@ export default function TabNavigator() {
             iconName = focused ? 'barbell' : 'barbell-outline';
           } else if (route.name === 'Personal') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'AddExercisePage') {
             iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'CustomCategory') {
+            iconName = focused ? 'barbell' : 'barbell-outline';
           }
-          return <Ionicons name={iconName} size={size} color={color}/>;
+          return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
@@ -56,7 +58,7 @@ export default function TabNavigator() {
           borderRadius: 15,
           height: 60,
           shadowColor: '#000',
-          shadowOffset: {width: 0, height: 2},
+          shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.25,
           shadowRadius: 3.5,
         }
@@ -68,8 +70,16 @@ export default function TabNavigator() {
       <Tab.Screen name="Training" component={Training} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
+      <Tab.Screen name="CustomCategory" component={CustomCategory} />
+      <Tab.Screen name="WorkDetailByUser" component={WorkDetailByUser} />
+      <Tab.Screen
+        name="EditExerciseCategory"
+        component={EditExerciseCategory}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+
 
     </Tab.Navigator>
   )
