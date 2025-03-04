@@ -10,7 +10,7 @@ const authentication = require("./middlewares/authentication")
 const { userTypeDefs, userResolvers } = require("./schemas/userSchema");
 const { workoutTypeDefs, workoutResolvers } = require("./schemas/workoutSchema");
 const { userExerciseTypeDefs, userExerciseResolvers } = require("./schemas/userExerciseSchema");
-const { historyExerciseTypeDefs, historyExerciseResolvers } = require("./schemas/historyExerciseSchema");
+const { historyExerciseTypeDefs, historyExerciseResolvers } = require("./schemas/historyCategorySchema");
 const { userGoalTypeDefs, userGoalResolvers } = require("./schemas/userGoalSchema");
 
 
