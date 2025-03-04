@@ -79,7 +79,7 @@ export default function CategoryTraining() {
     lengthExercises: category.exerciseId.length,
     image: `https://image.pollinations.ai/prompt/a%20workout%20category%20called%20${category.name}%20in%20black%20and%20white%20500x500?nologo=true`
   }));
-  console.log("🚀 ~ newExerciseCategories ~ newExerciseCategories:", newExerciseCategories)
+  // console.log("🚀 ~ newExerciseCategories ~ newExerciseCategories:", newExerciseCategories)
   return (
     <FlatList
       data={newExerciseCategories}

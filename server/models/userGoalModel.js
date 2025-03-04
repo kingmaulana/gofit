@@ -13,15 +13,53 @@ class UserGoalModel {
     }
 
     static async findGoal(args) {
-        try {
-            const goal = await this.collection().findOne({
-                userId: args.userId
-            })
-            return goal
-        } catch (error) {
-            throw new Error(error)
-        }
-    }
+        const result = await this.collection().aggregate([
+            {
+                // Match the goal by the provided userId
+                $match: {
+                    userId: new ObjectId(args.userId)
+                }
+            },
+            {
+                // Lookup to join the exercise collection
+                $lookup: {
+                    from: "exercise", // The name of the exercise collection
+                    let: { exercises: "$exercise.exercise" }, // Reference the exercise array from the goal document
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $in: ["$id", "$$exercises"] // Match exercise ids in the exercises array
+                                }
+                            }
+                        }
+                    ],
+                    as: "completeExercise" // Name of the new array field that will hold the exercise details
+                }
+            },
+            // {
+            //     // Optionally, unwind the exerciseDetails array if you want them to be in a flat structure
+            //     $unwind: {
+            //         path: "$exerciseDetails",
+            //         preserveNullAndEmptyArrays: true // Keep the structure even if no exercises are found
+            //     }
+            // }
+        ]).toArray();
+    
+        console.log("🚀 ~ UserGoalModel ~ findGoal ~ result:", result[0]);
+    
+        // if (result.length > 0) {
+        //     // Accessing the exercise details
+        //     const exerciseDetails = result[0].exerciseDetails;
+        //     console.log("Exercise Details:", exerciseDetails);
+        //     return exerciseDetails;
+        // } else {
+        //     console.log("No goal found for the given userId.");
+        //     return null;
+        // }
+        return result[0];
+    }    
+    
 
     static async createGoal(args) {
         // console.log("🚀 ~ UserGoalModel ~ createGoal ~ args:", args)
