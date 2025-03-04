@@ -43,6 +43,7 @@ const typeDefs = `#graphql
 
     type Query {
         userGoals(userId: String): UserGoal
+        getWeightProgress(userId: String): [WeightProgress]
     }
 
     type Mutation {
@@ -73,6 +74,14 @@ const resolvers = {
                 throw new Error(error)
             }
         },
+        getWeightProgress: async (_, args) => {
+            try {
+                const workouts = await UserGoalModel.getWeightProgress(args)
+                return workouts
+            } catch (error) {
+                throw new Error(error)
+            }
+        }
     },
     Mutation: {
         createUserGoal: async (_, args) => {

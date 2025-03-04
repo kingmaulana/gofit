@@ -250,6 +250,22 @@ class UserGoalModel {
         }
     }
 
+    static async getWeightProgress(args) {
+        // console.log("🚀 ~ UserGoalModel ~ getWeightProgress ~ args:", args)
+        try {
+            const userGoal = await this.collectionProgress().find({
+                userId: args.userId
+            }).toArray()
+
+            // console.log("🚀 ~ UserGoalModel ~ userGoal ~ userGoal:", userGoal)
+
+            return userGoal;
+        } catch (error) {
+        console.log("🚀 ~ UserGoalModel ~ getWeightProgress ~ error:", error)
+
+        }
+    }
+
 }
 
 module.exports = UserGoalModel
