@@ -46,7 +46,7 @@ class UserGoalModel {
             // }
         ]).toArray();
     
-        console.log("🚀 ~ UserGoalModel ~ findGoal ~ result:", result[0]);
+        // console.log("🚀 ~ UserGoalModel ~ findGoal ~ result:", result[0]);
     
         // if (result.length > 0) {
         //     // Accessing the exercise details
