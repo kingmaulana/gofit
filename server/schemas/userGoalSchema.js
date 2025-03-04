@@ -10,7 +10,12 @@ const typeDefs = `#graphql
         goalWeight: Float
         startDate: String
         endGoal: String
+        exercise: ExerciseAI
+    }
+
+    type ExerciseAI {
         exercise: [String]
+        duration: Int
     }
 
     type WeightProgress {

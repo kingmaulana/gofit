@@ -55,26 +55,33 @@ class UserGoalModel {
     }
 
     static async createSuggestionAI(args) {
-        console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
+        // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
         try {
             // Cari user goal terkait
             const userGoal = await this.collection().findOne({
                 userId: new ObjectId(args.userId)
             });
-
+    
             if (!userGoal) {
                 throw new Error('No goal found for the user');
             }
-
+    
             // List exercise yang bakal jadi parameter AI
             const DATA_EXERCISE = require('../constant/data_exercise.json'); // Your list of exercises
-
+    
             // Send the message to the chat session
-            const result = await chatSession.sendMessage(`My Data: ${DATA_EXERCISE}, from that data please give me 10-15 exercise recommendations for ${args.goalName}, and I have an injury in my legs, my current weight is ${args.weight} and my goal weight is ${args.goalWeight}, my gender is ${args.gender} also choose my level of exercise is ${args.activity}`);
-
+            const result = await chatSession.sendMessage(`Based on my data: ${DATA_EXERCISE}, provide 10-15 exercise recommendations for ${args.goalName}. I have a leg injury, weigh ${args.weight}, and my goal weight is ${args.goalWeight}. My gender is ${args.gender}, and my activity level is ${args.activity}. Structure the response in JSON with 'duration' (less than 200 seconds) and 'exercise' (list of recommended exercises). Example:
+            {
+            'duration': number,
+            'exercise': ['exercise1', 'exercise2', 'exercise3', ...]
+            }
+            ` );
+            // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ result:", result)
+    
             // Get the response text
             const responseText = await result.response.text();
-
+            // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ responseText:", responseText)
+    
             // Log the full response to understand the structure of candidates
             const formattedResponse = {
                 success: true,
@@ -84,33 +91,44 @@ class UserGoalModel {
                     }
                 }
             };
-
+    
             // Parse the response to JSON
             const jsonResponse = JSON.parse(formattedResponse.data.response.text);
-            console.log("🚀 ~ testChatSession ~ jsonResponse:", jsonResponse);
-
-            // Extract recommended exercises
-            const recommendedExercises = jsonResponse.exercises; // assuming the response contains "exercises" field
-
-            if (recommendedExercises && Array.isArray(recommendedExercises)) {
+            // console.log("🚀 ~ testChatSession ~ jsonResponse:", jsonResponse);
+    
+            // Extract the duration and exercises from the response
+            const { duration, exercises } = jsonResponse;
+    
+            // Ensure the duration is valid and exercises is an array
+            if (typeof duration === 'number' && Array.isArray(exercises)) {
+                // Create the ExerciseAI object
+                const exerciseAI = {
+                    exercise: exercises,
+                    duration: duration
+                };
+    
                 // Push exercises into the userGoal's exercise array, ensuring no duplicates
                 await this.collection().updateOne(
                     { userId: new ObjectId(args.userId) },
-                    { $addToSet: { exercise: { $each: recommendedExercises } } }  // $addToSet ensures unique exercises
+                    { $set: { exercise: exerciseAI } }  // Update the whole exercise field
                 );
+                
+                // Optional: Log the update result
+                // console.log("Updated UserGoal:", userGoal);
+    
+                // Return a success response
+                return { success: true, message: "Exercises updated successfully" };
+            } else {
+                throw new Error("Invalid response format. 'duration' and 'exercise' are required.");
             }
-
-            // Optional: Log the update result
-            console.log("Updated UserGoal:", userGoal);
-
-            // Return a success response
-            return { success: true, message: "Exercises updated successfully" };
-
+    
         } catch (error) {
             console.error("Error in createSuggestionAI:", error);
             throw new Error(error);
         }
     }
+    
+    
 
     // Hanya aktifkan analyticAI saat user sudah update progress
     static async giveAnalyticByAI(args) {
@@ -142,7 +160,7 @@ class UserGoalModel {
                       "exercises": ["exercise1", "exercise2", "exercise3", ...]
                     }`
                 );
-                
+
 
                 // Get the response text
                 const responseText = await result.response.text();
@@ -169,7 +187,7 @@ class UserGoalModel {
                       "exercises": ["exercise1", "exercise2", "exercise3", ...]
                     }`
                 );
-                
+
 
                 // Get the response text
                 const responseText = await result.response.text();
