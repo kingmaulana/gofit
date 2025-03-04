@@ -6,6 +6,11 @@ class UserExerciseModel {
     static collection() {
         return database.collection("user_exercise")
     }
+
+    static collectionDBCategoryNonArray() {
+        return database.collection("category_exercise")
+    }
+
     static async collectionCategory() {
         // Get collection and fetch all data
         const collection = database.collection("category_exercise");
@@ -128,13 +133,70 @@ class UserExerciseModel {
         try {
             // Fetch categories from the collection
             const categories = await this.collectionCategory();
-            console.log("🚀 ~ UserExerciseModel ~ findAllCategories ~ categories:", categories);
+            // console.log("🚀 ~ UserExerciseModel ~ findAllCategories ~ categories:", categories);
             return categories;
         } catch (error) {
             console.error("Error fetching categories:", error);
             throw new Error(error);
         }
     }
+
+    static async getCategoryById(idCategory) {
+        try {
+            // Step 1: Perform aggregation to look up exercises based on exerciseId
+            const result = await this.collectionDBCategoryNonArray().aggregate([
+                {
+                    // Match the category by the provided idCategory
+                    $match: {
+                        _id: new ObjectId(idCategory)
+                    }
+                },
+                {
+                    // Use $addFields to convert exerciseId strings to ObjectIds
+                    $addFields: {
+                        exerciseId: {
+                            $map: {
+                                input: "$exerciseId", // The exerciseId array
+                                as: "id",
+                                in: { $toObjectId: "$$id" } // Convert string to ObjectId
+                            }
+                        }
+                    }
+                },
+                {
+                    // Perform the lookup to join the exercises collection based on exerciseId array
+                    $lookup: {
+                        from: "exercise", // The exercises collection name
+                        localField: "exerciseId", // The field in the category collection containing ObjectId array
+                        foreignField: "_id", // The field in the exercises collection that we match against
+                        as: "exercises" // The name of the array that will hold the matched exercises
+                    }
+                },
+                {
+                    // Optionally, use $unwind to flatten the exercises array
+                    $unwind: {
+                        path: "$exercise",
+                        preserveNullAndEmptyArrays: true // This ensures categories without exercises will still be returned
+                    }
+                }
+            ]).toArray();
+    
+            // Step 2: Handle the result (result is an array with a single category document)
+            if (result.length === 0) {
+                throw new Error("Category not found");
+            }
+    
+            // Extract category data and exercises
+            const category = result[0];
+            // console.log("🚀 ~ Category with exercises:", category);
+    
+            return category;
+        } catch (error) {
+            console.error("Error fetching category and exercises:", error);
+            throw new Error(error);
+        }
+    }
+       
 
     
 }
