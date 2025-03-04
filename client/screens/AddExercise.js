@@ -76,6 +76,14 @@ export default function AddExercisePage() {
         setExercisesAdded((prev) => [...prev, exercise]);
     };
 
+    // Function to remove an exercise from exercisesAdded array
+    const handleRemoveExercise = (index) => {
+        // Create a new array without the exercise at the specified index
+        const updatedExercises = [...exercisesAdded];
+        updatedExercises.splice(index, 1);
+        setExercisesAdded(updatedExercises);
+    };
+
     // Search function
     const handleSearch = (query) => {
         setSearchQuery(query);
@@ -344,39 +352,49 @@ export default function AddExercisePage() {
                 {exercisesAdded.length > 0 ? (
                     exercisesAdded.map((exercise, index) => (
                         <View key={index} style={styles.addedExerciseCard}>
-                            <Text style={styles.exerciseName}>{exercise.name}</Text>
-                            <View style={styles.exerciseDetails}>
-                                <View style={[
-                                    styles.levelBadge,
-                                    {
-                                        backgroundColor:
-                                            exercise.level === 'Beginner' ? 'rgba(5, 150, 105, 0.1)' :
-                                                exercise.level === 'Intermediate' ? 'rgba(217, 119, 6, 0.1)' :
-                                                    'rgba(220, 38, 38, 0.1)'
-                                    },
-                                    {
-                                        borderColor:
-                                            exercise.level === 'Beginner' ? COLORS.beginner :
-                                                exercise.level === 'Intermediate' ? COLORS.intermediate :
-                                                    COLORS.advanced
-                                    }
-                                ]}>
-                                    <Text style={[
-                                        styles.levelText,
-                                        {
-                                            color:
-                                                exercise.level === 'Beginner' ? COLORS.beginner :
-                                                    exercise.level === 'Intermediate' ? COLORS.intermediate :
-                                                        COLORS.advanced
-                                        }
-                                    ]}>{exercise.level}</Text>
+                            <View style={styles.exerciseInfoWithDelete}>
+                                <View style={styles.exerciseInfo}>
+                                    <Text style={styles.exerciseName}>{exercise.name}</Text>
+                                    <View style={styles.exerciseDetails}>
+                                        <View style={[
+                                            styles.levelBadge,
+                                            {
+                                                backgroundColor:
+                                                    exercise.level === 'Beginner' ? 'rgba(5, 150, 105, 0.1)' :
+                                                        exercise.level === 'Intermediate' ? 'rgba(217, 119, 6, 0.1)' :
+                                                            'rgba(220, 38, 38, 0.1)'
+                                            },
+                                            {
+                                                borderColor:
+                                                    exercise.level === 'Beginner' ? COLORS.beginner :
+                                                        exercise.level === 'Intermediate' ? COLORS.intermediate :
+                                                            COLORS.advanced
+                                            }
+                                        ]}>
+                                            <Text style={[
+                                                styles.levelText,
+                                                {
+                                                    color:
+                                                        exercise.level === 'Beginner' ? COLORS.beginner :
+                                                            exercise.level === 'Intermediate' ? COLORS.intermediate :
+                                                                COLORS.advanced
+                                                }
+                                            ]}>{exercise.level}</Text>
+                                        </View>
+                                        <View style={styles.categoryBadge}>
+                                            <Text style={styles.categoryText}>{exercise.category}</Text>
+                                        </View>
+                                        <View style={styles.equipmentBadge}>
+                                            <Text style={styles.equipmentText}>{exercise.equipment}</Text>
+                                        </View>
+                                    </View>
                                 </View>
-                                <View style={styles.categoryBadge}>
-                                    <Text style={styles.categoryText}>{exercise.category}</Text>
-                                </View>
-                                <View style={styles.equipmentBadge}>
-                                    <Text style={styles.equipmentText}>{exercise.equipment}</Text>
-                                </View>
+                                <TouchableOpacity
+                                    style={styles.deleteButton}
+                                    onPress={() => handleRemoveExercise(index)}
+                                >
+                                    <Text style={styles.deleteButtonText}>Delete</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     ))
@@ -391,15 +409,13 @@ export default function AddExercisePage() {
             <TouchableOpacity
                 style={[
                     styles.submitButton,
-                    (!categoryName.trim() || exercisesAdded.length === 0) && styles.submitButtonDisabled,
-                    categoryName.trim() && exercisesAdded.length > 0 && styles.submitButtonEnabled
+                    styles.submitButtonEnabled
                 ]}
                 onPress={handleSubmit}
-                disabled={!categoryName.trim() || exercisesAdded.length === 0}
             >
                 <Text style={[
                     styles.submitButtonText, 
-                    categoryName.trim() && exercisesAdded.length > 0 && styles.submitButtonTextEnabled
+                    styles.submitButtonTextEnabled
                 ]}>Create Workout</Text>
             </TouchableOpacity>
             
@@ -956,6 +972,24 @@ const styles = StyleSheet.create({
         borderColor: COLORS.border,
         borderLeftWidth: 4,
         borderLeftColor: COLORS.accent,
+    },
+    exerciseInfoWithDelete: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+    },
+    deleteButton: {
+        backgroundColor: '#DC2626', // Red color for delete
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 8,
+        marginLeft: 8,
+    },
+    deleteButtonText: {
+        color: COLORS.background, // White text
+        fontWeight: 'bold',
+        fontSize: 12,
     },
     emptyStateSubText: {
         color: COLORS.textSecondary,
