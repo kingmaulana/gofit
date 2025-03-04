@@ -22,20 +22,16 @@ type ExerciseCategory {
 
 type Query {
     userExercises(id: String): [UserExercise]
-
     exerciseCategories: [ExerciseCategory]
+    getCategoryById(idCategory: String): ExerciseCategory
 }
 
 type Mutation {
     addUserExercise(name: String, userId: String, duration: Int, restDuration: Int,  exerciseId: [String]): UserExercise
-
     # untuk update belum perlu kirim userId karena di UI pas fetch semua koleksi exercise yg muncul hanya punya user
     updateName(name: String, id: String): UserExercise
-
     updateExercise(id: String, exerciseId: [String]): UserExercise
-
     deleteCollectionExercise(id: String): UserExercise
-
     deleteExercise(id: String, exerciseId: String): UserExercise
 }
 
@@ -54,6 +50,14 @@ const resolvers = {
         exerciseCategories: async () => {
             try {
                 const categories = await UserExerciseModel.findAllCategories()
+                return categories
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+        getCategoryById: async (_, args) => {
+            try {
+                const categories = await UserExerciseModel.getCategoryById(args.idCategory)
                 return categories
             } catch (error) {
                 throw new Error(error)

@@ -6,6 +6,11 @@ class UserExerciseModel {
     static collection() {
         return database.collection("user_exercise")
     }
+
+    static collectionDBCategoryNonArray() {
+        return database.collection("category_exercise")
+    }
+
     static async collectionCategory() {
         // Get collection and fetch all data
         const collection = database.collection("category_exercise");
@@ -128,6 +133,20 @@ class UserExerciseModel {
         try {
             // Fetch categories from the collection
             const categories = await this.collectionCategory();
+            console.log("🚀 ~ UserExerciseModel ~ findAllCategories ~ categories:", categories);
+            return categories;
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+            throw new Error(error);
+        }
+    }
+
+    static async getCategoryById(idCategory) {
+        try {
+            // Fetch categories from the collection
+            const categories = await this.collectionDBCategoryNonArray().findOne({
+                _id: new ObjectId(idCategory)
+            });
             console.log("🚀 ~ UserExerciseModel ~ findAllCategories ~ categories:", categories);
             return categories;
         } catch (error) {
