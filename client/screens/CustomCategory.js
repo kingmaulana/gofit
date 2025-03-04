@@ -4,13 +4,40 @@ import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import { Image } from "@/components/ui/image";
 import { Link, LinkText } from "@/components/ui/link";
-import { Icon, ArrowRightIcon } from "@/components/ui/icon";
-import { ScrollView } from "react-native";
+import { Icon, ArrowRightIcon, TrashIcon } from "@/components/ui/icon";
+import { ScrollView, Alert, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export default function CustomCategory() {
     const navigation = useNavigation();
+
+    const handleDelete = (categoryName, index) => {
+        console.log(`Delete icon pressed for: "${categoryName}" (index: ${index})`);
+        console.log(`Current timestamp: ${new Date().toISOString()}`);
+        
+        Alert.alert(
+            "Delete Category",
+            `Are you sure you want to delete "${categoryName}"?`,
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log(`Deletion cancelled for: "${categoryName}"`),
+                    style: "cancel"
+                },
+                { 
+                    text: "Delete", 
+                    onPress: () => {
+                        // Here you would implement the actual deletion logic
+                        console.log(`Deleting category: "${categoryName}" at index ${index}`);
+                        console.log(`User confirmed deletion at: ${new Date().toISOString()}`);
+                        // For example: setUserCategories(userCategories.filter((_, i) => i !== index));
+                    },
+                    style: "destructive"
+                }
+            ]
+        );
+    };
 
     const userCategories = [
         { name: "Leg Training", image: `https://image.pollinations.ai/prompt/${encodeURIComponent("Leg Training 500x500")}` },
@@ -50,7 +77,30 @@ export default function CustomCategory() {
     
                                 {/* Text & Button */}
                                 <VStack className="flex-1 ml-4">
-                                    <Heading size="md" className="text-white">{category.name}</Heading>
+                                    <HStack className="justify-between items-center">
+                                        <Heading size="md" className="text-white">{category.name}</Heading>
+                                        <TouchableOpacity 
+                                            activeOpacity={0.7}
+                                            onPress={() => handleDelete(category.name, index)}
+                                            style={{ 
+                                                backgroundColor: 'rgba(254, 226, 226, 1)', 
+                                                padding: 8, 
+                                                borderRadius: 9999,
+                                                marginLeft: 8,
+                                                shadowColor: "#000",
+                                                shadowOffset: { width: 0, height: 1 },
+                                                shadowOpacity: 0.2,
+                                                shadowRadius: 1.5,
+                                                elevation: 2
+                                            }}
+                                        >
+                                            <Icon 
+                                                as={TrashIcon} 
+                                                size="sm" 
+                                                className="text-red-500" 
+                                            />
+                                        </TouchableOpacity>
+                                    </HStack>
                                     <Link onPress={() => navigation.navigate('CategoryDetail', { category: category.name })}>
                                         <HStack className="items-center bg-600 px-3 py-2 rounded-lg mt-2">
                                             <LinkText size="sm" className="text-white font-semibold mr-2">Start Training</LinkText>

@@ -71,6 +71,10 @@ export default function TabNavigator() {
       <Tab.Screen name="Graph" component={ProgressGoal} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
+      <Tab.Screen name="TrainingByAI" component={TrainingByAI} />
+      <Tab.Screen name="CustomCategory" component={CustomCategory} />
       <Tab.Screen name="CustomCategory" component={CustomCategory} />
       <Tab.Screen name="WorkDetailByUser" component={WorkDetailByUser} />
       <Tab.Screen
@@ -80,8 +84,6 @@ export default function TabNavigator() {
           tabBarButton: () => null,
         }}
       />
-
-
     </Tab.Navigator>
   )
 }
