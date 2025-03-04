@@ -1,9 +1,10 @@
 const { database } = require("../config/mongodb")
+const {ObjectId} = require("mongodb");
 
 
 class HistoryExerciseModel {
     static collection() {
-        return database.collection("history_logs_exercise")
+        return database.collection("history_logs_categoryExercise")
     }
 
     // Menampilkan history exercise user bersangkutan
@@ -11,7 +12,7 @@ class HistoryExerciseModel {
         // console.log("🚀 ~ HistoryExerciseModel ~ findAll ~ args:", args)
         try {
             const history = await this.collection()
-            .find({userId: args.userId})
+            .find({userId: ObjectId.createFromHexString(args.userId)})
             .sort({ createdAt: -1 }) //biar sorting dari yang paling baru
             .toArray()
             return history
@@ -23,10 +24,9 @@ class HistoryExerciseModel {
     // fungsi ini akan otomatis menambahkan log history exercise user setiap selesai sesi exercise
     static async addToLogs(args) {
         try {
-
             const logEntry = {
-                userId: args.userId,
-                exerciseId: args.exerciseId,
+                userId: ObjectId.createFromHexString(args.userId),
+                categoryId: ObjectId.createFromHexString(args.categoryId),
                 date: new Date().toISOString(),
                 createdAt: new Date(),
             }

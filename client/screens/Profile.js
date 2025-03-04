@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Image
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import {AuthContext} from "@/helpers/auth-context";
 
 export default function ProfileScreen() {
+    const {handleLogout} = useContext(AuthContext);
+
     const user = {
         username: "nunung",
         email: "nunung@mail.com",
@@ -21,10 +24,6 @@ export default function ProfileScreen() {
             month: "long",
             day: "numeric",
         });
-    };
-
-    const handleLogout = () => {
-        console.log("User logged out");
     };
 
     return (

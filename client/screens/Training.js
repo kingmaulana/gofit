@@ -7,7 +7,7 @@ import { Image } from "@/components/ui/image"
 import { Text } from "@/components/ui/text"
 import { Icon, ClockIcon, CheckCircleIcon, AlertCircleIcon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
-import { ScrollView, TouchableWithoutFeedback } from 'react-native'
+import {ActivityIndicator, Alert, ScrollView, TouchableWithoutFeedback, View} from 'react-native'
 import { Link, useNavigation, useRoute } from '@react-navigation/native'
 import { Pressable } from '@/components/ui/pressable'
 import { gql, useQuery } from '@apollo/client';
@@ -34,7 +34,7 @@ export default function Training() {
   
   // Getting the category ID from route params
   const { categoryId } = route.params;
-  // console.log("🚀 ~ Training ~ categoryId:", categoryId)
+  console.log("🚀 ~ Training ~ categoryId:", categoryId)
 
   // Using Apollo's useQuery hook to fetch data
   const { data, loading, error } = useQuery(GET_CATEGORY_BY_ID, {
@@ -45,25 +45,36 @@ export default function Training() {
 
   // Handle loading and error states
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <View className="h-full justify-center items-center">
+      <ActivityIndicator size="large" color="black" />
+    </View>;
   }
 
   if (error) {
     return <Text>Error: {error.message}</Text>;
   }
 
+  const handleStartWorkout = () => {
+    Alert.alert(`Start workout ${data?.getCategoryById.name}`, null, [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Start',
+        onPress: () => {
+          navigation.navigate('TrainingSession', { categoryId: category._id, usingGoalId: false });
+        },
+      },
+    ], {
+      cancelable: true,
+    });
+  }
+
   // Extract the data from the response
   const category = data?.getCategoryById;
   console.log("🚀 ~ Training ~ data?.getCategoryById;:", data?.getCategoryById)
-
-  // Dummy exercises to display
-  const exercises = [
-    { id: 1, name: "Push-ups", minute: 10 },
-    { id: 2, name: "Squats", minute: 5 },
-    { id: 3, name: "Lunges", minute: 10 },
-    { id: 4, name: "Plank", minute: 10 },
-    { id: 5, name: "Shoulder Press", minute: 5 },
-  ];
 
   return (
     <ScrollView className="flex-1">
@@ -129,10 +140,7 @@ export default function Training() {
         {/* Start Workout Button */}
         <Pressable
           className="w-full bg-black rounded-md flex"
-          onPress={() => {
-            // Handle the press event here
-            navigation.navigate('TrainingSession');
-          }}
+          onPress={handleStartWorkout}
         >
           <Text className="text-white font-medium text-center py-3">
             Start Workout

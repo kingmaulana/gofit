@@ -64,11 +64,9 @@ export default function TabNavigator() {
         }
       })
       }>
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Details" component={DetailsExercise} />
       <Tab.Screen name="Graph" component={ProgressGoal} />
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Daily" component={TrainingSession} />
-      <Tab.Screen name="Training" component={Training} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
