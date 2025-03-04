@@ -2,12 +2,12 @@ import { Box } from '@/components/ui/box';
 import { Image } from '@/components/ui/image';
 import { VStack } from '@/components/ui/vstack';
 import { Text } from '@/components/ui/text';
-import { FlatList, Dimensions, Animated, StyleSheet } from 'react-native';
+import {FlatList, Dimensions, Animated, StyleSheet, View, ActivityIndicator} from 'react-native';
 import { gql, useQuery } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const GET_CATEGORY = gql(`
@@ -65,7 +65,9 @@ export default function CategoryTraining() {
   }, [data]);
 
   if (loading) {
-    return <Text>Loading...</Text>;
+    return <View className="h-full justify-center items-center">
+      <ActivityIndicator size="large" color="black" />
+    </View>;
   }
 
   if (error) {
