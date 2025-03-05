@@ -37,26 +37,8 @@ class UserGoalModel {
                     as: "completeExercise" // Name of the new array field that will hold the exercise details
                 }
             },
-            // {
-            //     // Optionally, unwind the exerciseDetails array if you want them to be in a flat structure
-            //     $unwind: {
-            //         path: "$exerciseDetails",
-            //         preserveNullAndEmptyArrays: true // Keep the structure even if no exercises are found
-            //     }
-            // }
         ]).toArray();
     
-        // console.log("🚀 ~ UserGoalModel ~ findGoal ~ result:", result[0]);
-    
-        // if (result.length > 0) {
-        //     // Accessing the exercise details
-        //     const exerciseDetails = result[0].exerciseDetails;
-        //     console.log("Exercise Details:", exerciseDetails);
-        //     return exerciseDetails;
-        // } else {
-        //     console.log("No goal found for the given userId.");
-        //     return null;
-        // }
         return result[0];
     }    
     
@@ -185,17 +167,20 @@ class UserGoalModel {
             const currentDate = new Date()
             const daysLastExercise = (new Date(currentDate) - new Date(lastExerciseDate)) / (1000 * 60 * 60 * 24);
 
+            const DATA_EXERCISE_CATEGORY = require('../constant/data_category.json'); 
+
             if (currentWeight !== userGoal.goalWeight) {
                 const result = await analyticChat.sendMessage(`User Goal: ${userGoal.goalName}
                     Current Weight: ${currentWeight}
                     Goal Weight: ${userGoal.goalWeight}
                     Start Date: ${userGoal.startDate}
+                    CategoryList: ${DATA_EXERCISE_CATEGORY}
                     The user has not lost weight or hasn't gained weight and/or has not exercised recently. 
-                    Please generate a list of 15-20 exercises for the user to help them break their plateau, continue losing weight, or gain weight. Make sure to structure the response in JSON format with fields: "description" and "exercises". Example:
+                    Please generate a list of 1-3 category name from "CategoryList" for the user to help them break their plateau, continue losing weight, or gain weight. Make sure to structure the response in JSON format with fields: "description" and "exercises". Example:
                 
                     {
                       "description": "description text here",
-                      "exercises": ["exercise1", "exercise2", "exercise3", ...]
+                      "category": ["category1", "category2", ...]
                     }`
                 );
 

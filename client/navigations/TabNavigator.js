@@ -67,8 +67,8 @@ export default function TabNavigator() {
         }
       })
       }>
-      <Tab.Screen name="HistoryExercise" component={ExerciseHistory} />
       <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="AnalyzeAI" component={AnalyzeAI} />
       <Tab.Screen name="Details" component={DetailsExercise} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
