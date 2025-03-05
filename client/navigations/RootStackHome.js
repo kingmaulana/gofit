@@ -15,6 +15,8 @@ import ExerciseHistory from "@/screens/HistoryExercise";
 import DetailsExercise from '@/screens/DetailsExercise';
 import ProfileEdit from "@/screens/ProfileEdit";
 import {FormProvider, useForm} from "react-hook-form";
+import TrainingSessionByAI from '@/screens/TrainingSessionByAI';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,7 @@ export default function RootStackHome() {
 
       {/* Training Screens */}
       <Stack.Screen name="TrainingSession" component={TrainingSession}/>
+      <Stack.Screen name="TrainingSessionByAI" component={TrainingSessionByAI} />
       <Stack.Screen name="Training" component={Training}/>
       <Stack.Screen name="CustomCategory" component={CustomCategory}/>
       <Stack.Screen name="AddExercisePage" component={AddExercisePage}/>

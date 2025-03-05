@@ -10,6 +10,8 @@ type CategoryId {
     userGoalId: String
     createdAt: String
     updatedAt: String
+    goalName: String
+    categoryName: String
 }
 
 type Query {

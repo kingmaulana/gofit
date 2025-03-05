@@ -21,6 +21,7 @@ import WorkDetailByUser from '@/screens/WorkDetailByUser';
 import EditExerciseCategory from '@/screens/EditExerciseCategory';
 import TrainingByAI from '@/screens/TrainingByAI';
 import DetailsExercise from '@/screens/DetailsExercise';
+import ExerciseHistory from '@/screens/HistoryExercise';
 
 
 const Tab = createBottomTabNavigator();
@@ -66,17 +67,15 @@ export default function TabNavigator() {
         }
       })
       }>
+      <Tab.Screen name="HistoryExercise" component={ExerciseHistory} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Details" component={DetailsExercise} />
-      <Tab.Screen name="Graph" component={ProgressGoal} />
       <Tab.Screen name="Personal" component={CategoryTraining} />
       <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
-      <Tab.Screen name="TrainingByAI" component={TrainingByAI} />
       <Tab.Screen name="CustomCategory" component={CustomCategory} />
       <Tab.Screen name="WorkDetailByUser" component={WorkDetailByUser} />
-      <Tab.Screen name="DetailsExercise" component={DetailsExercise} />
       <Tab.Screen
         name="EditExerciseCategory"
         component={EditExerciseCategory}
