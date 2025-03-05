@@ -46,9 +46,7 @@ export default function TrainingByAI() {
       userId: "67c6a7d8be60228e126ec03e"
      }, // Pass the ID as a variable to the query
   });
-  // console.log("🚀 ~ TrainingByAI ~ data:", data)
   const exercises = data?.userGoals?.completeExercise;
-  // console.log("🚀 ~ TrainingByAI ~ exercise:", exercises)
 
   // Handle loading and error states
   if (loading) {
