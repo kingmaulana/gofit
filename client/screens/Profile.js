@@ -108,11 +108,6 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.actionsContainer}>
-          {/* Logout Button */}
-          <TouchableOpacity style={styles.actionButtonLogout} onPress={handleLogout}>
-            <Feather name="log-out" size={20} color="#FFFFFF" style={styles.actionIcon}/>
-            <Text style={styles.actionText}>Logout</Text>
-          </TouchableOpacity>
 
           {/* Edit Profile Button */}
           <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("EditProfile", {
@@ -126,11 +121,16 @@ export default function ProfileScreen() {
             <Text style={styles.actionText}>Edit Profile</Text>
           </TouchableOpacity>
 
+            {/* Logout Button */}
+            <TouchableOpacity style={styles.actionButtonLogout} onPress={handleLogout}>
+              <Feather name="log-out" size={20} color="#FFFFFF" style={styles.actionIcon}/>
+              <Text style={styles.actionText}>Logout</Text>
+            </TouchableOpacity>
           {/* Settings Button */}
-          <TouchableOpacity style={styles.actionButton}>
+          {/* <TouchableOpacity style={styles.actionButton}>
             <Feather name="settings" size={20} color="#FFFFFF" style={styles.actionIcon}/>
             <Text style={styles.actionText}>Settings</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -162,10 +162,10 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     borderWidth: 3,
-    borderColor: "#4361EE",
+    borderColor: "#020617",
     borderRadius: 50,
     padding: 5,
-    shadowColor: "#4361EE",
+    shadowColor: "#64748b",
     shadowOffset: {width: 0, height: 0},
     shadowOpacity: 0.5,
     shadowRadius: 8,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#E6EDFF",
+    backgroundColor: "#e2e8f0",
     borderRadius: 20,
     padding: 24,
     marginHorizontal: 24,
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   statIconContainer: {
-    backgroundColor: "#4361EE",
+    backgroundColor: "#0f172a",
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   actionButton: {
-    backgroundColor: "#4361EE",
+    backgroundColor: "#475569",
     padding: 16,
     borderRadius: 12,
     flexDirection: 'row',

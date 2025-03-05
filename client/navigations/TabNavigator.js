@@ -2,26 +2,11 @@ import Home from '@/screens/Home';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useContext } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import Training from '@/screens/Training';
-import TrainingSession from '@/screens/TrainingSession';
 import CategoryTraining from '@/screens/CategoryTraining';
-
 import CustomCategory from '@/screens/CustomCategory';
-import AddExercisePage from '@/screens/AddExercise';
-import CreateCategoryPage from '@/screens/CreateCategory';
-
-import { TouchableOpacity, View } from "react-native";
 import { AuthContext } from "@/helpers/auth-context";
-import ProgressGoal from '@/screens/ProgressGoal';
-import HistoryExercise from '@/screens/HistoryExercise';
-import AnalyzeAI from '@/screens/AnalyzeAI';
 import ProfileScreen from '@/screens/Profile';
 import ProgressWeight from '@/screens/ProgressWeight';
-import WorkDetailByUser from '@/screens/WorkDetailByUser';
-import EditExerciseCategory from '@/screens/EditExerciseCategory';
-import TrainingByAI from '@/screens/TrainingByAI';
-import DetailsExercise from '@/screens/DetailsExercise';
-import ExerciseHistory from '@/screens/HistoryExercise';
 
 
 const Tab = createBottomTabNavigator();
@@ -36,14 +21,14 @@ export default function TabNavigator() {
           let iconName;
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Daily') {
-            iconName = focused ? 'calendar' : 'calendar-outline';
-          } else if (route.name === 'Training') {
-            iconName = focused ? 'barbell' : 'barbell-outline';
-          } else if (route.name === 'Personal') {
-            iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'AddExercisePage') {
-            iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'Category') {
+            iconName = focused ? 'color-filter' : 'color-filter-outline';
+          } else if (route.name === 'My Workout') {
+            iconName = focused ? 'accessibility' : 'accessibility-outline';
+          } else if (route.name === 'Progress') {
+            iconName = focused ? 'stats-chart' : 'stats-chart-outline';
+          } else if (route.name === 'Profile') {
+            iconName = focused ? 'person-circle' : 'person-circle-outline';
           } else if (route.name === 'CustomCategory') {
             iconName = focused ? 'barbell' : 'barbell-outline';
           }
@@ -68,21 +53,10 @@ export default function TabNavigator() {
       })
       }>
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="AnalyzeAI" component={AnalyzeAI} />
-      <Tab.Screen name="Details" component={DetailsExercise} />
-      <Tab.Screen name="Personal" component={CategoryTraining} />
-      <Tab.Screen name="ProgressWeight" component={ProgressWeight} />
+      <Tab.Screen name="Category" component={CategoryTraining} />
+      <Tab.Screen name="My Workout" component={CustomCategory} />
+      <Tab.Screen name="Progress" component={ProgressWeight} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="AddExercisePage" component={AddExercisePage} />
-      <Tab.Screen name="CustomCategory" component={CustomCategory} />
-      <Tab.Screen name="WorkDetailByUser" component={WorkDetailByUser} />
-      <Tab.Screen
-        name="EditExerciseCategory"
-        component={EditExerciseCategory}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
     </Tab.Navigator>
   )
 }

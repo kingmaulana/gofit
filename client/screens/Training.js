@@ -125,8 +125,8 @@ export default function Training() {
                   className="rounded-md fit-cover h-20 w-20"
                   alt="Workout"
                 />
-                <VStack>
-                  <Text className="font-bold text-xl capitalize">{exercise.name}</Text>
+                <VStack className='flex-1'>
+                   <Text className="w-44 font-bold text-xl capitalize text-left overflow-hidden">{exercise.name}</Text>
                   <Text className="text-sm text-typography-600">
                     {Math.floor(category?.duration / 60)} minutes
                   </Text>

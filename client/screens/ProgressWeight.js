@@ -5,6 +5,9 @@ import { LineChart } from 'react-native-chart-kit';
 import { Svg, Circle, Text as SvgText } from 'react-native-svg';
 import { gql, useQuery, useMutation } from "@apollo/client";
 import { HStack } from "@/components/ui/hstack";
+import { Button } from "@/components/ui/button";
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 // GraphQL queries and mutation
 const GET_GOAL_USER = gql(`
@@ -100,6 +103,7 @@ const GoalProgressCircle = ({ currentWeight, goalWeight }) => {
 };
 
 export default function ProgressWeight() {
+      const navigation = useNavigation();
     // Fetch data
     const { data: goalData, loading: goalLoading, error: goalError } = useQuery(GET_GOAL_USER, {
         variables: { userId: "67c6a7d8be60228e126ec03e" },
@@ -224,6 +228,23 @@ export default function ProgressWeight() {
             </Modal>
 
             {/* Main Content */}
+            <HStack className="flex justify-between">
+                <Button 
+                onPress={() => navigation.navigate("HistoryExercise")}
+                size="sm" variant="solid" className="bg-slate-700 mt-3 rounded-lg">
+                    <Ionicons name="eye" size={24} color="white" />
+                    <Text className="text-white font-medium"> 
+                        See History</Text>
+                </Button>
+
+                <Button 
+                onPress={() => navigation.navigate("AnalyzeAI")}
+                size="sm" variant="solid" className="bg-black mt-3 rounded-lg">
+                    <Text className="text-white font-medium">Analyze AI</Text>
+                    <Ionicons name="analytics" size={24} color="white" />
+                </Button>
+            </HStack>
+
             <View className="flex-1 flex-col justify-between">
                 {/* Goal Progress Circle */}
                 {progress.length > 0 && (

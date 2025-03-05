@@ -1,6 +1,9 @@
+import { Button } from '@/components/ui/button';
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const GET_HISTORY_EXERCISE = gql(`query HistoryUser {
   historyCategory {
@@ -26,11 +29,12 @@ const formatDate = (dateString) => {
 
 
 export default function ExerciseHistory() {
+  const navigation = useNavigation();
   const { data, loading, error } = useQuery(GET_HISTORY_EXERCISE);
-  console.log("🚀 ~ ExerciseHistory ~ data:", data)
+  // console.log("🚀 ~ ExerciseHistory ~ data:", data)
 
   const exerciseHistory = data?.historyCategory
-  console.log("🚀 ~ ExerciseHistory ~ exerciseHistory:", exerciseHistory)
+  // console.log("🚀 ~ ExerciseHistory ~ exerciseHistory:", exerciseHistory)
 
 
   return (
@@ -40,6 +44,13 @@ export default function ExerciseHistory() {
         <Text style={styles.headerText}>Exercise History</Text>
         <Text style={styles.subHeaderText}>{exerciseHistory?.length} Collection Exercises Completed</Text>
       </View>
+
+      <Button
+                onPress={() => navigation.navigate("ProgressWeight")}
+                size="sm" variant="solid" className="bg-black mt-3 mb-3 rounded-lg">
+                    <Text className="text-white font-medium">See Progress</Text>
+                    <Ionicons name="analytics" size={24} color="white" />
+      </Button>
 
       {/* List of exercises */}
       <FlatList
@@ -63,7 +74,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    backgroundColor: '#4F46E5',
+    backgroundColor: '#334155',
     padding: 16,
     borderRadius: 8,
     marginBottom: 16,
