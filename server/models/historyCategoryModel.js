@@ -9,17 +9,70 @@ class HistoryExerciseModel {
 
     // Menampilkan history exercise user bersangkutan
     static async findAll(args) {
-        // console.log("🚀 ~ HistoryExerciseModel ~ findAll ~ args:", args)
         try {
             const history = await this.collection()
-            .find({userId: ObjectId.createFromHexString(args.userId)})
-            .sort({ createdAt: -1 }) //biar sorting dari yang paling baru
-            .toArray()
-            return history
+                .aggregate([
+                    {
+                        $match: {
+                            userId: ObjectId.createFromHexString("67c6a7d8be60228e126ec03e"),
+                        },
+                    },
+                    {
+                        // First lookup based on categoryId
+                        $lookup: {
+                            from: 'category_exercise', // Join category_exercise collection
+                            localField: 'categoryId',   // Match categoryId from historyCategory
+                            foreignField: '_id',        // Match _id from category_exercise
+                            as: 'category',
+                        },
+                    },
+                    {
+                        // Second lookup based on userGoalId (if categoryId doesn't match)
+                        $lookup: {
+                            from: 'user_goal', // Join user_goal collection
+                            localField: 'userGoalId', // Match userGoalId from historyCategory
+                            foreignField: '_id', // Match _id from user_goal
+                            as: 'userGoal',
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: '$category', // Unwind category array to make it accessible
+                            preserveNullAndEmptyArrays: true, // Keep documents with no categoryId
+                        },
+                    },
+                    {
+                        $unwind: {
+                            path: '$userGoal', // Unwind userGoal array to make it accessible
+                            preserveNullAndEmptyArrays: true, // Keep documents with no userGoalId
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 1,
+                            userId: 1,
+                            categoryId: 1,
+                            userGoalId: 1,
+                            createdAt: 1,
+                            updatedAt: 1,
+                            categoryName: { $ifNull: ['$category.name', null] }, // Category name or null if no category
+                            goalName: { $ifNull: ['$userGoal.goalName', null] }, // Goal name or null if no goal
+                        },
+                    },
+                    {
+                        $sort: { createdAt: -1 }, // Sort by createdAt in descending order
+                    },
+                ])
+                .toArray();
+    
+                console.log("🚀 ~ HistoryExerciseModel ~ findAll ~ history:", history)
+            return history;
         } catch (error) {
-            throw new Error(error)
+            throw new Error(error);
         }
     }
+    
+    
 
     // fungsi ini akan otomatis menambahkan log history exercise user setiap selesai sesi exercise
     static async addToLogs(args) {

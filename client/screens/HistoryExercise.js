@@ -1,33 +1,44 @@
+import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 
-// Mock data for exercise history
-const exerciseHistory = [
-  { id: '1', name: 'Running', date: '2023-12-15',  },
-  { id: '2', name: 'Push-ups', date: '2023-12-13',  },
-  { id: '3', name: 'Cycling', date: '2023-12-10', },
-  { id: '4', name: 'Swimming', date: '2023-12-08',},
-  { id: '5', name: 'Weightlifting', date: '2023-12-05',  },
-  { id: '6', name: 'Yoga', date: '2023-12-03',  },
-  { id: '7', name: 'HIIT Workout', date: '2023-11-30',  },
-  { id: '8', name: 'Pilates', date: '2023-11-27',  },
-  { id: '9', name: 'Jogging', date: '2023-11-25', },
-  { id: '10', name: 'Jump Rope', date: '2023-11-22',  }
-];
+const GET_HISTORY_EXERCISE = gql(`query HistoryUser {
+  historyCategory {
+    _id
+    userId
+    categoryId
+    userGoalId
+    createdAt
+    categoryName
+    goalName
+  }
+}
+`);
 
 // Format date to a more readable format (e.g., "Dec 15, 2023")
 const formatDate = (dateString) => {
+  const timestamp = parseInt(dateString, 10); // Convert the string to a number if it's not already a number
+  if (isNaN(timestamp)) return "Invalid Date"; // Handle invalid cases
+
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('en-US', options);
+  return new Date(timestamp).toLocaleDateString('en-US', options);
 };
 
+
 export default function ExerciseHistory() {
+  const { data, loading, error } = useQuery(GET_HISTORY_EXERCISE);
+  console.log("🚀 ~ ExerciseHistory ~ data:", data)
+
+  const exerciseHistory = data?.historyCategory
+  console.log("🚀 ~ ExerciseHistory ~ exerciseHistory:", exerciseHistory)
+
+
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Exercise History</Text>
-        <Text style={styles.subHeaderText}>{exerciseHistory.length} Exercises Completed</Text>
+        <Text style={styles.subHeaderText}>{exerciseHistory?.length} Collection Exercises Completed</Text>
       </View>
 
       {/* List of exercises */}
@@ -35,11 +46,11 @@ export default function ExerciseHistory() {
         data={exerciseHistory}
         renderItem={({ item }) => (
           <View style={styles.exerciseItem}>
-            <Text style={styles.exerciseName}>{item.name}</Text>
-            <Text style={styles.exerciseDate}>{formatDate(item.date)}</Text>
+            <Text style={styles.exerciseName}>{(item?.categoryName) ? `${item?.categoryName} collections` : `${item?.goalName} Powered By AI`}</Text>
+            <Text style={styles.exerciseDate}>{formatDate(item.createdAt)}</Text>
           </View>
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
       />
     </View>
   );
@@ -80,6 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+    textTransform: 'capitalize',
   },
   exerciseDate: {
     fontSize: 14,
