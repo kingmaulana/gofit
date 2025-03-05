@@ -4,58 +4,58 @@ const UserModel = require("../models/userModel")
 // * Data User
 const typeDefs = `#graphql
 
-    # Collection User
-    type User {
-        _id: ID!
-        username: String
-        name: String
-        email: String
-        gender: String
-        activity: String
-        weight: Int
-        age: Int
-        height: Int
-        goal: String
-        categoryId: ID
-        createdAt: String!
-        updatedAt: String!
-    }
+# Collection User
+type User {
+    _id: ID!
+    username: String
+    name: String
+    email: String
+    gender: String
+    activity: String
+    weight: Int
+    age: Int
+    height: Int
+    goal: String
+    categoryId: ID
+    createdAt: String!
+    updatedAt: String!
+}
 
-    # Token
-    type Token {
-        access_token: String
-    }
+# Token
+type Token {
+    access_token: String
+}
 
-    # Type cek user
-    type CheckUserResponse {
-        success: Boolean
-        message: String
-    }
+# Type cek user
+type CheckUserResponse {
+    success: Boolean
+    message: String
+}
 
-    # Query (Read Operation)
-    type Query {
-        users: [User]
-        checkUser(username: String, email: String): CheckUserResponse
-        getUserDetails: User
-    }
+# Query (Read Operation)
+type Query {
+    users: [User]
+    checkUser(username: String, email: String): CheckUserResponse
+    getUserDetails: User
+}
 
-    # Collection Token
-    type Token {
-        access_token: String
-    }
+# Collection Token
+type Token {
+    access_token: String
+}
 
-    # Mutation untuk write
-    type Mutation {
-        # Register
-        register(
-        username: String, 
-        name: String, 
-        email: String, 
-        password: String, 
-        weight: Int,  
-        height: Int,  
-        age: Int,  
-        gender: String, 
+# Mutation untuk write
+type Mutation {
+    # Register
+    register(
+        name: String,
+        username: String,
+        email: String,
+        password: String,
+        weight: Int,
+        height: Int,
+        age: Int,
+        gender: String,
         activity: String,
         goal: String,
         bmi: Int,
@@ -64,9 +64,10 @@ const typeDefs = `#graphql
         injuries: [String]
     ) : Token
 
-        # Login
-        login(email: String, password: String): Token
-    }
+    # Login
+    login(email: String, password: String): Token
+    editUser(name: String, email: String, username: String, password: String, newPassword: String): User
+}
 
 `;
 
@@ -95,8 +96,6 @@ const resolvers = {
         getUserDetails: async (parents, __, context) => {
             try {
                 const decodedUser = await context.authentication();
-
-        
                 const userDetails = await UserModel.userDetails(decodedUser);
         
                 return userDetails;
@@ -108,10 +107,10 @@ const resolvers = {
     },
     Mutation: {
         // * Mutation Register User
-        register: async (parents, { username, name, email, password, weight, age, height, gender, activity, goal, bmi, goalWeight, endGoal, injuries }) => {
+        register: async (parents, { name, username, email, password, weight, age, height, gender, activity, goal, bmi, goalWeight, endGoal, injuries }) => {
             const newUser = {
-                username,
                 name,
+                username,
                 email,
                 password,
                 weight,
@@ -134,6 +133,10 @@ const resolvers = {
             const user = await UserModel.login(email, password)
 
             return user
+        },
+        editUser: async (_, data, context) => {
+            const decodedUser = await context.authentication();
+            return await UserModel.editUser(decodedUser, data)
         }
     }
 }

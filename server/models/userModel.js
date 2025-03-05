@@ -81,6 +81,7 @@ class UserModel {
     
         // Register user in the database
         const registeredUser = await this.collection().insertOne({
+            name: newUser.name,
             username: newUser.username,
             email: newUser.email,
             password: hashedPass,
@@ -123,8 +124,7 @@ class UserModel {
             activity: newUser.activity, 
             goal: newUser.goal, 
             bmi: newUser.bmi, 
-            goalWeight: newUser.goalWeight, 
-            endGoal: newUser.endGoal
+            goalWeight: newUser.goalWeight,
         });
 
         const argsForAI = {
@@ -138,7 +138,6 @@ class UserModel {
             endGoal: newUser.endGoal,
             bmi: newUser.bmi,
             goalWeight: newUser.goalWeight,
-            endGoal: newUser.endGoal
         }
 
         //disini untuk ai suggestion ter create
@@ -168,18 +167,7 @@ class UserModel {
                 throw new Error("User not found");
             }
 
-            const dataUser = {
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                age: user.age,
-                height: user.height,
-                weight: user.weight,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt
-            }
-
-            return dataUser
+            return user
         } catch (error) {
             throw new Error(error.message)
 
@@ -252,6 +240,54 @@ class UserModel {
         return {
             access_token: token
         }
+    }
+
+    /**
+     * Edit data user
+     * @param {Object} decodedUser - User yang sedang login
+     * @param data - Data user yang akan diubah
+     */
+    static async editUser(decodedUser, data) {
+        const user = await this.collection().findOne({
+            _id: ObjectId.createFromHexString(decodedUser._id)
+        });
+        if (!user) throw new Error("User not found");
+
+        // comparing password if user wants to change password
+        if (data.newPassword) {
+            if (!data.password) throw new Error("Please input your current password to change your password");
+            const isPassValid = comparePassword(data.password, user.password);
+            if (!isPassValid) throw new Error("Password is incorrect");
+            if(data.newPassword.length < 5) throw new Error("Password must be at least 5 characters");
+        }
+
+        // validating name, email, username
+        if (!data.name) throw new Error("Please input your name");
+        if (!data.email) throw new Error("Please input your email");
+        if (!data.username) throw new Error("Please input your username");
+
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) === false) throw new Error("Please use correct email format");
+        if (data.username !== user.username && await this.collection().findOne({username: data.username})) {
+            throw new Error("This username has already been used, please use another username.");
+        }
+
+        if (data.email !== user.email && await this.collection().findOne({email: data.email})) {
+            throw new Error("This email has already been used, please use another email.");
+        }
+
+        // updating user data
+        return await this.collection().updateOne(
+          {_id: user._id},
+          {
+              $set: {
+                  name: data.name,
+                  username: data.username,
+                  email: data.email,
+                  password: data.newPassword ? hashPassword(data.newPassword) : user.password,
+                  updatedAt: new Date(),
+              }
+          }
+        );
     }
 
     // * Cek User (saat menggunakan app) apakah sudah menggunakan email atau usernamenya
