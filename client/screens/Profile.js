@@ -115,7 +115,13 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
           {/* Edit Profile Button */}
-          <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("EditProfile")}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("EditProfile", {
+            defaults: {
+              username: user.username,
+              name: user.name,
+              email: user.email,
+            }
+          })}>
             <Feather name="edit-2" size={20} color="#FFFFFF" style={styles.actionIcon}/>
             <Text style={styles.actionText}>Edit Profile</Text>
           </TouchableOpacity>

@@ -14,7 +14,7 @@ import TrainingByAI from '@/screens/TrainingByAI';
 import ExerciseHistory from "@/screens/HistoryExercise";
 import DetailsExercise from '@/screens/DetailsExercise';
 import ProfileEdit from "@/screens/ProfileEdit";
-
+import {FormProvider, useForm} from "react-hook-form";
 
 const Stack = createNativeStackNavigator();
 

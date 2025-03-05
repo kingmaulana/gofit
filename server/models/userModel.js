@@ -254,11 +254,11 @@ class UserModel {
         if (!user) throw new Error("User not found");
 
         // comparing password if user wants to change password
-        if (data.newPassword && !data.password) throw new Error("Please input your current password to change your password");
-        if (data.newPassword.length < 5) throw new Error("Password must be at least 5 characters");
-        if (data.newPassword && data.password) {
+        if (data.newPassword) {
+            if (!data.password) throw new Error("Please input your current password to change your password");
             const isPassValid = comparePassword(data.password, user.password);
-            if (data.newPassword && !isPassValid) throw new Error("Password is incorrect");
+            if (!isPassValid) throw new Error("Password is incorrect");
+            if(data.newPassword.length < 5) throw new Error("Password must be at least 5 characters");
         }
 
         // validating name, email, username
@@ -267,14 +267,12 @@ class UserModel {
         if (!data.username) throw new Error("Please input your username");
 
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) === false) throw new Error("Please use correct email format");
-        if (data.username !== user.username) {
-            const isUsernameTaken = await this.collection().findOne({username: data.username});
-            if (isUsernameTaken) throw new Error("This username has already been used, please use another username.");
+        if (data.username !== user.username && await this.collection().findOne({username: data.username})) {
+            throw new Error("This username has already been used, please use another username.");
         }
 
-        if (data.email !== user.email) {
-            const isEmailTaken = await this.collection().findOne({email: data.email});
-            if (isEmailTaken) throw new Error("This email has already been used, please use another email.");
+        if (data.email !== user.email && await this.collection().findOne({email: data.email})) {
+            throw new Error("This email has already been used, please use another email.");
         }
 
         // updating user data
