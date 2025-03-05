@@ -17,6 +17,7 @@ import ProfileEdit from "@/screens/ProfileEdit";
 import {FormProvider, useForm} from "react-hook-form";
 import TrainingSessionByAI from '@/screens/TrainingSessionByAI';
 import AnalyzeAI from '@/screens/AnalyzeAI';
+import CategoryTraining from '@/screens/CategoryTraining';
 import TrainingSessionCustom from "@/screens/TrainingSessionCustom";
 
 
@@ -37,6 +38,7 @@ export default function RootStackHome() {
       <Stack.Screen name="AddExercisePage" component={AddExercisePage}/>
       <Stack.Screen name="TrainingByAI" component={TrainingByAI}/>
       <Stack.Screen name="DetailsExercise" component={DetailsExercise}/>
+      <Stack.Screen name="Category" component={CategoryTraining}/>
 
       {/* Profile and Progress Screens */}
       <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
