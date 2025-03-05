@@ -11,10 +11,13 @@ export default function Step8({onNext}) {
   }
 
   return <OnboardingLayout>
-    <View className="p-4 flex-col gap-2">
-      <Text className="text-white text-3xl text-center" style={{
-        marginVertical: 32
-      }}>Choose your activity level</Text>
+     <View className="p-6 flex-1 bg-gray-900 justify-center items-center">
+        {/* Heading */}
+
+        <Text className="text-white text-4xl font-extrabold text-center mb-10">
+          Choose your activity level
+        </Text>
+
       <View className="flex-row justify-center" style={{
         display: "relative",
         height: 300

@@ -13,7 +13,7 @@ export default function OnboardingLayout({children, style, className, statusBarS
   return <>
     <View className={`bg-black flex-1 relative ${className || ""}`} style={style}>
       {image && <Image source={{
-        uri: image
+        uri: "https://i0.wp.com/www.pictureperfectphoto.co.uk/wp-content/uploads/2023/03/199-J412-scaled.jpg?resize=683%2C1024&ssl=1"
       }} className="w-full h-full absolute top-0 left-0" blurRadius={5}/>
       }
       <SafeAreaView style={defaultStyle.AndroidSafeArea}>

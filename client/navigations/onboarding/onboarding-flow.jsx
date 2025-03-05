@@ -69,9 +69,9 @@ const OnboardingFlow = () => {
           {/* Step 7: BMI */}
           {step === 7 && <Step7 onNext={() => setStep(8)}/>}
           {/* Step 8: preferensi */}
-          {step === 8 && <Step8 onNext={() => setStep(9)}/>}
+          {step === 8 && <Step8 onNext={() => setStep(10)}/>}
           {/* Step 9: workout berapa kali */}
-          { step === 9 && <Step9 onNext={() => setStep(10)}/> }
+          {/* { step === 9 && <Step9 onNext={() => setStep(10)}/> } */}
           {/* Step 10: injuries */}
           {step === 10 && <Step10 onNext={() => setStep(11)} />}
           {step === 11 && <ReviewStep />}

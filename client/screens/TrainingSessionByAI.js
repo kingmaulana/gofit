@@ -47,8 +47,9 @@ export default function TrainingSessionByAI() {
             userId: userId
         }
     });
+    console.log("🚀 ~ TrainingSessionByAI ~ exerciseAI:", exerciseAI)
     // console.log("🚀 ~ TrainingSessionByAI ~ exerciseAI:", exerciseAI)
-    const duration = exerciseAI?.userGoals?.exercise?.duration
+    const duration = exerciseAI?.userGoals.exercise.duration
     const data = exerciseAI?.userGoals;
     const exercises = data?.completeExercise;
     const exercisesCount = exercises?.length;

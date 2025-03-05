@@ -1,14 +1,14 @@
 import OnboardingLayout from "@/components/screens/onboarding-layout";
-import {ScrollView, Text, TextInput, View} from "react-native";
-import {useController, useFormContext} from "react-hook-form";
-import {Button, ButtonSpinner, ButtonText} from "@/components/ui/button";
-import {Alert, AlertIcon, AlertText} from "@/components/ui/alert";
-import {AlertCircleIcon} from "@/components/ui/icon";
-import {Link, LinkText} from "@/components/ui/link";
-import {HStack} from "@/components/ui/hstack";
-import {Text as UIText} from "@/components/ui/text";
-import {gql, useLazyQuery} from "@apollo/client";
-import {useState} from "react";
+import { ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
+import { useController, useFormContext } from "react-hook-form";
+import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
+import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
+import { AlertCircleIcon } from "@/components/ui/icon";
+import { Link, LinkText } from "@/components/ui/link";
+import { HStack } from "@/components/ui/hstack";
+import { Text as UIText } from "@/components/ui/text";
+import { gql, useLazyQuery } from "@apollo/client";
+import { useState } from "react";
 
 const CHECK_USERNAME = gql(`
     query CheckUser($email: String, $username: String) {
@@ -17,10 +17,10 @@ const CHECK_USERNAME = gql(`
             success
         }
     }
-`)
+`);
 
-export default function Step1({onNext, onLogin}) {
-  const {control, getValues} = useFormContext();
+export default function Step1({ onNext, onLogin }) {
+  const { control, getValues } = useFormContext();
   const [error, setError] = useState(null);
   const [userAlreadyExists, setUserAlreadyExists] = useState(false);
 
@@ -41,15 +41,15 @@ export default function Step1({onNext, onLogin}) {
     control: control,
   });
 
-  const [checkUsername, {_, loading, __}] = useLazyQuery(CHECK_USERNAME, {
-    fetchPolicy: 'network-only'
+  const [checkUsername, { _, loading, __ }] = useLazyQuery(CHECK_USERNAME, {
+    fetchPolicy: "network-only",
   });
 
   const handleNext = async () => {
     try {
       setError(null);
       setUserAlreadyExists(false);
-      const {name, email, username, password} = getValues();
+      const { name, email, username, password } = getValues();
 
       if (!name || !email || !username || !password) {
         setError("Please fill all fields.");
@@ -65,11 +65,11 @@ export default function Step1({onNext, onLogin}) {
         return;
       }
 
-      const {data, error: queryError} = await checkUsername({
+      const { data, error: queryError } = await checkUsername({
         variables: {
           email,
-          username
-        }
+          username,
+        },
       });
 
       if (queryError) {
@@ -79,7 +79,7 @@ export default function Step1({onNext, onLogin}) {
       }
 
       if (!data.checkUser.success) {
-        setError("User already exists. ");
+        setError("User already exists.");
         setUserAlreadyExists(true);
         return;
       } else {
@@ -88,73 +88,146 @@ export default function Step1({onNext, onLogin}) {
     } catch (err) {
       setError("An unexpected error occurred.");
     }
-  }
+  };
 
-  return <OnboardingLayout>
-    <View className="p-4 gap-2 flex-1">
-      <View className="flex-1 flex-col justify-center gap-2">
-        {error && <Alert className="mb-4" action="error">
-          <AlertIcon as={AlertCircleIcon}/>
-          <AlertText className="px-4">
-            <HStack>
-              <UIText>{error}</UIText>
-              {userAlreadyExists &&
-                <Link onPress={onLogin}>
-                  <LinkText>Login</LinkText>
-                </Link>
-              }
-            </HStack>
-          </AlertText>
-        </Alert>
-        }
-        <ScrollView className="flex-1">
-          <View className="gap-4">
-            <View className="gap-2 px-4">
-              <Text className="text-white text-xl">What is your name?</Text>
+  return (
+    <OnboardingLayout>
+      <View style={styles.container}>
+        {/* Heading */}
+        <Text style={styles.headerText}>Create Your Account</Text>
+
+        {/* Error Handling */}
+        {error && (
+          <Alert className="mb-6" action="error">
+            <AlertIcon as={AlertCircleIcon} />
+            <AlertText className="px-4">
+              <HStack>
+                <UIText>{error}</UIText>
+                {userAlreadyExists && (
+                  <Link onPress={onLogin}>
+                    <LinkText>Login</LinkText>
+                  </Link>
+                )}
+              </HStack>
+            </AlertText>
+          </Alert>
+        )}
+
+        {/* Form */}
+        <ScrollView contentContainerStyle={{ flex: 1 }}>
+          <View style={styles.formContainer}>
+            {/* Name Input */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>What is your name?</Text>
               <TextInput
-                className="p-2 border border-white text-white rounded-md text-lg"
+                style={styles.input}
                 value={nameInput.field.value}
                 onChangeText={nameInput.field.onChange}
+                placeholder="Enter your full name"
+                placeholderTextColor="#bbb"
               />
             </View>
-            <View className="gap-2 px-4">
-              <Text className="text-white text-xl">What is your email?</Text>
+
+            {/* Email Input */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>What is your email?</Text>
               <TextInput
-                className="p-2 border border-white text-white rounded-md text-lg"
+                style={styles.input}
                 value={emailInput.field.value}
                 onChangeText={emailInput.field.onChange}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                placeholder="Enter your email"
+                placeholderTextColor="#bbb"
               />
             </View>
-            <View className="gap-2 px-4">
-              <Text className="text-white text-xl">Pick your username</Text>
+
+            {/* Username Input */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Pick your username</Text>
               <TextInput
-                className="p-2 border border-white text-white rounded-md text-lg"
+                style={styles.input}
                 value={usernameInput.field.value}
                 onChangeText={usernameInput.field.onChange}
                 autoCapitalize="none"
+                placeholder="Pick a username"
+                placeholderTextColor="#bbb"
               />
             </View>
-            <View className="gap-2 px-4">
-              <Text className="text-white text-xl">Type your password</Text>
+
+            {/* Password Input */}
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Type your password</Text>
               <TextInput
-                className="p-2 border border-white text-white rounded-md text-lg"
+                style={styles.input}
                 value={passwordInput.field.value}
                 onChangeText={passwordInput.field.onChange}
                 secureTextEntry={true}
                 autoCapitalize="none"
+                placeholder="Enter your password"
+                placeholderTextColor="#bbb"
               />
             </View>
           </View>
         </ScrollView>
+
+        {/* Next Button */}
+        <View style={styles.buttonContainer}>
+          <Button
+            action="secondary"
+            onPress={handleNext}
+            disabled={loading}
+            style={styles.nextButton} 
+          >
+            {loading && <ButtonSpinner />}
+            <ButtonText className="text-white">Next</ButtonText>
+          </Button>
+        </View>
       </View>
-      <View className="flex-grow-0">
-        <Button action="secondary" onPress={handleNext} disabled={loading}>
-          {loading && <ButtonSpinner/>}
-          <ButtonText>Next</ButtonText>
-        </Button>
-      </View>
-    </View>
-  </OnboardingLayout>
+    </OnboardingLayout>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#1A1A1A", // Dark background for a modern look
+    padding: 20,
+  },
+  headerText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#FFF",
+    textAlign: "center",
+    marginVertical: 40,
+  },
+  formContainer: {
+    flex: 1,
+  },
+  inputGroup: {
+    marginBottom: 24,
+  },
+  inputLabel: {
+    fontSize: 18,
+    color: "#FFF",
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: "#2C2C2C", // Slightly lighter background for inputs
+    color: "#FFF",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#444",
+    fontSize: 16,
+  },
+  buttonContainer: {
+    marginVertical: 20,
+  },
+  nextButton: {
+    paddingHorizontal: 40,
+    backgroundColor: "#4F76A1", // Blue color for the button
+    borderRadius: 8,
+  },
+});

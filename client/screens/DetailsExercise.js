@@ -1,7 +1,7 @@
 import { Box } from '@/components/ui/box'
 import { Text } from '@/components/ui/text'
 import { Image } from '@/components/ui/image'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { HStack } from '@gluestack-ui/themed'
 import { gql, useQuery } from '@apollo/client'
 import { useRoute } from '@react-navigation/native'
@@ -63,6 +63,7 @@ export default function DetailsExercise() {
     return (
         <ScrollView className="p-6 bg-gray-100 rounded-lg shadow-lg max-w-3xl mx-auto">
         {/* Title Section */}
+        <View className="w-full">
             <Text className="text-2xl font-extrabold text-center text-slate-700">{exerciseData.name}</Text>
 
             <Box className="mt-4 flex flex-col gap-3">
@@ -103,6 +104,7 @@ export default function DetailsExercise() {
                     className="rounded-lg shadow-md border-2 border-gray-300"
                 />
             </Box>
+            </View>
         </ScrollView>
     )
 }

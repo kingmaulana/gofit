@@ -11,6 +11,7 @@ const typeDefs = `#graphql
         startDate: String
         endGoal: String
         exercise: ExerciseAI
+        injuries: [String]
         completeExercise: [Workout]
     }
 
@@ -57,6 +58,7 @@ const typeDefs = `#graphql
             goal: String, 
             bmi: Int, 
             goalWeight: Int
+            injuries: [String],
             ): UserGoal
         updateWeightProgress(userId: String, weight: Float): WeightProgress
         createSuggestionAI(userId: String): UserGoal

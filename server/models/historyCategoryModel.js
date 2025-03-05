@@ -65,7 +65,7 @@ class HistoryExerciseModel {
                 ])
                 .toArray();
     
-                console.log("🚀 ~ HistoryExerciseModel ~ findAll ~ history:", history)
+                // console.log("🚀 ~ HistoryExerciseModel ~ findAll ~ history:", history)
             return history;
         } catch (error) {
             throw new Error(error);
