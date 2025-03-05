@@ -55,7 +55,7 @@ export default function Training() {
   }
 
   const handleStartWorkout = () => {
-    Alert.alert(`Start workout ${data?.getCategoryById.name}`, null, [
+    Alert.alert(`Start workout ${data?.getCategoryById.name}`, "Get ready to start the workout!", [
       {
         text: 'Cancel',
         onPress: () => {},
@@ -74,7 +74,7 @@ export default function Training() {
 
   // Extract the data from the response
   const category = data?.getCategoryById;
-  console.log("🚀 ~ Training ~ data?.getCategoryById;:", data?.getCategoryById)
+  // console.log("🚀 ~ Training ~ data?.getCategoryById;:", data?.getCategoryById)
 
   return (
     <ScrollView className="flex-1">
