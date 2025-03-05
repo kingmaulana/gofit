@@ -7,6 +7,7 @@ import { Text } from '@gluestack-ui/themed';
 import { Divider } from '@gluestack-ui/themed';
 import { Center } from '@gluestack-ui/themed';
 import { ButtonText, Button } from '@/components/ui/button';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AnalyzeAI() {
     // Mock data for exercise recommendations
@@ -15,6 +16,8 @@ export default function AnalyzeAI() {
             "To gain weight, you need a caloric surplus and a strength training program focusing on compound exercises that work multiple muscle groups simultaneously.  From your provided categories, we will prioritize those most effective for overall muscle growth and weight gain. This will help you build muscle mass, leading to a higher overall weight.",
         exercises:  ["Compound Strength", "Barbell Power", "Leg Strength"],
     };
+
+    const navigation = useNavigation();
 
     return (
         <ScrollView contentContainerStyle={{ paddingBottom: 100 }} style={{ flex: 1, backgroundColor: '#F9FAFB' }}>
@@ -48,7 +51,8 @@ export default function AnalyzeAI() {
                         {analyzeResult.exercises.map((exercise, index) => (
                             <Box key={index} className="bg-white flex-row justify-between p-4 rounded-lg border border-gray-200 shadow-sm">
                                 <Text className="text-lg text-gray-800">{exercise}</Text>
-                                <Button>
+                                <Button
+                                 onPress={() => navigation.navigate("TrainingByAI")}>
                                     <ButtonText>Start</ButtonText>
                                 </Button>
                             </Box>

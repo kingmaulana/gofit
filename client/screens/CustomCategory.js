@@ -101,7 +101,7 @@ export default function CustomCategory() {
                                             />
                                         </TouchableOpacity>
                                     </HStack>
-                                    <Link onPress={() => navigation.navigate('CategoryDetail', { category: category.name })}>
+                                    <Link onPress={() => navigation.navigate('WorkDetailByUser', { category: category.name })}>
                                         <HStack className="items-center bg-600 px-3 py-2 rounded-lg mt-2">
                                             <LinkText size="sm" className="text-white font-semibold mr-2">Start Training</LinkText>
                                             <Icon as={ArrowRightIcon} size="sm" className="text-white" />

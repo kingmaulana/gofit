@@ -70,6 +70,12 @@ export default function Home() {
       <Box className="px-4 py-2 w-full">
         <HStack className="justify-between items-center mb-3">
           <Heading size="md">AI Workout Recommendations</Heading>
+
+          <Button 
+              onPress={() => navigation.navigate("AddExercisePage")}
+              size="sm" variant="solid" className="bg-black mt-3 rounded-lg">
+                <Text className="text-white font-medium">+ Create Workout</Text>
+          </Button>
         </HStack>
 
 
@@ -100,7 +106,7 @@ export default function Home() {
       <Divider className="bg-gray-800 my-3" />
 
       {/* Section for Exercise Categories */}
-      <Box className="px-4 py-2 mb-6">
+      <Box className="px-4 py-2 mb-24">
         <HStack className="justify-between items-center mb-3">
           <Heading size="md" className="mb-4">Exercise Categories</Heading>
           <Link onPress={() => navigation.navigate("Personal")}>
