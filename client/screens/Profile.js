@@ -6,6 +6,8 @@ import {Feather} from '@expo/vector-icons';
 import {LinearGradient} from 'expo-linear-gradient';
 import {gql, useQuery} from "@apollo/client";
 import {AuthContext} from "@/helpers/auth-context";
+import dayjs from "dayjs";
+import {useNavigation} from "@react-navigation/native";
 
 const GET_USER_DATA = gql(`
     query GetUserDetails {
@@ -31,22 +33,10 @@ export default function ProfileScreen() {
   const {data: userData, error, loading} = useQuery(GET_USER_DATA);
   const user = userData?.getUserDetails;
   const {handleLogout} = useContext(AuthContext);
-
-  // const user = {
-  //     username: "nunung",
-  //     email: "nunung@mail.com",
-  //     weight: 50,
-  //     age: 25,
-  //     height: 170,
-  //     createdAt: "2025-03-03T06:25:58.318Z"
-  // };
+  const navigation = useNavigation();
 
   const formatDate = (timestamp) => {
-    return new Date(timestamp).toLocaleDateString("id-ID", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    return dayjs(Number(timestamp)).format("MMM DD, YYYY");
   };
 
   // Handle loading and error states
@@ -125,7 +115,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
           {/* Edit Profile Button */}
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate("EditProfile")}>
             <Feather name="edit-2" size={20} color="#FFFFFF" style={styles.actionIcon}/>
             <Text style={styles.actionText}>Edit Profile</Text>
           </TouchableOpacity>
