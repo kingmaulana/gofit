@@ -34,7 +34,7 @@ export default function Training() {
   
   // Getting the category ID from route params
   const { categoryId } = route.params;
-  console.log("🚀 ~ Training ~ categoryId:", categoryId)
+  // console.log("🚀 ~ Training ~ categoryId:", categoryId)
 
   // Using Apollo's useQuery hook to fetch data
   const { data, loading, error } = useQuery(GET_CATEGORY_BY_ID, {
@@ -131,7 +131,9 @@ export default function Training() {
                     {Math.floor(category?.duration / 60)} minutes
                   </Text>
                 </VStack>
-                <Icon as={AlertCircleIcon} size="xl" className="text-primary-600 ml-auto" />
+                <Pressable onPress={() => navigation.navigate("DetailsExercise", { workoutByIdId: exercise._id })}>
+                  <Icon as={AlertCircleIcon} size="xl" className="text-primary-600 ml-auto" />
+                </Pressable>
               </HStack>
             </Card>
           ))}

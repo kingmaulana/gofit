@@ -4,6 +4,7 @@ import { Box, VStack, HStack, Center, Heading, Divider, Icon } from '@gluestack-
 import { Svg, Circle, Text as SvgText } from 'react-native-svg'
 import { ArrowUpIcon, ArrowDownIcon } from '@/components/ui/icon'
 
+//! This screen is not used
 export default function ProgressGoal() {
   // Get screen dimensions
   const screenHeight = Dimensions.get('window').height;

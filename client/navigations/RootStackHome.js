@@ -12,6 +12,7 @@ import WorkDetailByUser from '@/screens/WorkDetailByUser';
 import EditExerciseCategory from '@/screens/EditExerciseCategory';
 import TrainingByAI from '@/screens/TrainingByAI';
 import ExerciseHistory from "@/screens/HistoryExercise";
+import DetailsExercise from '@/screens/DetailsExercise';
 
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ export default function RootStackHome() {
             <Stack.Screen name="WorkDetailByUser" component={WorkDetailByUser} />
             <Stack.Screen name="EditExerciseCategory" component={EditExerciseCategory} />
             <Stack.Screen name="TrainingByAI" component={TrainingByAI} />
+            <Stack.Screen name="DetailsExercise" component={DetailsExercise} />
         </Stack.Navigator>
     );
 }

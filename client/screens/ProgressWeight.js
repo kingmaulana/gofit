@@ -170,6 +170,11 @@ export default function ProgressWeight() {
         };
     };
 
+    const formatDate = (date) => {
+        const options = { day: 'numeric', month: 'short', year: '2-digit' };
+        return new Date(date).toLocaleDateString('en-GB', options).replace(',', '');
+    };
+
     const weightDifference = calculateWeightDifference();
     const screenWidth = Dimensions.get('window').width;
 
@@ -178,7 +183,7 @@ export default function ProgressWeight() {
             <StatusBar barStyle="light-content" />
 
             {/* Button to trigger the modal */}
-            
+
             {/* Modal for updating weight */}
             <Modal visible={modalVisible} animationType="slide" transparent={true}>
                 <View className="absolute inset-0 bg-black/50 justify-center items-center z-[1000]">
@@ -228,12 +233,12 @@ export default function ProgressWeight() {
                     />
                 )}
 
-            <TouchableOpacity
-                className="bg-black p-3 rounded-full mb-5"
-                onPress={() => setModalVisible(true)}
-            >
-                <Text className="text-white font-semibold text-center">Add Weight</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    className="bg-black p-3 rounded-full mb-5"
+                    onPress={() => setModalVisible(true)}
+                >
+                    <Text className="text-white font-semibold text-center">Add Weight</Text>
+                </TouchableOpacity>
 
                 {/* Line Chart */}
                 {progress.length > 1 && (
@@ -267,7 +272,7 @@ export default function ProgressWeight() {
                             <Text className="text-base text-gray-800 ml-2">
                                 {weightDifference.isLoss ? 'Lost ' : 'Gained '}
                                 <Text className="font-bold text-black">
-                                    {Math.abs(weightDifference.difference)} kg
+                                    {Math.abs(weightDifference.difference)} kg 
                                 </Text>
                                 since you started
                             </Text>
@@ -281,13 +286,21 @@ export default function ProgressWeight() {
                     className="bg-white rounded-xl p-3 shadow-sm"
                     showsVerticalScrollIndicator={true}
                 >
-                    {[...progress]
-                        .sort((a, b) => new Date(b.date) - new Date(a.date))
-                        .map(item => (
-                            <View key={item._id} className="flex-row items-center justify-between">
-                                <Text>{item.weight} kg</Text>
-                            </View>
-                        ))}
+                    {
+                        [...progress]
+                            .sort((a, b) => new Date(b.date) - new Date(a.date))
+                            .map(item => (
+                                <View key={item._id}>
+                                    <View className="flex-row items-center justify-between my-2">
+                                        <Text className="text-md font-semibold">{item.weight} kg</Text>
+                                        <Text className="text-gray-500">{formatDate(item.date)}</Text>
+                                    </View>
+
+                                    {/* Divider */}
+                                    <View className="h-0.5 bg-gray-300 my-2" />
+                                </View>
+                            ))
+                    }
                 </ScrollView>
             </View>
         </ScrollView>
