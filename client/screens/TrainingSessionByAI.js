@@ -49,7 +49,7 @@ export default function TrainingSessionByAI() {
     });
     console.log("🚀 ~ TrainingSessionByAI ~ exerciseAI:", exerciseAI)
     // console.log("🚀 ~ TrainingSessionByAI ~ exerciseAI:", exerciseAI)
-    const duration = exerciseAI?.userGoals?.exercise?.duration
+    const duration = exerciseAI?.userGoals.exercise.duration
     const data = exerciseAI?.userGoals;
     const exercises = data?.completeExercise;
     const exercisesCount = exercises?.length;
@@ -58,7 +58,7 @@ export default function TrainingSessionByAI() {
 
     //   // console.log("🚀 ~ TrainingSession ~ exercises:", exercises)
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-    const [time, setTime] = useState(exerciseAI?.userGoals.exercise.duration);
+    const [time, setTime] = useState(exerciseAI.userGoals.exercise.duration);
     const [rest, setRest] = useState(false);
     const [isRunning, setIsRunning] = useState(true)
     const timerRef = useRef(null);
