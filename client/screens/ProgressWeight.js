@@ -103,40 +103,33 @@ const GoalProgressCircle = ({ currentWeight, goalWeight }) => {
 };
 
 export default function ProgressWeight() {
-      const navigation = useNavigation();
-    // Fetch data
-    const { data: goalData, loading: goalLoading, error: goalError } = useQuery(GET_GOAL_USER);
-    console.log("🚀 ~ ProgressWeight ~ goalData:", goalData)
-    const { data: progressData, loading: progressLoading, error: progressError } = useQuery(GET_LOGS_WEIGHT_USER);
-    console.log("🚀 ~ ProgressWeight ~ progressData:", progressData)
+    const navigation = useNavigation();
 
-    if (goalLoading || progressLoading) {
-        return <View className="h-full justify-center items-center">
-            <ActivityIndicator size="large" color="black" />
-          </View>;
-      }
-
-    // Define mutation hook
-    // const [updateWeightProgress, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_WEIGHT_PROGRESS, {
-    //     refetchQueries: [GET_LOGS_WEIGHT_USER], // Refetch the weight logs after mutation
-    // });
-
-    // if (updateLoading) {
-    //     return <View className="h-full justify-center items-center">
-    //         <ActivityIndicator size="large" color="black" />
-    //       </View>;
-    //   }
+    const { data: goalData, loading: goalLoading } = useQuery(GET_GOAL_USER);
+    const { data: progressData, loading: progressLoading } = useQuery(GET_LOGS_WEIGHT_USER);
+    const [updateWeightProgress, { loading: updateLoading }] = useMutation(UPDATE_WEIGHT_PROGRESS, {
+        refetchQueries: [GET_LOGS_WEIGHT_USER],
+    });
+    // console.log("🚀 ~ ProgressWeight ~ progressData:", progressData)
 
     const [modalVisible, setModalVisible] = useState(false);
     const [weight, setWeight] = useState("");
-    const [goalWeight, setGoalWeight] = useState(goalData?.userGoals?.goalWeight); 
-    const [progress, setProgress] = useState([]);  // Initialize with empty array
+    const [goalWeight, setGoalWeight] = useState(goalData?.userGoals?.goalWeight);
+    const [progress, setProgress] = useState([]);
 
     useEffect(() => {
         if (progressData) {
-            setProgress(progressData.getWeightProgress); // Update progress when data is fetched
+            setProgress(progressData.getWeightProgress);
         }
-    }, [progressData]); // Trigger when progressData is available
+    }, [progressData]);
+   
+    if (goalLoading || progressLoading || updateLoading) {
+        return (
+            <View className="h-full justify-center items-center">
+                <ActivityIndicator size="large" color="black" />
+            </View>
+        );
+    }
 
     const handleSubmit = () => {
         const newWeight = parseFloat(weight);

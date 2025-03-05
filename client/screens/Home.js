@@ -109,7 +109,7 @@ export default function Home() {
       <Box className="px-4 py-2 mb-24">
         <HStack className="justify-between items-center mb-3">
           <Heading size="md" className="mb-4">Exercise Categories</Heading>
-          <Link onPress={() => navigation.navigate("Personal")}>
+          <Link onPress={() => navigation.navigate("Category")}>
             <HStack className="items-center">
               <LinkText size="sm" className="text-gray-600 no-underline">View All</LinkText>
               <Icon as={ArrowRightIcon} size="sm" className="text-gray-600" />

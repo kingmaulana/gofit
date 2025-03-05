@@ -1,5 +1,5 @@
 import OnboardingLayout from "@/components/screens/onboarding-layout";
-import { ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
+import { ScrollView, Text, TextInput, View, StyleSheet, KeyboardAvoidingView, Platform } from "react-native";
 import { useController, useFormContext } from "react-hook-form";
 import { Button, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import { Alert, AlertIcon, AlertText } from "@/components/ui/alert";
@@ -92,7 +92,11 @@ export default function Step1({ onNext, onLogin }) {
 
   return (
     <OnboardingLayout>
-      <View style={styles.container}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      >
         {/* Heading */}
         <Text style={styles.headerText}>Create Your Account</Text>
 
@@ -114,7 +118,10 @@ export default function Step1({ onNext, onLogin }) {
         )}
 
         {/* Form */}
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <ScrollView 
+          contentContainerStyle={styles.scrollViewContent}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.formContainer}>
             {/* Name Input */}
             <View style={styles.inputGroup}>
@@ -183,7 +190,7 @@ export default function Step1({ onNext, onLogin }) {
             <ButtonText className="text-white">Next</ButtonText>
           </Button>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </OnboardingLayout>
   );
 }
@@ -192,7 +199,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1A1A1A", // Dark background for a modern look
-    padding: 20,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: Platform.OS === "ios" ? 40 : 20,
   },
   headerText: {
     fontSize: 32,
