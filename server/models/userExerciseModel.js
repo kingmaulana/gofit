@@ -147,12 +147,12 @@ class UserExerciseModel {
   static async getAllExercises(args) {
     try {
       const query = {};
-      console.log(args);
       if (args) {
         const {level, equipment, category} = args;
         if (level?.length) query.level = {$in: level};
         if (equipment?.length) query.equipment = {$in: equipment};
         if (category?.length) query.category = {$in: category};
+        if (args.search) query.name = {$regex: args.search, $options: "i"};
       }
       return await database.collection("exercise").find(query).toArray();
     } catch (error) {

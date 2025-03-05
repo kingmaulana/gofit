@@ -46,7 +46,7 @@ type CompleteCategoryExercise {
 type Query {
     userExercises: [UserExercise]
     exerciseCategories: [ExerciseCategory]
-    getAllExercises(level: [String], equipment: [String], category: [String]): [Workout]
+    getAllExercises(level: [String], equipment: [String], category: [String], search: String): [Workout]
     getCategoryById(idCategory: String): CompleteCategoryExercise
 }
 
