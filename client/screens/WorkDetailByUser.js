@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { ScrollView, RefreshControl, SafeAreaView, Dimensions } from "react-native";
+import { ScrollView, RefreshControl, SafeAreaView, Dimensions, Pressable, Alert } from "react-native";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
@@ -25,6 +25,24 @@ export default function WorkDetailByUser() {
             exercises: workout.exercises
         });      
     };
+
+    const handleStartWorkout = () => {
+        Alert.alert(`Start workout`, "Get ready to start the workout!", [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: 'Start',
+            onPress: () => {
+              navigation.navigate('TrainingSession', { categoryId: category._id, usingGoalId: false });
+            },
+          },
+        ], {
+          cancelable: true,
+        });
+      }
     
     const workout = {
         name: "My Legs Monster",
@@ -139,6 +157,14 @@ export default function WorkDetailByUser() {
                         </VStack>
                     </Box>
                 </VStack>
+                <Pressable
+                    className="w-full bg-black rounded-md flex"
+                    onPress={handleStartWorkout}
+                    >
+                    <Text className="text-white font-medium text-center py-3">
+                        Start Workout
+                    </Text>
+                </Pressable>
             </Card>
         </ScrollView>
     </SafeAreaView>

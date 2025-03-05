@@ -16,6 +16,7 @@ import DetailsExercise from '@/screens/DetailsExercise';
 import ProfileEdit from "@/screens/ProfileEdit";
 import {FormProvider, useForm} from "react-hook-form";
 import TrainingSessionByAI from '@/screens/TrainingSessionByAI';
+import AnalyzeAI from '@/screens/AnalyzeAI';
 
 
 const Stack = createNativeStackNavigator();
@@ -37,6 +38,7 @@ export default function RootStackHome() {
 
       {/* Profile and Progress Screens */}
       <Stack.Screen name="ProfileScreen" component={ProfileScreen}/>
+      <Stack.Screen name="AnalyzeAI" component={AnalyzeAI}/>
       <Stack.Screen name="EditProfile" component={ProfileEdit} options={{
         headerShown: true,
         title: 'Edit Profile',

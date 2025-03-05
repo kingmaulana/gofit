@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // Color constants for better maintainability
 const COLORS = {
@@ -20,6 +21,9 @@ const COLORS = {
 }
 
 export default function AddExercisePage() {
+
+    const navigation = useNavigation();
+
     const [searchQuery, setSearchQuery] = useState('');
     const [exercisesAdded, setExercisesAdded] = useState([]);
     const [filteredExercises, setFilteredExercises] = useState([]);
@@ -411,7 +415,7 @@ export default function AddExercisePage() {
                     styles.submitButton,
                     styles.submitButtonEnabled
                 ]}
-                onPress={handleSubmit}
+                onPress={() => navigation.navigate("CustomCategory")}
             >
                 <Text style={[
                     styles.submitButtonText, 
