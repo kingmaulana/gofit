@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, Modal, ScrollView, Dimensions, StatusBar } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Modal, ScrollView, Dimensions, StatusBar, ActivityIndicator } from "react-native";
 import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LineChart } from 'react-native-chart-kit';
 import { Svg, Circle, Text as SvgText } from 'react-native-svg';
@@ -11,8 +11,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 // GraphQL queries and mutation
 const GET_GOAL_USER = gql(`
-    query UserGoals($userId: String) {
-        userGoals(userId: $userId) {
+    query UserGoals{
+        userGoals {
             _id
             goalName
             userId
@@ -24,8 +24,8 @@ const GET_GOAL_USER = gql(`
     }`);
 
 const GET_LOGS_WEIGHT_USER = gql(`
-    query GetWeightProgress($userId: String) {
-        getWeightProgress(userId: $userId) {
+    query GetWeightProgress {
+        getWeightProgress {
             _id
             userId
             weight
@@ -105,22 +105,32 @@ const GoalProgressCircle = ({ currentWeight, goalWeight }) => {
 export default function ProgressWeight() {
       const navigation = useNavigation();
     // Fetch data
-    const { data: goalData, loading: goalLoading, error: goalError } = useQuery(GET_GOAL_USER, {
-        variables: { userId: "67c6a7d8be60228e126ec03e" },
-    });
-    const { data: progressData, loading: progressLoading, error: progressError } = useQuery(GET_LOGS_WEIGHT_USER, {
-        variables: { userId: "67c6a7d8be60228e126ec03e" },
-    });
+    const { data: goalData, loading: goalLoading, error: goalError } = useQuery(GET_GOAL_USER);
+    console.log("🚀 ~ ProgressWeight ~ goalData:", goalData)
+    const { data: progressData, loading: progressLoading, error: progressError } = useQuery(GET_LOGS_WEIGHT_USER);
+    console.log("🚀 ~ ProgressWeight ~ progressData:", progressData)
+
+    if (goalLoading || progressLoading) {
+        return <View className="h-full justify-center items-center">
+            <ActivityIndicator size="large" color="black" />
+          </View>;
+      }
 
     // Define mutation hook
-    const [updateWeightProgress, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_WEIGHT_PROGRESS, {
-        refetchQueries: [GET_LOGS_WEIGHT_USER], // Refetch the weight logs after mutation
-    });
+    // const [updateWeightProgress, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_WEIGHT_PROGRESS, {
+    //     refetchQueries: [GET_LOGS_WEIGHT_USER], // Refetch the weight logs after mutation
+    // });
+
+    // if (updateLoading) {
+    //     return <View className="h-full justify-center items-center">
+    //         <ActivityIndicator size="large" color="black" />
+    //       </View>;
+    //   }
 
     const [modalVisible, setModalVisible] = useState(false);
     const [weight, setWeight] = useState("");
-    const [goalWeight, setGoalWeight] = useState(goalData?.userGoals?.goalWeight);
-    const [progress, setProgress] = useState([]); // Initialize with empty array
+    const [goalWeight, setGoalWeight] = useState(goalData?.userGoals?.goalWeight); 
+    const [progress, setProgress] = useState([]);  // Initialize with empty array
 
     useEffect(() => {
         if (progressData) {

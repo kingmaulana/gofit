@@ -1,7 +1,7 @@
 import { Box } from '@/components/ui/box'
 import { Text } from '@/components/ui/text'
 import { Image } from '@/components/ui/image'
-import { ScrollView, View } from 'react-native'
+import { ActivityIndicator, ScrollView, View } from 'react-native'
 import { HStack } from '@gluestack-ui/themed'
 import { gql, useQuery } from '@apollo/client'
 import { useRoute } from '@react-navigation/native'
@@ -57,8 +57,15 @@ export default function DetailsExercise() {
     // console.log("🚀 ~ DetailsExercise ~ data:", data)
     const exerciseData = data?.workoutById
 
-    if (loading) return <Text>Loading...</Text>;
-    if (error) return <Text>Error: {error.message}</Text>;
+    if (loading) {
+        return <View className="h-full justify-center items-center">
+          <ActivityIndicator size="large" color="black" />
+        </View>;
+      }
+    
+      if (error) {
+        return <Text>Error: {error.message}</Text>;
+      }
 
     return (
         <ScrollView className="p-6 bg-gray-100 rounded-lg shadow-lg max-w-3xl mx-auto">
