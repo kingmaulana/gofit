@@ -242,6 +242,56 @@ class UserModel {
         }
     }
 
+    /**
+     * Edit data user
+     * @param {Object} decodedUser - User yang sedang login
+     * @param data - Data user yang akan diubah
+     */
+    static async editUser(decodedUser, data) {
+        const user = await this.collection().findOne({
+            _id: ObjectId.createFromHexString(decodedUser._id)
+        });
+        if (!user) throw new Error("User not found");
+
+        // comparing password if user wants to change password
+        if (data.newPassword && !data.password) throw new Error("Please input your current password to change your password");
+        if (data.newPassword.length < 5) throw new Error("Password must be at least 5 characters");
+        if (data.newPassword && data.password) {
+            const isPassValid = comparePassword(data.password, user.password);
+            if (data.newPassword && !isPassValid) throw new Error("Password is incorrect");
+        }
+
+        // validating name, email, username
+        if (!data.name) throw new Error("Please input your name");
+        if (!data.email) throw new Error("Please input your email");
+        if (!data.username) throw new Error("Please input your username");
+
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email) === false) throw new Error("Please use correct email format");
+        if (data.username !== user.username) {
+            const isUsernameTaken = await this.collection().findOne({username: data.username});
+            if (isUsernameTaken) throw new Error("This username has already been used, please use another username.");
+        }
+
+        if (data.email !== user.email) {
+            const isEmailTaken = await this.collection().findOne({email: data.email});
+            if (isEmailTaken) throw new Error("This email has already been used, please use another email.");
+        }
+
+        // updating user data
+        return await this.collection().updateOne(
+          {_id: user._id},
+          {
+              $set: {
+                  name: data.name,
+                  username: data.username,
+                  email: data.email,
+                  password: data.newPassword ? hashPassword(data.newPassword) : user.password,
+                  updatedAt: new Date(),
+              }
+          }
+        );
+    }
+
     // * Cek User (saat menggunakan app) apakah sudah menggunakan email atau usernamenya
     static async checkUser(username, email) {
         // * Cari di database users, username atau email sudah ada atau belum

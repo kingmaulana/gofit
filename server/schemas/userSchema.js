@@ -66,6 +66,7 @@ type Mutation {
 
     # Login
     login(email: String, password: String): Token
+    editUser(name: String, email: String, username: String, password: String, newPassword: String): User
 }
 
 `;
@@ -132,6 +133,10 @@ const resolvers = {
             const user = await UserModel.login(email, password)
 
             return user
+        },
+        editUser: async (_, data, context) => {
+            const decodedUser = await context.authentication();
+            return await UserModel.editUser(decodedUser, data)
         }
     }
 }
