@@ -67,7 +67,6 @@ export default function CustomCategory() {
         {
           text: "Delete",
           onPress: async () => {
-            // TODO: implement delete logic
             console.log(`Deleting category: "${categoryName}" with ID: ${index}`);
             await deleteCategoryById({
               variables: {

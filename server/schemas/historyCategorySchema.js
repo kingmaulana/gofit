@@ -8,6 +8,7 @@ type CategoryId {
     userId: String
     categoryId: String
     userGoalId: String
+    userExerciseId: String
     createdAt: String
     updatedAt: String
     goalName: String
@@ -19,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-    createHistoryCategory(categoryId: String, userGoalId: String): CategoryId
+    createHistoryCategory(categoryId: String, userGoalId: String, userExerciseId: String): CategoryId
 }
 `;
 
@@ -36,13 +37,14 @@ const resolvers = {
         }
     },
     Mutation: {
-        createHistoryCategory: async (_, {categoryId, userGoalId}, context) => {
+        createHistoryCategory: async (_, {categoryId, userGoalId, userExerciseId}, context) => {
             try {
                 const user = await context.authentication();
                 const workout = await HistoryCategoryModel.addToLogs({
                     userId: user._id,
                     categoryId,
-                    userGoalId
+                    userGoalId,
+                    userExerciseId
                 })
                 return workout
             } catch (error) {

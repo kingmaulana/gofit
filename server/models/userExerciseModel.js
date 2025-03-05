@@ -58,6 +58,27 @@ class UserExerciseModel {
     }
   }
 
+  static async getUserExerciseById(id) {
+    try {
+      return await this.collection()
+        .aggregate([
+          { $match: { _id: ObjectId.createFromHexString(id) } },
+          {
+            $lookup: {
+              from: "exercise",
+              localField: "exerciseId",
+              foreignField: "_id",
+              as: "exercises"
+            }
+          },
+          { $limit: 1 }
+        ]).next();
+    } catch (error) {
+      console.error("Error fetching exercise:", error);
+      throw new Error(error);
+    }
+  }
+
   static async updateName(args, userId) {
     try {
       const userExercise = await this.collection()

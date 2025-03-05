@@ -13,18 +13,18 @@ type UserExercise {
 }
 
 type Workout {
-        _id: ID!
-        name: String
-        force: String
-        level: String
-        mechanic: String
-        equipment: String
-        primaryMuscles: [String]
-        secondaryMuscles: [String]
-        instructions: [String]
-        category: String
-        images: [String]
-    }
+    _id: ID!
+    name: String
+    force: String
+    level: String
+    mechanic: String
+    equipment: String
+    primaryMuscles: [String]
+    secondaryMuscles: [String]
+    instructions: [String]
+    category: String
+    images: [String]
+}
 
 
 type ExerciseCategory {
@@ -47,6 +47,7 @@ type Query {
     userExercises: [UserExercise]
     exerciseCategories: [ExerciseCategory]
     getAllExercises(level: [String], equipment: [String], category: [String], search: String): [Workout]
+    getUserExerciseById(id: String): UserExercise
     getCategoryById(idCategory: String): CompleteCategoryExercise
 }
 
@@ -83,6 +84,13 @@ const resolvers = {
             try {
                 const exercises = await UserExerciseModel.getAllExercises(args)
                 return exercises
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+        getUserExerciseById: async (_, args) => {
+            try {
+                return await UserExerciseModel.getUserExerciseById(args.id)
             } catch (error) {
                 throw new Error(error)
             }
