@@ -9,6 +9,7 @@ type UserExercise {
     duration: Int
     restDuration: Int
     exerciseId: [String]
+    exercises: [Workout]
 }
 
 type Workout {
@@ -43,13 +44,14 @@ type CompleteCategoryExercise {
 
 
 type Query {
-    userExercises(id: String): [UserExercise]
+    userExercises: [UserExercise]
     exerciseCategories: [ExerciseCategory]
+    getAllExercises(level: [String], equipment: [String], category: [String]): [Workout]
     getCategoryById(idCategory: String): CompleteCategoryExercise
 }
 
 type Mutation {
-    addUserExercise(name: String, userId: String, duration: Int, restDuration: Int,  exerciseId: [String]): UserExercise
+    addUserExercise(name: String, duration: Int, restDuration: Int,  exerciseId: [String]): UserExercise
     # untuk update belum perlu kirim userId karena di UI pas fetch semua koleksi exercise yg muncul hanya punya user
     updateName(name: String, id: String): UserExercise
     updateExercise(id: String, exerciseId: [String]): UserExercise
@@ -61,10 +63,10 @@ type Mutation {
 
 const resolvers = {
     Query: {
-        userExercises: async (_, args) => {
+        userExercises: async (_, args, context) => {
             try {
-                const workouts = await UserExerciseModel.findAll(args.id)
-                return workouts
+                const user = await context.authentication();
+                return await UserExerciseModel.findAll(user._id)
             } catch (error) {
                 throw new Error(error)
             }
@@ -73,6 +75,14 @@ const resolvers = {
             try {
                 const categories = await UserExerciseModel.findAllCategories()
                 return categories
+            } catch (error) {
+                throw new Error(error)
+            }
+        },
+        getAllExercises: async (_, args) => {
+            try {
+                const exercises = await UserExerciseModel.getAllExercises(args)
+                return exercises
             } catch (error) {
                 throw new Error(error)
             }
@@ -87,26 +97,27 @@ const resolvers = {
         }
     },
     Mutation: {
-        addUserExercise: async (_, args) => {
+        addUserExercise: async (_, args, context) => {
             try {
-                const userExercise = await UserExerciseModel.create(args)
-                return userExercise
+                const user = await context.authentication();
+                return await UserExerciseModel.create(args, user._id)
             } catch (error) {
                 throw new Error(error)
             }
         },
-        updateName: async (_, args) => {
+        updateName: async (_, args, context) => {
             try {
-                const userExercise = await UserExerciseModel.updateName(args)
-                return userExercise
+                const user = await context.authentication();
+                return await UserExerciseModel.updateName(args, user._id)
             } catch (error) {
                 throw new Error(error)
             }
         },
-        updateExercise: async (_, args) => {
+        updateExercise: async (_, args, context) => {
             console.log("🚀 ~ updateExercise: ~ args:", args)
             try {
-                const userExercise = await UserExerciseModel.updateExercise(args)
+                const user = await context.authentication();
+                const userExercise = await UserExerciseModel.updateExercise(args, user._id)
                 return userExercise
             } catch (error) {
                 throw new Error(error)
