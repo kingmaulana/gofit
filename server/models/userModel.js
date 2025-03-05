@@ -81,6 +81,7 @@ class UserModel {
     
         // Register user in the database
         const registeredUser = await this.collection().insertOne({
+            name: newUser.name,
             username: newUser.username,
             email: newUser.email,
             password: hashedPass,
@@ -123,8 +124,7 @@ class UserModel {
             activity: newUser.activity, 
             goal: newUser.goal, 
             bmi: newUser.bmi, 
-            goalWeight: newUser.goalWeight, 
-            endGoal: newUser.endGoal
+            goalWeight: newUser.goalWeight,
         });
 
         const argsForAI = {
@@ -138,7 +138,6 @@ class UserModel {
             endGoal: newUser.endGoal,
             bmi: newUser.bmi,
             goalWeight: newUser.goalWeight,
-            endGoal: newUser.endGoal
         }
 
         //disini untuk ai suggestion ter create
@@ -168,18 +167,7 @@ class UserModel {
                 throw new Error("User not found");
             }
 
-            const dataUser = {
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                age: user.age,
-                height: user.height,
-                weight: user.weight,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt
-            }
-
-            return dataUser
+            return user
         } catch (error) {
             throw new Error(error.message)
 
