@@ -26,7 +26,7 @@ const GET_USER_DATA = gql(`
             createdAt
             updatedAt
         }
-    }
+    } 
 `)
 
 export default function ProfileScreen() {
@@ -36,7 +36,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
 
   const formatDate = (timestamp) => {
-    return dayjs(Number(timestamp)).format("MMM DD, YYYY");
+    return dayjs(Number(timestamp)).format("MMM DD, YYYY"); 
   };
 
   // Handle loading and error states

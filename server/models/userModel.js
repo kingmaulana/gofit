@@ -19,6 +19,7 @@ class UserModel {
 
     // * Fitur register user
     static async register(newUser) {
+    console.log("🚀 ~ UserModel ~ register ~ newUser:", newUser)
 
         // Validate user input (username, email, password, etc.)
         if (newUser.username === "" || newUser.username === undefined) {
@@ -125,6 +126,7 @@ class UserModel {
             goal: newUser.goal, 
             bmi: newUser.bmi, 
             goalWeight: newUser.goalWeight,
+            injuries: newUser.injuries,
         });
 
         const argsForAI = {
@@ -138,6 +140,7 @@ class UserModel {
             endGoal: newUser.endGoal,
             bmi: newUser.bmi,
             goalWeight: newUser.goalWeight,
+            injuries: newUser.injuries,
         }
 
         //disini untuk ai suggestion ter create

@@ -44,7 +44,7 @@ class UserGoalModel {
     
 
     static async createGoal(args) {
-        // console.log("🚀 ~ UserGoalModel ~ createGoal ~ args:", args)
+        console.log("🚀 ~ UserGoalModel ~ createGoal ~ args:", args)
         try {
             const goal = await this.collection().insertOne({
                 goalName: args.goalName,
@@ -53,6 +53,7 @@ class UserGoalModel {
                 goalWeight: args.goalWeight,
                 startDate: args.startDate,
                 endGoal: args.endGoal,
+                injuries: args.injuries,
                 exercise: []
             })
             return goal
@@ -75,6 +76,7 @@ class UserGoalModel {
     }
 
     static async createSuggestionAI(args) {
+        console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
         // console.log("🚀 ~ UserGoalModel ~ createSuggestionAI ~ args:", args)
         try {
             // Cari user goal terkait
@@ -90,7 +92,7 @@ class UserGoalModel {
             const DATA_EXERCISE = require('../constant/data_exercise.json'); // Your list of exercises
     
             // Send the message to the chat session
-            const result = await chatSession.sendMessage(`Based on my data: ${DATA_EXERCISE}, provide 10-15 exercise recommendations for ${args.goalName}. I have a leg injury, weigh ${args.weight}, and my goal weight is ${args.goalWeight}. My gender is ${args.gender}, and my activity level is ${args.activity}. Structure the response in JSON with 'duration' (less than 200 seconds) and 'exercise' (list of recommended exercises). Example:
+            const result = await chatSession.sendMessage(`Based on my data: ${DATA_EXERCISE}, provide 10-15 exercise recommendations for ${args.goalName}. I have a ${args.injuries} injury, weigh ${args.weight}, and my goal weight is ${args.goalWeight}. My gender is ${args.gender}, and my activity level is ${args.activity}. Structure the response in JSON with 'duration' (less than 200 seconds) and 'exercise' (list of recommended exercises). Example:
             {
             'duration': number,
             'exercise': ['exercise1', 'exercise2', 'exercise3', ...]

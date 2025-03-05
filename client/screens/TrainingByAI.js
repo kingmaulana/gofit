@@ -7,7 +7,7 @@ import { Image } from "@/components/ui/image"
 import { Text } from "@/components/ui/text"
 import { Icon, ClockIcon, CheckCircleIcon, AlertCircleIcon } from "@/components/ui/icon"
 import { Button } from "@/components/ui/button"
-import { ScrollView, TouchableWithoutFeedback } from 'react-native'
+import { Alert, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import { Link, useNavigation, useRoute } from '@react-navigation/native'
 import { Pressable } from '@/components/ui/pressable'
 import { gql, useQuery } from '@apollo/client';
@@ -37,16 +37,17 @@ query UserGoals($userId: String) {
 `;
 
 export default function TrainingByAI() {
-  const navigation = useNavigation();
+  const navigation = useNavigation(); 
   const route = useRoute();
 
   // Using Apollo's useQuery hook to fetch data
   const { data, loading, error } = useQuery(USER_GOAL_BY_ID, {
     variables: { 
-      userId: "67c6a7d8be60228e126ec03e"
+      userId: "67c86332d7f9c70de43f4b9f"
      }, // Pass the ID as a variable to the query
   });
   const exercises = data?.userGoals?.completeExercise;
+  // console.log("🚀 ~ TrainingByAI ~ exercises:", exercises)
 
   // Handle loading and error states
   if (loading) {
@@ -58,6 +59,24 @@ export default function TrainingByAI() {
   }
 
   const goal = data?.userGoals;
+
+  const handleStartWorkout = () => {
+      Alert.alert(`Start workout ${goal?.goalName}`, "Get ready to start the workout!", [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Start',
+          onPress: () => {
+            navigation.navigate('TrainingSessionByAI', {userId: data?.userGoals?.userId});
+          },
+        },
+      ], {
+        cancelable: true,
+      });
+    }
 
   return (
     <ScrollView className="flex-1">
@@ -99,8 +118,8 @@ export default function TrainingByAI() {
         {/* Display exercises (replace with data if needed) */}
         <VStack className="mb-6 space-y-2">
           {exercises?.map((exercise) => (
-            <Card key={exercise._id} className="p-3">
-              <HStack className="gap-5 items-center">
+            <Card key={exercise._id} className="p-3 w-full">
+              <HStack className="gap-5 items-center w-full">
                 <Image
                   source={{
                     uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercise.images[0]}`,
@@ -108,8 +127,10 @@ export default function TrainingByAI() {
                   className="rounded-md fit-cover h-20 w-20"
                   alt="Workout"
                 />
-                  <Text className="w-44 font-bold text-xl capitalize text-left overflow-hidden">{exercise.name}</Text>
-                <Icon as={AlertCircleIcon} size="xl" className="text-primary-600 ml-auto" />
+                <Text className="w-44 font-bold text-xl capitalize text-left overflow-hidden">{exercise.name}</Text>
+                 <Pressable className='ml-auto' onPress={() => navigation.navigate("DetailsExercise", { workoutByIdId: exercise._id })}>
+                        <Icon as={AlertCircleIcon} size="xl" className="text-primary-600 ml-auto" />
+                  </Pressable>
               </HStack>
             </Card>
           ))}
@@ -118,10 +139,7 @@ export default function TrainingByAI() {
         {/* Start Workout Button */}
         <Pressable
           className="w-full bg-black rounded-md flex"
-          onPress={() => {
-            // Handle the press event here
-            navigation.navigate('TrainingSessionByAI', {userId: data?.userGoals?.userId});
-          }}
+          onPress={handleStartWorkout}
         >
           <Text className="text-white font-medium text-center py-3">
             Start Workout
