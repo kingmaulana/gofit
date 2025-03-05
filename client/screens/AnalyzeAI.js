@@ -12,16 +12,8 @@ export default function AnalyzeAI() {
     // Mock data for exercise recommendations
     const analyzeResult = {
         description:
-            "To achieve your weight gain goal of 2.465 kg, starting from 51 kg, and break through your current plateau, focus on a combination of strength training and a slight caloric surplus. The exercises below target various muscle groups to promote overall muscle growth, which contributes to weight gain.",
-        exercises: [
-            "Barbell Squats",
-            "Romanian Deadlifts",
-            "Bench Press",
-            "Overhead Press",
-            "Pull-ups",
-            "Bent-Over Rows",
-            "Lunges",
-        ],
+            "To gain weight, you need a caloric surplus and a strength training program focusing on compound exercises that work multiple muscle groups simultaneously.  From your provided categories, we will prioritize those most effective for overall muscle growth and weight gain. This will help you build muscle mass, leading to a higher overall weight.",
+        exercises:  ["Compound Strength", "Barbell Power", "Leg Strength"],
     };
 
     return (
@@ -35,11 +27,6 @@ export default function AnalyzeAI() {
                             AI Analysis for Weight Gain
                         </Heading>
                     </Center>
-                    <Center>
-                        <Text className="text-lg text-white font-medium">
-                            Goal: Weight Gain (2.465 kg)
-                        </Text>
-                    </Center>
                 </Box>
 
                 {/* Description Section */}
@@ -51,7 +38,7 @@ export default function AnalyzeAI() {
 
                 {/* Exercises List */}
                 <Box className="w-full mb-8">
-                    <Heading size="lg" className="text-gray-900 mb-3">Recommended Exercises</Heading>
+                    <Heading size="lg" className="text-gray-900 mb-3">Recommended Collection Exercises</Heading>
                     <Text className="text-gray-600 mb-4">
                         These exercises target different muscle groups to help you achieve your weight gain goal:
                     </Text>
@@ -59,18 +46,14 @@ export default function AnalyzeAI() {
 
                     <VStack space={3}>
                         {analyzeResult.exercises.map((exercise, index) => (
-                            <Box key={index} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <Box key={index} className="bg-white flex-row justify-between p-4 rounded-lg border border-gray-200 shadow-sm">
                                 <Text className="text-lg text-gray-800">{exercise}</Text>
+                                <Button>
+                                    <ButtonText>Start</ButtonText>
+                                </Button>
                             </Box>
                         ))}
                     </VStack>
-                </Box>
-
-                {/* Update Exercises Button */}
-                <Box className="w-full mt-6">
-                    <Button size="md" variant="solid" action="primary" className="shadow-lg">
-                        <ButtonText>Add Custom Exercise</ButtonText>
-                    </Button>
                 </Box>
 
             </VStack>
