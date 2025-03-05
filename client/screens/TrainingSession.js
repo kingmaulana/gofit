@@ -1,15 +1,15 @@
-import {Image} from "expo-image"
-import {Box} from '@/components/ui/box'
-import {Button, ButtonText} from '@/components/ui/button'
-import {HStack} from '@/components/ui/hstack'
-import {Icon, PlayIcon, ChevronsRightIcon} from '@/components/ui/icon'
+import { Image } from "expo-image"
+import { Box } from '@/components/ui/box'
+import { Button, ButtonText } from '@/components/ui/button'
+import { HStack } from '@/components/ui/hstack'
+import { Icon, PlayIcon, ChevronsRightIcon } from '@/components/ui/icon'
 // import { Image } from '@/components/ui/image'
-import {Text} from '@/components/ui/text'
-import {VStack} from '@/components/ui/vstack'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
-import {ActivityIndicator, Alert, Animated, BackHandler, TouchableHighlight, TouchableOpacity, View} from 'react-native'
-import {gql, useMutation, useQuery} from "@apollo/client";
-import {useNavigation, useRoute} from "@react-navigation/native";
+import { Text } from '@/components/ui/text'
+import { VStack } from '@/components/ui/vstack'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, Alert, Animated, BackHandler, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ADD_HISTORY_EXERCISE = gql(`
     mutation CreateHistoryCategory($categoryId: String, $userGoalId: String) {
@@ -36,8 +36,8 @@ const GET_ALL_EXERCISE_DATA = gql(`
 `)
 
 export default function TrainingSession() {
-  const {categoryId, usingGoalId} = useRoute().params;
-  const {data: categoryData, loading, error} = useQuery(GET_ALL_EXERCISE_DATA, {
+  const { categoryId, usingGoalId } = useRoute().params;
+  const { data: categoryData, loading, error } = useQuery(GET_ALL_EXERCISE_DATA, {
     variables: {
       idCategory: categoryId
     }
@@ -48,13 +48,14 @@ export default function TrainingSession() {
   const restTime = Math.round(data.duration / 3);
   const navigation = useNavigation();
 
+  // console.log("🚀 ~ TrainingSession ~ exercises:", exercises)
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [time, setTime] = useState(data.duration);
   const [rest, setRest] = useState(false);
   const [isRunning, setIsRunning] = useState(true)
   const timerRef = useRef(null);
 
-  const [createHistoryExercise, {loading: createLoading}] = useMutation(ADD_HISTORY_EXERCISE);
+  const [createHistoryExercise, { loading: createLoading }] = useMutation(ADD_HISTORY_EXERCISE);
 
   const onFinish = useCallback(async () => {
     if (usingGoalId) {
@@ -72,9 +73,21 @@ export default function TrainingSession() {
     }
     navigation.reset({
       index: 1,
-      routes: [{name: "Landing"}, {name: "HistoryExercise"}],
+      routes: [{ name: "Landing" }, { name: "HistoryExercise" }],
     });
   }, [navigation])
+
+  const progress = (currentExerciseIndex + 1) / exercisesCount;  // Calculate the progress
+
+  const progressWidth = useRef(new Animated.Value(0)).current; // Initialize Animated.Value for width
+
+  useEffect(() => {
+    Animated.timing(progressWidth, {
+      toValue: progress, // Update the width dynamically based on the progress
+      duration: 500,
+      useNativeDriver: false, // Set to false for width-based animations
+    }).start();
+  }, [progress]);
 
   useEffect(() => {
     if (isRunning && time > 0) {
@@ -94,6 +107,7 @@ export default function TrainingSession() {
         setRest(false);
         setTime(data.duration);
       }
+
     } else {
       clearInterval(timerRef.current);
     }
@@ -110,20 +124,20 @@ export default function TrainingSession() {
   // handling skip button
   const handleSkipButton = () => {
     Alert.alert(`Confirm skip ${exercises[currentExerciseIndex].name}?`, "You cannot back to this exercise", [
-        {
-          text: 'Cancel',
-          onPress: () => {
-          },
-          style: 'cancel',
+      {
+        text: 'Cancel',
+        onPress: () => {
         },
-        {
-          text: 'Confirm',
-          onPress: () => {
-            setTime(0);
-            setIsRunning(true);
-          },
-        }
-      ]
+        style: 'cancel',
+      },
+      {
+        text: 'Confirm',
+        onPress: () => {
+          setTime(0);
+          setIsRunning(true);
+        },
+      }
+    ]
     )
   }
 
@@ -174,6 +188,11 @@ export default function TrainingSession() {
 
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
+  const progressBarWidth = fadeAnim.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'], // Converts the progress percentage to width
+  });
+
   useEffect(() => {
     const loopAnimation = () => {
       Animated.sequence([
@@ -198,7 +217,7 @@ export default function TrainingSession() {
   // Handle loading and error states
   if (loading || createLoading) {
     return <View className="h-full justify-center items-center">
-      <ActivityIndicator size="large" color="black"/>
+      <ActivityIndicator size="large" color="black" />
     </View>;
   }
 
@@ -219,7 +238,7 @@ export default function TrainingSession() {
               width: 320,
               height: 208,
               position: "absolute"
-            }, {opacity: fadeAnim}]}
+            }, { opacity: fadeAnim }]}
           />
           <Animated.Image
             source={{
@@ -241,6 +260,28 @@ export default function TrainingSession() {
       </VStack>
 
       <VStack className='items-center w-full'>
+        {/* Progress Bar */}
+        <Text className='font-black text-black text-xl mb-4'>
+          Exercise {currentExerciseIndex + 1} of {exercisesCount}
+        </Text>
+
+        {/* Progress Bar Container */}
+        <View style={{ width: '100%', height: 10, backgroundColor: '#e0e0e0', borderRadius: 5, marginBottom: 10 }}>
+          <Animated.View
+            style={{
+              height: '100%',
+              backgroundColor: '#000000', // Green color for progress bar
+              width: progressWidth.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['0%', '100%'], // Interpolate to percentage width
+              }),
+              borderRadius: 5,
+            }}
+          />
+        </View>
+
+
+
         <Text
           className='font-black text-black text-3xl mb-5'>{rest ? "Rest" : exercises[currentExerciseIndex].name}</Text>
         <Text className='font-black text-7xl'>{formatTime(time)}</Text>
@@ -261,7 +302,7 @@ export default function TrainingSession() {
 
           <Box className="flex items-center justify-center">
             <TouchableOpacity onPress={handleSkipButton} className="w-20 h-20" disabled={rest}>
-              <Icon as={ChevronsRightIcon} className="w-20 h-20 text-slate-600"/>
+              <Icon as={ChevronsRightIcon} className="w-20 h-20 text-slate-600" />
             </TouchableOpacity>
           </Box>
         </HStack>
