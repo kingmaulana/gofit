@@ -12,11 +12,12 @@ import { Link, useNavigation, useRoute } from '@react-navigation/native'
 import { Pressable } from '@/components/ui/pressable'
 import { gql, useQuery } from '@apollo/client';
 import { View } from '@gluestack-ui/themed'
+import { ActivityIndicator } from 'react-native'
 
 // GraphQL Query to fetch category details by ID
 const USER_GOAL_BY_ID = gql`
-query UserGoals($userId: String) {
-  userGoals(userId: $userId) {
+query UserGoals {
+  userGoals {
     goalName
     userId
     startWeight
@@ -41,17 +42,15 @@ export default function TrainingByAI() {
   const route = useRoute();
 
   // Using Apollo's useQuery hook to fetch data
-  const { data, loading, error } = useQuery(USER_GOAL_BY_ID, {
-    variables: { 
-      userId: "67c86332d7f9c70de43f4b9f"
-     }, // Pass the ID as a variable to the query
-  });
+  const { data, loading, error } = useQuery(USER_GOAL_BY_ID);
   const exercises = data?.userGoals?.completeExercise;
   // console.log("🚀 ~ TrainingByAI ~ exercises:", exercises)
 
   // Handle loading and error states
   if (loading) {
-    return <Text>Loading...</Text>;
+      return <View className="h-full justify-center items-center">
+          <ActivityIndicator size="large" color="black" />
+        </View>;
   }
 
   if (error) {

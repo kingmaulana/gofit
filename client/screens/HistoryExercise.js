@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, Text, View} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -35,6 +35,16 @@ export default function ExerciseHistory() {
 
   const exerciseHistory = data?.historyCategory
   // console.log("🚀 ~ ExerciseHistory ~ exerciseHistory:", exerciseHistory)
+
+  if (loading) {
+    return <View className="h-full justify-center items-center">
+      <ActivityIndicator size="large" color="black" />
+    </View>;
+  }
+
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
 
 
   return (

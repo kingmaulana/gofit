@@ -6,7 +6,7 @@ import { Image } from "@/components/ui/image";
 import { Link, LinkText } from "@/components/ui/link";
 import { Text } from "@/components/ui/text";
 import { ArrowRightIcon, Icon } from "@/components/ui/icon";
-import { ScrollView, TouchableWithoutFeedback } from "react-native";
+import { ActivityIndicator, ScrollView, TouchableWithoutFeedback, View } from "react-native";
 import { Box } from "@/components/ui/box";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
@@ -25,8 +25,8 @@ const GET_CATEGORY = gql(`
 `);
 
 const GET_CATEGORY_AI = gql(`
-  query UserGoals($userId: String) {
-    userGoals(userId: $userId) {
+  query UserGoals {
+    userGoals {
       _id
       goalName
       exercise {
@@ -39,16 +39,16 @@ const GET_CATEGORY_AI = gql(`
 
 export default function Home() {
   const { data: categoryData, loading: categoryLoading, error: categoryError } = useQuery(GET_CATEGORY);
-  const { data: goalData, loading: goalLoading, error: goalError } = useQuery(GET_CATEGORY_AI, {
-    variables: { userId: "67c6a7d8be60228e126ec03e" }, // Ganti dengan userId yang sesuai
-  });
-  // console.log("🚀 ~ Home ~ goalData:", goalData)
+  const { data: goalData, loading: goalLoading, error: goalError } = useQuery(GET_CATEGORY_AI);
+  console.log("🚀 ~ Home ~ goalData:", goalData)
 
   const navigation = useNavigation();
 
   // Handle loading states for both queries
   if (categoryLoading || goalLoading) {
-    return <Text>Loading...</Text>;
+    return <View className="h-full justify-center items-center">
+        <ActivityIndicator size="large" color="black" />
+      </View>;
   }
 
   // Handle error states for both queries

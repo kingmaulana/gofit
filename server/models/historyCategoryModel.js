@@ -14,7 +14,7 @@ class HistoryExerciseModel {
                 .aggregate([
                     {
                         $match: {
-                            userId: ObjectId.createFromHexString("67c6a7d8be60228e126ec03e"),
+                            userId: ObjectId.createFromHexString(args.userId),
                         },
                     },
                     {
