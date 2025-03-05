@@ -42,7 +42,9 @@ export default function TrainingSession() {
       idCategory: categoryId
     }
   });
+  console.log("🚀 ~ TrainingSession ~ categoryData:", categoryData)
   const data = categoryData?.getCategoryById;
+  // console.log("🚀 ~ TrainingSession ~ data:", data)
   const exercises = data.exercises;
   const exercisesCount = exercises.length;
   const restTime = Math.round(data.duration / 3);
@@ -51,6 +53,7 @@ export default function TrainingSession() {
   // console.log("🚀 ~ TrainingSession ~ exercises:", exercises)
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
   const [time, setTime] = useState(data.duration);
+  // console.log("🚀 ~ TrainingSession ~ time:", time)
   const [rest, setRest] = useState(false);
   const [isRunning, setIsRunning] = useState(true)
   const timerRef = useRef(null);
@@ -226,87 +229,92 @@ export default function TrainingSession() {
   }
 
   return (
-    <Box className='flex flex-col items-center justify-between h-[80%] w-full'>
-      <VStack className='w-full items-center pt-10 flex-1 justify-center'>
-        {!rest && <>
-          <Animated.Image
-            source={{
-              uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercises[currentExerciseIndex].images[0]}`,
-            }}
-            contentFit="cover"
-            style={[{
-              width: 320,
-              height: 208,
-              position: "absolute"
-            }, { opacity: fadeAnim }]}
-          />
-          <Animated.Image
-            source={{
-              uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercises[currentExerciseIndex].images[1]}`,
-            }}
-            contentFit="cover"
-            style={[{
-              width: 320,
-              height: 208,
-              position: "absolute"
-            }, {
-              opacity: fadeAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [1, 0], // Inverse fade effect
-              })
-            }]}
-          />
-        </>}
-      </VStack>
-
-      <VStack className='items-center w-full'>
-        {/* Progress Bar */}
-        <Text className='font-black text-black text-xl mb-4'>
-          Exercise {currentExerciseIndex + 1} of {exercisesCount}
-        </Text>
-
-        {/* Progress Bar Container */}
-        <View style={{ width: '100%', height: 10, backgroundColor: '#e0e0e0', borderRadius: 5, marginBottom: 10 }}>
-          <Animated.View
-            style={{
-              height: '100%',
-              backgroundColor: '#000000', // Green color for progress bar
-              width: progressWidth.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['0%', '100%'], // Interpolate to percentage width
-              }),
-              borderRadius: 5,
-            }}
-          />
-        </View>
-
-
-
-        <Text
-          className='font-black text-black text-3xl mb-5'>{rest ? "Rest" : exercises[currentExerciseIndex].name}</Text>
-        <Text className='font-black text-7xl'>{formatTime(time)}</Text>
-        <HStack className="flex w-[100%] justify-evenly items-center mt-4">
-          <Button variant="outline" className="rounded-full" onPress={handleCompleteButton}>
-            <ButtonText className="font-bold">Completed</ButtonText>
-          </Button>
-
-          <Button
-            variant="outline"
-            className="rounded-full"
-            onPress={() => setIsRunning(!isRunning)} // Toggle start/pause
-          >
-            <ButtonText className="font-bold">
-              {isRunning ? "Pause" : "Resume"}
-            </ButtonText>
-          </Button>
-
-          <Box className="flex items-center justify-center">
-            <TouchableOpacity onPress={handleSkipButton} className="w-20 h-20" disabled={rest}>
-              <Icon as={ChevronsRightIcon} className="w-20 h-20 text-slate-600" />
-            </TouchableOpacity>
-          </Box>
-        </HStack>
-      </VStack>
-    </Box>
+      <Box className='flex flex-col items-center justify-between h-[80%] w-full bg-gray-100 p-4 rounded-lg'>
+        <VStack className='w-full items-center pt-10 flex-1 justify-center'>
+          {!rest && <>
+            <Animated.Image
+              source={{
+                uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercises[currentExerciseIndex].images[0]}`,
+              }}
+              contentFit="cover"
+              style={[{
+                width: 320,
+                height: 208,
+                position: "absolute",
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: '#ddd',
+              }, { opacity: fadeAnim }]}
+            />
+            <Animated.Image
+              source={{
+                uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercises[currentExerciseIndex].images[1]}`,
+              }}
+              contentFit="cover"
+              style={[{
+                width: 320,
+                height: 208,
+                position: "absolute",
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor: '#ddd',
+              }, {
+                opacity: fadeAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [1, 0], // Inverse fade effect
+                })
+              }]}
+            />
+          </>}
+  
+        </VStack>
+  
+        <VStack className='items-center w-full'>
+          {/* Progress Bar */}
+          <Text className='font-semibold text-xl text-gray-700 mb-4'>
+            Exercise {currentExerciseIndex + 1} of {exercisesCount}
+          </Text>
+  
+          {/* Progress Bar Container */}
+          <View style={{ width: '100%', height: 12, backgroundColor: '#e0e0e0', borderRadius: 8, marginBottom: 15 }}>
+            <Animated.View
+              style={{
+                height: '100%',
+                backgroundColor: '#4CAF50', // Green color for progress bar
+                width: progressWidth.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['0%', '100%'], // Interpolate to percentage width
+                }),
+                borderRadius: 8,
+              }}
+            />
+          </View>
+  
+          <Text className='font-semibold text-3xl text-gray-800 mb-5'>{rest ? "Rest" : exercises[currentExerciseIndex].name}</Text>
+          <Text className='font-bold text-5xl text-black'>{formatTime(time)}</Text>
+  
+          <HStack className="flex w-[100%] justify-evenly items-center mt-6">
+            <Button variant="outline" className="rounded-full border-2 border-green-500 px-3 bg-white shadow-md hover:bg-green-100" onPress={handleCompleteButton}>
+              <ButtonText className="font-semibold text-green-500">Completed</ButtonText>
+            </Button>
+  
+            <Button
+              variant="outline"
+              className="rounded-full border-2 border-blue-500 px-3  bg-white shadow-md hover:bg-blue-100"
+              onPress={() => setIsRunning(!isRunning)} // Toggle start/pause
+            >
+              <ButtonText className="font-semibold text-blue-500">
+                {isRunning ? "Pause" : "Resume"}
+              </ButtonText>
+            </Button>
+  
+            <Box className="flex items-center justify-center">
+              <TouchableOpacity onPress={handleSkipButton} className="w-20 h-20 p-4 bg-gray-200 rounded-full shadow-lg" disabled={rest}>
+                <Icon as={ChevronsRightIcon} className="w-12 h-12 text-gray-600" />
+              </TouchableOpacity>
+            </Box>
+          </HStack>
+        </VStack>
+      </Box>  
   )
 }

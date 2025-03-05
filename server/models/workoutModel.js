@@ -22,22 +22,6 @@ class WorkoutModel {
 
     static async findById(id) {
         try {
-            const result = await chatSession.sendMessage("Make a list of thing i do if im a monster ?");
-            const responseText = await result.response.text();
-    
-            // Log the full response to understand the structure of candidates
-            console.log("Full response from chat session:", result);
-    
-            const formattedResponse = {
-                success: true,
-                data: {
-                    response: {
-                        text: responseText
-                    }
-                }
-            };
-            console.log("🚀 ~ testChatSession ~ formattedResponse:", formattedResponse)
-
             const workout = await this.collection().findOne({
                 _id: new ObjectId(id)
             })

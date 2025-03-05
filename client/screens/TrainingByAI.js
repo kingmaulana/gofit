@@ -39,10 +39,6 @@ query UserGoals($userId: String) {
 export default function TrainingByAI() {
   const navigation = useNavigation();
   const route = useRoute();
-  
-  // Getting the category ID from route params
-//   const { categoryId } = route.params;
-  // console.log("🚀 ~ Training ~ categoryId:", categoryId)
 
   // Using Apollo's useQuery hook to fetch data
   const { data, loading, error } = useQuery(USER_GOAL_BY_ID, {
@@ -52,7 +48,7 @@ export default function TrainingByAI() {
   });
   // console.log("🚀 ~ TrainingByAI ~ data:", data)
   const exercises = data?.userGoals?.completeExercise;
-  console.log("🚀 ~ TrainingByAI ~ exercise:", exercises)
+  // console.log("🚀 ~ TrainingByAI ~ exercise:", exercises)
 
   // Handle loading and error states
   if (loading) {
@@ -64,8 +60,6 @@ export default function TrainingByAI() {
   }
 
   const goal = data?.userGoals;
-  console.log(data);
-
 
   return (
     <ScrollView className="flex-1">
@@ -133,7 +127,7 @@ export default function TrainingByAI() {
           className="w-full bg-black rounded-md flex"
           onPress={() => {
             // Handle the press event here
-            navigation.navigate('TrainingSession', {categoryId: goal._id, usingGoalId: true});
+            navigation.navigate('TrainingSessionByAI', {userId: data?.userGoals?.userId});
           }}
         >
           <Text className="text-white font-medium text-center py-3">

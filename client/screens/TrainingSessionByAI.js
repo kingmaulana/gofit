@@ -1,0 +1,320 @@
+import { Image } from "expo-image"
+import { Box } from '@/components/ui/box'
+import { Button, ButtonText } from '@/components/ui/button'
+import { HStack } from '@/components/ui/hstack'
+import { Icon, PlayIcon, ChevronsRightIcon } from '@/components/ui/icon'
+// import { Image } from '@/components/ui/image'
+import { Text } from '@/components/ui/text'
+import { VStack } from '@/components/ui/vstack'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, Alert, Animated, BackHandler, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { useNavigation, useRoute } from "@react-navigation/native";
+
+const ADD_HISTORY_EXERCISE = gql(`
+    mutation CreateHistoryCategory($categoryId: String, $userGoalId: String) {
+        createHistoryCategory(categoryId: $categoryId, userGoalId: $userGoalId) {
+            userId
+            userGoalId
+        }
+    }
+`)
+
+const GET_ALL_EXERCISE_DATA = gql(`
+    query UserGoals($userId: String) {
+        userGoals(userId: $userId) {
+            _id
+            userId
+            exercise {
+                exercise
+                duration
+            }
+            completeExercise {
+                _id
+                name
+                images
+            }
+        }
+    }`)
+
+
+export default function TrainingSessionByAI() {
+    const { userId } = useRoute().params;
+    //   console.log("🚀 ~ TrainingSessionByAI ~ categoryId, userId:", userId)
+
+    const { data: exerciseAI, loading, error } = useQuery(GET_ALL_EXERCISE_DATA, {
+        variables: {
+            userId: userId
+        }
+    });
+    // console.log("🚀 ~ TrainingSessionByAI ~ exerciseAI:", exerciseAI)
+    const duration = exerciseAI?.userGoals?.exercise?.duration
+    console.log("🚀 ~ TrainingSessionByAI ~ duration:", duration)
+    const data = exerciseAI?.userGoals;
+    console.log("🚀 ~ TrainingSessionAI ~ data:", data)
+    const exercises = data?.completeExercise;
+    const exercisesCount = exercises?.length;
+    const restTime = Math.round(duration / 3);
+    const navigation = useNavigation();
+
+    //   // console.log("🚀 ~ TrainingSession ~ exercises:", exercises)
+    const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+    const [time, setTime] = useState(duration);
+    console.log("🚀 ~ TrainingSessionByAI ~ time:", time)
+    const [rest, setRest] = useState(false);
+    const [isRunning, setIsRunning] = useState(true)
+    const timerRef = useRef(null);
+
+    const [createHistoryExercise, { loading: createLoading }] = useMutation(ADD_HISTORY_EXERCISE);
+
+    const onFinish = useCallback(async () => {
+        await createHistoryExercise({
+            variables: {
+                userGoalId: exerciseAI.userGoals._id
+            }
+        })
+        navigation.reset({
+            index: 1,
+            routes: [{ name: "Landing" }, { name: "HistoryExercise" }],
+        });
+    }, [navigation])
+
+    const progress = (currentExerciseIndex + 1) / exercisesCount;  // Calculate the progress
+
+    const progressWidth = useRef(new Animated.Value(0)).current; // Initialize Animated.Value for width
+
+    useEffect(() => {
+        Animated.timing(progressWidth, {
+            toValue: progress, // Update the width dynamically based on the progress
+            duration: 500,
+            useNativeDriver: false, // Set to false for width-based animations
+        }).start();
+    }, [progress]);
+
+// Ensure that the time is always valid when updating it
+useEffect(() => {
+    if (isRunning && time > 0) {
+        timerRef.current = setInterval(() => {
+            setTime(prevTime => (Number(prevTime) - 1) || 0); // Prevent time from becoming NaN
+        }, 1000);
+    } else if (time === 0) {
+        if (!rest) {
+            if (currentExerciseIndex === exercisesCount - 1) {
+                onFinish();
+            } else {
+                setCurrentExerciseIndex(currentExerciseIndex + 1);
+                setRest(true);
+                setTime(restTime);
+            }
+        } else {
+            setRest(false);
+            setTime(duration);  // Ensure time is set to a valid value
+        }
+    } else {
+        clearInterval(timerRef.current);
+    }
+
+    return () => clearInterval(timerRef.current); // Cleanup
+}, [isRunning, time, rest]);
+
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60)
+        const secs = seconds % 60
+        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
+    }
+
+    // handling skip button
+    const handleSkipButton = () => {
+        Alert.alert(`Confirm skip ${exercises[currentExerciseIndex].name}?`, "You cannot back to this exercise", [
+            {
+                text: 'Cancel',
+                onPress: () => {
+                },
+                style: 'cancel',
+            },
+            {
+                text: 'Confirm',
+                onPress: () => {
+                    setTime(0);
+                    setIsRunning(true);
+                },
+            }
+        ]
+        )
+    }
+
+    const handleCompleteButton = () => {
+        Alert.alert("Confirm complete exercise?", "Your current exercise will be saved into your history", [
+            {
+                text: 'Cancel',
+                onPress: () => {
+                },
+                style: 'cancel',
+            },
+            {
+                text: 'Confirm',
+                onPress: () => onFinish(),
+            },
+        ], {
+            cancelable: true,
+        })
+    }
+
+
+    useEffect(() => {
+        const backAction = () => {
+            Alert.alert("Confirm exit?", "You are in the middle of workout", [
+                {
+                    text: 'Cancel',
+                    onPress: () => {
+                    },
+                    style: 'cancel',
+                },
+                {
+                    text: 'Yes',
+                    onPress: () => navigation.goBack(),
+                },
+            ], {
+                cancelable: true,
+            });
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
+
+    const fadeAnim = useRef(new Animated.Value(1)).current;
+
+    const progressBarWidth = fadeAnim.interpolate({
+        inputRange: [0, 100],
+        outputRange: ['0%', '100%'], // Converts the progress percentage to width
+    });
+
+    useEffect(() => {
+        const loopAnimation = () => {
+            Animated.sequence([
+                Animated.timing(fadeAnim, {
+                    toValue: 0,
+                    duration: 500, // 500ms fade-out
+                    useNativeDriver: true,
+                }),
+                Animated.timing(fadeAnim, {
+                    toValue: 1,
+                    duration: 500, // 500ms fade-in
+                    useNativeDriver: true,
+                }),
+            ]).start(() => loopAnimation()); // Loop animation
+        };
+
+        if (!rest) {
+            loopAnimation();
+        }
+    }, [rest]);
+
+    // Handle loading and error states
+    if (loading || createLoading) {
+        return <View className="h-full justify-center items-center">
+            <ActivityIndicator size="large" color="black" />
+        </View>;
+    }
+
+    if (error) {
+        return <Text>Error: {error.message}</Text>;
+    }
+
+    return (
+        <Box className='flex flex-col items-center justify-between h-[80%] w-full bg-gray-100 p-4 rounded-lg'>
+                <VStack className='w-full items-center pt-10 flex-1 justify-center'>
+                  {!rest && <>
+                    <Animated.Image
+                      source={{
+                        uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercises[currentExerciseIndex].images[0]}`,
+                      }}
+                      contentFit="cover"
+                      style={[{
+                        width: 320,
+                        height: 208,
+                        position: "absolute",
+                        borderRadius: 10,
+                        borderWidth: 2,
+                        borderColor: '#ddd',
+                      }, { opacity: fadeAnim }]}
+                    />
+                    <Animated.Image
+                      source={{
+                        uri: `https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/${exercises[currentExerciseIndex].images[1]}`,
+                      }}
+                      contentFit="cover"
+                      style={[{
+                        width: 320,
+                        height: 208,
+                        position: "absolute",
+                        borderRadius: 10,
+                        borderWidth: 2,
+                        borderColor: '#ddd',
+                      }, {
+                        opacity: fadeAnim.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: [1, 0], // Inverse fade effect
+                        })
+                      }]}
+                    />
+                  </>}
+          
+                </VStack>
+          
+                <VStack className='items-center w-full'>
+                  {/* Progress Bar */}
+                  <Text className='font-semibold text-xl text-gray-700 mb-4'>
+                    Exercise {currentExerciseIndex + 1} of {exercisesCount}
+                  </Text>
+          
+                  {/* Progress Bar Container */}
+                  <View style={{ width: '100%', height: 12, backgroundColor: '#e0e0e0', borderRadius: 8, marginBottom: 15 }}>
+                    <Animated.View
+                      style={{
+                        height: '100%',
+                        backgroundColor: '#4CAF50', // Green color for progress bar
+                        width: progressWidth.interpolate({
+                          inputRange: [0, 1],
+                          outputRange: ['0%', '100%'], // Interpolate to percentage width
+                        }),
+                        borderRadius: 8,
+                      }}
+                    />
+                  </View>
+          
+                  <Text className='font-semibold text-3xl text-gray-800 mb-5'>{rest ? "Rest" : exercises[currentExerciseIndex].name}</Text>
+                  <Text className='font-bold text-5xl text-black'>{formatTime(time)}</Text>
+          
+                  <HStack className="flex w-[100%] justify-evenly items-center mt-6">
+                    <Button variant="outline" className="rounded-full border-2 border-green-500 px-3 bg-white shadow-md hover:bg-green-100" onPress={handleCompleteButton}>
+                      <ButtonText className="font-semibold text-green-500">Completed</ButtonText>
+                    </Button>
+          
+                    <Button
+                      variant="outline"
+                      className="rounded-full border-2 border-blue-500 px-3  bg-white shadow-md hover:bg-blue-100"
+                      onPress={() => setIsRunning(!isRunning)} // Toggle start/pause
+                    >
+                      <ButtonText className="font-semibold text-blue-500">
+                        {isRunning ? "Pause" : "Resume"}
+                      </ButtonText>
+                    </Button>
+          
+                    <Box className="flex items-center justify-center">
+                      <TouchableOpacity onPress={handleSkipButton} className="w-20 h-20 p-4 bg-gray-200 rounded-full shadow-lg" disabled={rest}>
+                        <Icon as={ChevronsRightIcon} className="w-12 h-12 text-gray-600" />
+                      </TouchableOpacity>
+                    </Box>
+                  </HStack>
+                </VStack>
+              </Box>  
+    )
+}
