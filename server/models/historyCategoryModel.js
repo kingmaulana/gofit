@@ -79,6 +79,7 @@ class HistoryExerciseModel {
         try {
             let userGoalId = null
             let categoryId = null
+            let userExerciseId = null
             if(args.categoryId) {
                 categoryId = ObjectId.createFromHexString(args.categoryId)
             } 
@@ -87,10 +88,15 @@ class HistoryExerciseModel {
                 userGoalId = ObjectId.createFromHexString(args.userGoalId)
             }
 
+            if(args.userExerciseId) {
+                userExerciseId = ObjectId.createFromHexString(args.userExerciseId);
+            }
+
             const logEntry = {
                 userId: ObjectId.createFromHexString(args.userId),
                 userGoalId,
                 categoryId,
+                userExerciseId,
                 date: new Date().toISOString(),
                 createdAt: new Date(),
             }
